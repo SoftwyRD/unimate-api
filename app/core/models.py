@@ -148,7 +148,7 @@ class SectionSchedule(models.Model):
     """Model for the schedule of a section."""
 
     id = models.AutoField(primary_key=True, unique=True, editable=False)
-    section = models.ForeignKey(SubjectSection, on_delete=models.CASCADE)
+    section = models.ForeignKey(SubjectSection, on_delete=models.CASCADE, related_name="subject_schedule")
     weekday = models.ForeignKey(Weekday, on_delete=models.SET_NULL, null=True)
     start_time = models.IntegerField(
         default=7, validators=[MinValueValidator(7), MaxValueValidator(20)]

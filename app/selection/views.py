@@ -68,11 +68,12 @@ class SubjectSectionListView(APIView):
                 },
             }
             return Response(response, status=status.HTTP_200_OK)
-        except Exception:
+        except Exception as e:
             response = {
                 "status": "error",
                 "message": "There was an error trying to get the subjects.",
             }
+            print(e)
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
@@ -107,7 +108,7 @@ class SubjectSectionListView(APIView):
 
                 headers = {
                     "Location": subject_section_location_url(
-                        selection_id, subject_section["id"]
+                        selection_id, subject_section["data"]["id"]
                     ),
                 }
                 response = {
@@ -128,11 +129,13 @@ class SubjectSectionListView(APIView):
                 },
             }
             return Response(response, status.HTTP_400_BAD_REQUEST)
-        except Exception:
+        except Exception as e:
             response = {
                 "status": "error",
-                "message": "There was an error trying to get the subjects.",
+                "message": "There was an error trying to post the subjects.",
             }
+            print("Exception:")
+            print(e)
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -179,6 +182,7 @@ class SubjectSectionDetailsView(APIView):
                 "status": "error",
                 "message": "There was an error trying to get the subjects.",
             }
+
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(

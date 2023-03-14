@@ -1,10 +1,26 @@
 """Selection Serializers"""
 
-from core.models import SubjectSection, Subject, Selection as SelectionModel
+from core.models import (
+    SubjectSection,
+    Subject,
+    Selection as SelectionModel,
+    SectionSchedule as ScheduleModel,
+    Weekday as WeekdayModel,
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
 )
+
+
+class ScheduleSerializer(ModelSerializer):
+    """Serializer for Schedule"""
+
+    class Meta:
+        model = ScheduleModel
+        # fields = "__all__"
+        exclude = ('section', )
+        read_only_fields = ["id"]
 
 
 class SelectionSerializer(ModelSerializer):
@@ -31,6 +47,7 @@ class SubjectSectionSerializer(ModelSerializer):
     subject_code = SerializerMethodField()
     subject_name = SerializerMethodField()
     selection = SerializerMethodField()
+    subject_schedule = ScheduleSerializer(many=True)
 
     class Meta:
         model = SubjectSection
@@ -43,6 +60,7 @@ class SubjectSectionSerializer(ModelSerializer):
             "subject_name",
             "professor",
             "taken",
+            "subject_schedule",
         ]
         extra_kwargs = {
             "subject": {
@@ -57,14 +75,32 @@ class SubjectSectionSerializer(ModelSerializer):
         super().run_validation(data)
         return data
 
+    def to_representation(self, instance):
+        x = super().to_representation(instance)
+
+        response = {
+            "status": "success",
+            "data": x,
+        }
+
+        return response
     def create(self, validated_data):
         """Create the subject section"""
+        schedules = validated_data.pop('subject_schedule')
 
         subject_id = validated_data["subject"]
         subject = Subject.objects.get(id=subject_id)
 
         validated_data["subject"] = subject
         subject_section = SubjectSection.objects.create(**validated_data)
+
+        if schedules:
+            for schedule in schedules:
+                weekday = WeekdayModel.objects.get(id=schedule["weekday"])
+                schedule["weekday"] = weekday
+                schedule["section"] = subject_section
+                ScheduleModel.objects.create(**schedule)
+
         return subject_section
 
     def update(self, instance, validated_data):
@@ -102,3 +138,12 @@ class SubjectSectionSerializer(ModelSerializer):
         data = serializer.data
         subject_name = data["name"]
         return subject_name
+
+    # def get_subject_schedule(self, obj) -> str:
+    #     """Get the subject schedule"""
+
+    #     schedule = obj.schedule
+    #     serializer = ScheduleSerializer(schedule, many=True)
+    #     data = serializer.data
+    #     print(data)
+    #     return data

@@ -19,7 +19,7 @@ urlpatterns = [
         name="subject-list",
     ),
     path(
-        "<uuid:selection_id>/subjects/<int:subject_section_id>/",
+        "<uuid:selection_id>/sections/<int:subject_section_id>/",
         views.SubjectSectionDetailsView.as_view(),
         name="subject-detail",
     ),
