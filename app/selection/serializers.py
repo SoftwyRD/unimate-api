@@ -47,7 +47,7 @@ class SubjectSectionSerializer(ModelSerializer):
     subject_code = SerializerMethodField()
     subject_name = SerializerMethodField()
     selection = SerializerMethodField()
-    subject_schedule = ScheduleSerializer(many=True)
+    subject_schedule = ScheduleSerializer(many=True, required=False)
 
     class Meta:
         model = SubjectSection
@@ -86,7 +86,7 @@ class SubjectSectionSerializer(ModelSerializer):
         return response
     def create(self, validated_data):
         """Create the subject section"""
-        schedules = validated_data.pop('subject_schedule')
+        schedules = validated_data.pop('subject_schedule', [])
 
         subject_id = validated_data["subject"]
         subject = Subject.objects.get(id=subject_id)
@@ -94,12 +94,11 @@ class SubjectSectionSerializer(ModelSerializer):
         validated_data["subject"] = subject
         subject_section = SubjectSection.objects.create(**validated_data)
 
-        if schedules:
-            for schedule in schedules:
-                weekday = WeekdayModel.objects.get(id=schedule["weekday"])
-                schedule["weekday"] = weekday
-                schedule["section"] = subject_section
-                ScheduleModel.objects.create(**schedule)
+        for schedule in schedules:
+            weekday = WeekdayModel.objects.get(id=schedule["weekday"])
+            schedule["weekday"] = weekday
+            schedule["section"] = subject_section
+            ScheduleModel.objects.create(**schedule)
 
         return subject_section
 
