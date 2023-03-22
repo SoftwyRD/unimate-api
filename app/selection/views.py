@@ -168,7 +168,7 @@ class SubjectSectionDetailsView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            subject_section = SubjectSection.objects.get(id=subject_section_id)
+            subject_section = SubjectSection.objects.get(id=subject_section_id, selection=selection_id)
             serializer = self.serializer_class(subject_section, many=False)
             response = {
                 "status": "success",
@@ -177,6 +177,18 @@ class SubjectSectionDetailsView(APIView):
                 },
             }
             return Response(response, status=status.HTTP_200_OK)
+
+        except SubjectSection.DoesNotExist:
+            response = {
+                "status": "fail",
+                "data": {
+                    "title": "Could not find the subject section",
+                    "message": "Could not find the subject section you"
+                    + " are trying to get.",
+                },
+            }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+
         except Exception:
             response = {
                 "status": "error",

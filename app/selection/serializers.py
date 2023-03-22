@@ -75,15 +75,6 @@ class SubjectSectionSerializer(ModelSerializer):
         super().run_validation(data)
         return data
 
-    def to_representation(self, instance):
-        x = super().to_representation(instance)
-
-        response = {
-            "status": "success",
-            "data": x,
-        }
-
-        return response
     def create(self, validated_data):
         """Create the subject section"""
         schedules = validated_data.pop('subject_schedule', [])
