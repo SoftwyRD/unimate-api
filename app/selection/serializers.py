@@ -21,8 +21,8 @@ class ScheduleSerializer(ModelSerializer):
     class Meta:
         model = ScheduleModel
         # fields = "__all__"
-        exclude = ("section",)
-        read_only_fields = ["id"]
+        exclude = ("section","id")
+        # read_only_fields = ["id"]
 
     def create(self, validated_data):
         section = self.context.get('section')
@@ -113,11 +113,12 @@ class SubjectSectionSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update de subject section"""
-        # schedules = validated_data.pop('subject_schedule', [])
+        schedules = validated_data.pop('subject_schedule', [])
 
-        subject_id = validated_data["subject"]
-        subject = Subject.objects.get(id=subject_id)
-        validated_data["subject"] = subject
+        if "subject" in validated_data:
+            subject_id = validated_data["subject"]
+            subject = Subject.objects.get(id=subject_id)
+            validated_data["subject"] = subject
 
         return super().update(instance, validated_data)
 

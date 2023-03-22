@@ -266,11 +266,13 @@ class SubjectSectionDetailsView(APIView):
             }
             return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-        except Exception:
+        except Exception as ex:
             response = {
                 "status": "error",
                 "message": "There was an error trying to update the subjects.",
             }
+            ex.with_traceback()
+
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
@@ -535,7 +537,6 @@ class SelectionDetailView(APIView):
                 "status": "error",
                 "message": ex,
             }
-
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -598,14 +599,16 @@ class ScheduleListView(APIView):
                     errors.append(serializer.errors)
 
             if not errors:
-                updated_schedules = self.serializer_class(
-                    schedules, many=True, context={"request": request}
-                ).data
+                updated_schedules = ScheduleModel.objects.filter(section=subject_section_id)
+                serializer = self.serializer_class(
+                    updated_schedules,
+                    many=True,
+                )
 
                 response = {
                     "status": "success",
                     "data": {
-                        "schedules": updated_schedules,
+                        "schedules": serializer.data,
                     },
                 }
                 return Response(response, status.HTTP_200_OK)
@@ -636,5 +639,4 @@ class ScheduleListView(APIView):
                 "message": "There was an error trying to update the subjects.",
             }
             ex.with_traceback()
-            # print(ex)
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
