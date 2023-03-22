@@ -5,8 +5,21 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from selection.serializers import SubjectSectionSerializer, SelectionSerializer
-from core.models import SubjectSection, Selection as SelectionModel
+from selection.serializers import (
+    SubjectSectionSerializer,
+    SelectionSerializer,
+    ScheduleListSerializer,
+    ScheduleSerializer,
+)
+
+from core.models import (
+    SubjectSection,
+    Selection as SelectionModel,
+    SectionSchedule as ScheduleModel,
+    Subject,
+    Weekday as WeekdayModel,
+)
+
 from drf_spectacular.utils import extend_schema
 
 from datetime import datetime
@@ -16,9 +29,7 @@ schema_name = "selection"
 
 def subject_section_location_url(selection_id, subject_section_id):
     """Get reverse url for subject section details"""
-    return reverse(
-        "selection:subject-detail", args=[selection_id, subject_section_id]
-    )
+    return reverse("selection:subject-detail", args=[selection_id, subject_section_id])
 
 
 def selection_location_url(selection_id):
@@ -55,9 +66,7 @@ class SubjectSectionListView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            subject_section = SubjectSection.objects.filter(
-                selection=selection
-            )
+            subject_section = SubjectSection.objects.filter(selection=selection)
             serializer = self.serializer_class(subject_section, many=True)
 
             response = {
@@ -108,7 +117,7 @@ class SubjectSectionListView(APIView):
 
                 headers = {
                     "Location": subject_section_location_url(
-                        selection_id, subject_section["data"]["id"]
+                        selection_id, subject_section["id"]
                     ),
                 }
                 response = {
@@ -117,9 +126,7 @@ class SubjectSectionListView(APIView):
                         "subject_section": subject_section,
                     },
                 }
-                return Response(
-                    response, status.HTTP_201_CREATED, headers=headers
-                )
+                return Response(response, status.HTTP_201_CREATED, headers=headers)
 
             response = {
                 "status": "fail",
@@ -168,7 +175,9 @@ class SubjectSectionDetailsView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            subject_section = SubjectSection.objects.get(id=subject_section_id, selection=selection_id)
+            subject_section = SubjectSection.objects.get(
+                id=subject_section_id, selection=selection_id
+            )
             serializer = self.serializer_class(subject_section, many=False)
             response = {
                 "status": "success",
@@ -207,6 +216,7 @@ class SubjectSectionDetailsView(APIView):
         try:
             user = request.user
             selection = SelectionModel.objects.get(id=selection_id)
+
             if selection.user != user:
                 response = {
                     "status": "fail",
@@ -219,7 +229,9 @@ class SubjectSectionDetailsView(APIView):
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
             data = request.data
-            subject_section = SubjectSection.objects.get(id=subject_section_id)
+            subject_section = SubjectSection.objects.get(
+                id=subject_section_id, selection=selection_id
+            )
             serializer = self.serializer_class(
                 subject_section, data=data, many=False, partial=True
             )
@@ -242,6 +254,18 @@ class SubjectSectionDetailsView(APIView):
                 },
             }
             return Response(response, status.HTTP_400_BAD_REQUEST)
+
+        except SubjectSection.DoesNotExist:
+            response = {
+                "status": "fail",
+                "data": {
+                    "title": "Could not find the subject section",
+                    "message": "Could not find the subject section you"
+                    + " are trying to get.",
+                },
+            }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+
         except Exception:
             response = {
                 "status": "error",
@@ -270,10 +294,24 @@ class SubjectSectionDetailsView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            subject_section = SubjectSection.objects.get(id=subject_section_id)
+            subject_section = SubjectSection.objects.get(
+                id=subject_section_id, selection=selection_id
+            )
             subject_section.delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except SubjectSection.DoesNotExist:
+            response = {
+                "status": "fail",
+                "data": {
+                    "title": "Could not find the subject section",
+                    "message": "Could not find the subject section you"
+                    + " are trying to get.",
+                },
+            }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+
         except Exception:
             response = {
                 "status": "error",
@@ -342,9 +380,7 @@ class SelectionListView(APIView):
                         "selection": selection,
                     },
                 }
-                return Response(
-                    response, status.HTTP_201_CREATED, headers=headers
-                )
+                return Response(response, status.HTTP_201_CREATED, headers=headers)
 
             response = {
                 "status": "fail",
@@ -383,7 +419,6 @@ class SelectionDetailView(APIView):
             serialized = self.serializer_class(selection, many=False)
 
             if selection and serialized.data["user"] == req.user.id:
-
                 response = {
                     "status": "success",
                     "data": {
@@ -420,9 +455,7 @@ class SelectionDetailView(APIView):
         try:
             selectionQuery = SelectionModel.objects.filter(id=id)
             if selectionQuery:
-                serializedQuerry = self.serializer_class(
-                    selectionQuery[0], many=False
-                )
+                serializedQuerry = self.serializer_class(selectionQuery[0], many=False)
 
             if selectionQuery and serializedQuerry.data["user"] == req.user.id:
                 selection = SelectionModel.objects.get(id=id)
@@ -503,4 +536,105 @@ class SelectionDetailView(APIView):
                 "message": ex,
             }
 
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@extend_schema(tags=[schema_name])
+class ScheduleListView(APIView):
+    """List all schedules, or create a new schedule."""
+
+    # permission_classes = [IsAuthenticated]
+    serializer_class = ScheduleSerializer
+
+    @extend_schema(
+        request=serializer_class,
+        responses=serializer_class,
+        operation_id="schedule_list_put",
+    )
+    def put(self, request, selection_id, subject_section_id, format=None):
+        """Update subject section details"""
+        try:
+            user = request.user
+            selection = SelectionModel.objects.get(id=selection_id)
+
+            if selection.user != user:
+                response = {
+                    "status": "fail",
+                    "data": {
+                        "title": "Could not find the selection",
+                        "message": "Could not find the selection you are"
+                        + " trying to update the subject.",
+                    },
+                }
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+
+            data = request.data
+            errors = []
+            section = SubjectSection.objects.get(id=subject_section_id)
+            schedules = list(ScheduleModel.objects.filter(section=subject_section_id))
+
+            if len(data) > len(schedules):
+                for a in range(len(data) - len(schedules)):
+                    schedule = ScheduleModel.objects.create(section=section)
+                    schedules.append(schedule)
+
+            for a, schedule in enumerate(schedules):
+                try:
+                    schedule_data = data[a]
+                except IndexError:
+                    schedule.delete()
+                    continue
+
+                serializer = self.serializer_class(
+                    schedule,
+                    data=schedule_data,
+                    many=False,
+                    partial=True,
+                )
+
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    errors.append(serializer.errors)
+
+            if not errors:
+                updated_schedules = self.serializer_class(
+                    schedules, many=True, context={"request": request}
+                ).data
+
+                response = {
+                    "status": "success",
+                    "data": {
+                        "schedules": updated_schedules,
+                    },
+                }
+                return Response(response, status.HTTP_200_OK)
+
+            response = {
+                "status": "fail",
+                "data": {
+                    "title": "Could not update the subject subject",
+                    "details": errors,
+                },
+            }
+            return Response(response, status.HTTP_400_BAD_REQUEST)
+
+        except SubjectSection.DoesNotExist:
+            response = {
+                "status": "fail",
+                "data": {
+                    "title": "Could not find the subject section",
+                    "message": "Could not find the subject section you"
+                    + " are trying to get.",
+                },
+            }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            response = {
+                "status": "error",
+                "message": "There was an error trying to update the subjects.",
+            }
+            ex.with_traceback()
+            # print(ex)
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)

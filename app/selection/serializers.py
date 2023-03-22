@@ -10,7 +10,9 @@ from core.models import (
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
+    ListSerializer,
 )
+
 
 
 class ScheduleSerializer(ModelSerializer):
@@ -19,8 +21,24 @@ class ScheduleSerializer(ModelSerializer):
     class Meta:
         model = ScheduleModel
         # fields = "__all__"
-        exclude = ('section', )
+        exclude = ("section",)
         read_only_fields = ["id"]
+
+    def create(self, validated_data):
+        section = self.context.get('section')
+        instance, created = ScheduleModel.objects.update_or_create(section=section, defaults=validated_data)
+        return instance
+
+
+class ScheduleListSerializer(ListSerializer):
+    """Serializer for Schedule"""
+    child = ScheduleSerializer()
+
+    class Meta:
+        model = ScheduleModel
+        fields = "__all__"
+        read_only_fields = ["id"]
+
 
 
 class SelectionSerializer(ModelSerializer):
@@ -77,7 +95,7 @@ class SubjectSectionSerializer(ModelSerializer):
 
     def create(self, validated_data):
         """Create the subject section"""
-        schedules = validated_data.pop('subject_schedule', [])
+        schedules = validated_data.pop("subject_schedule", [])
 
         subject_id = validated_data["subject"]
         subject = Subject.objects.get(id=subject_id)
@@ -95,6 +113,7 @@ class SubjectSectionSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update de subject section"""
+        # schedules = validated_data.pop('subject_schedule', [])
 
         subject_id = validated_data["subject"]
         subject = Subject.objects.get(id=subject_id)

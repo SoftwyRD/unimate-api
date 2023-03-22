@@ -23,4 +23,9 @@ urlpatterns = [
         views.SubjectSectionDetailsView.as_view(),
         name="subject-detail",
     ),
+    path(
+        "<uuid:selection_id>/sections/<int:subject_section_id>/schedules/",
+        views.ScheduleListView.as_view(),
+        name="schedule-list",
+    ),
 ]
