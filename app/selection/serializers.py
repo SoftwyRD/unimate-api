@@ -87,24 +87,21 @@ class SubjectSectionSerializer(ModelSerializer):
         }
         read_only_fields = ["id"]
 
-    def run_validation(self, data):
-        """Validate the data before saving it"""
-
-        super().run_validation(data)
-        return data
-
     def create(self, validated_data):
         """Create the subject section"""
         schedules = validated_data.pop("subject_schedule", [])
 
-        subject_id = validated_data["subject"]
-        subject = Subject.objects.get(id=subject_id)
+        # subject_id = validated_data["subject"]
+        # print("DATA")
+        # print (validated_data)
 
-        validated_data["subject"] = subject
+        # subject = Subject.objects.get(id=subject_id)
+
+        # validated_data["subject"] = subject.id
         subject_section = SubjectSection.objects.create(**validated_data)
 
         for schedule in schedules:
-            weekday = WeekdayModel.objects.get(id=schedule["weekday"])
+            weekday = WeekdayModel.objects.get(id=schedule["weekday"].id)
             schedule["weekday"] = weekday
             schedule["section"] = subject_section
             ScheduleModel.objects.create(**schedule)
@@ -115,11 +112,10 @@ class SubjectSectionSerializer(ModelSerializer):
         """Update de subject section"""
         schedules = validated_data.pop('subject_schedule', [])
 
-        if "subject" in validated_data:
-            subject_id = validated_data["subject"]
-            subject = Subject.objects.get(id=subject_id)
-            validated_data["subject"] = subject
-
+        # if "subject" in validated_data:
+        #     subject_id = validated_data["subject"]
+        #     subject = Subject.objects.get(id=subject_id)
+        #     validated_data["subject"] = subject
         return super().update(instance, validated_data)
 
     def get_selection(self, obj) -> str:

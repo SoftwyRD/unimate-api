@@ -108,11 +108,10 @@ class SubjectSectionListView(APIView):
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
             data = request.data
-            data["selection"] = selection
-
             serializer = self.serializer_class(data=data, many=False)
+
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(selection=selection)
                 subject_section = serializer.data
 
                 headers = {
@@ -143,6 +142,7 @@ class SubjectSectionListView(APIView):
             }
             print("Exception:")
             print(e)
+            e.__traceback__()
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -271,7 +271,6 @@ class SubjectSectionDetailsView(APIView):
                 "status": "error",
                 "message": "There was an error trying to update the subjects.",
             }
-            ex.with_traceback()
 
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -599,7 +598,9 @@ class ScheduleListView(APIView):
                     errors.append(serializer.errors)
 
             if not errors:
-                updated_schedules = ScheduleModel.objects.filter(section=subject_section_id)
+                updated_schedules = ScheduleModel.objects.filter(
+                    section=subject_section_id
+                )
                 serializer = self.serializer_class(
                     updated_schedules,
                     many=True,
