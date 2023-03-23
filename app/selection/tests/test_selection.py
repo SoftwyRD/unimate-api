@@ -9,6 +9,7 @@ from rest_framework.reverse import reverse
 from core.models import Selection as SelectionModel
 from datetime import datetime
 import uuid
+import time
 
 SELECTION_URL = reverse("selection:selection-list")
 
@@ -308,6 +309,7 @@ class SelectionTestsAuthorized(APITestCase):
             "name": "my super new name",
         }
 
+        time.sleep(0.01)
         res = self.client.patch(selection_detail_url(id), payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
