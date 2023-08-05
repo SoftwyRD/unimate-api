@@ -1,13 +1,9 @@
-"""Admin for project."""
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from core import models
+from user.models import User
 
 
 class UserAdmin(BaseUserAdmin):
-    """Fields to be displayed in the admin panel."""
-
     ordering = ["id"]
     list_display = ["username", "email"]
     fieldsets = (
@@ -41,9 +37,7 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    readonly_fields = [
-        "last_login",
-    ]
+    readonly_fields = ["last_login"]
     add_fieldsets = (
         (
             None,
@@ -66,9 +60,4 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
-admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Subject)
-admin.site.register(models.Weekday)
-admin.site.register(models.SubjectSection)
-admin.site.register(models.SectionSchedule)
-admin.site.register(models.Selection)
+admin.site.register(User, UserAdmin)

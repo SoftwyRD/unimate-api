@@ -1,0 +1,44 @@
+[
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Monday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Tuesday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Wednesday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Thursday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Friday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Saturday"
+    }
+  },
+  {
+    "model": "selection.weekday",
+    "fields": {
+      "name": "Sunday"
+    }
+  }
+]

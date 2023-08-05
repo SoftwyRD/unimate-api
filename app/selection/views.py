@@ -12,7 +12,7 @@ from selection.serializers import (
     ScheduleSerializer,
 )
 
-from core.models import (
+from selection.models import (
     SubjectSection,
     Selection as SelectionModel,
     SectionSchedule as ScheduleModel,
@@ -29,7 +29,9 @@ schema_name = "selection"
 
 def subject_section_location_url(selection_id, subject_section_id):
     """Get reverse url for subject section details"""
-    return reverse("selection:subject-detail", args=[selection_id, subject_section_id])
+    return reverse(
+        "selection:subject-detail", args=[selection_id, subject_section_id]
+    )
 
 
 def selection_location_url(selection_id):
@@ -66,7 +68,9 @@ class SubjectSectionListView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            subject_section = SubjectSection.objects.filter(selection=selection)
+            subject_section = SubjectSection.objects.filter(
+                selection=selection
+            )
             serializer = self.serializer_class(subject_section, many=True)
 
             response = {
@@ -126,7 +130,9 @@ class SubjectSectionListView(APIView):
                         "subject_section": subject_section,
                     },
                 }
-                return Response(response, status.HTTP_201_CREATED, headers=headers)
+                return Response(
+                    response, status.HTTP_201_CREATED, headers=headers
+                )
 
             response = {
                 "status": "fail",
@@ -382,7 +388,9 @@ class SelectionListView(APIView):
                         "selection": selection,
                     },
                 }
-                return Response(response, status.HTTP_201_CREATED, headers=headers)
+                return Response(
+                    response, status.HTTP_201_CREATED, headers=headers
+                )
 
             response = {
                 "status": "fail",
@@ -457,7 +465,9 @@ class SelectionDetailView(APIView):
         try:
             selectionQuery = SelectionModel.objects.filter(id=id)
             if selectionQuery:
-                serializedQuerry = self.serializer_class(selectionQuery[0], many=False)
+                serializedQuerry = self.serializer_class(
+                    selectionQuery[0], many=False
+                )
 
             if selectionQuery and serializedQuerry.data["user"] == req.user.id:
                 selection = SelectionModel.objects.get(id=id)
@@ -572,7 +582,9 @@ class ScheduleListView(APIView):
             data = request.data
             errors = []
             section = SubjectSection.objects.get(id=subject_section_id)
-            schedules = list(ScheduleModel.objects.filter(section=subject_section_id))
+            schedules = list(
+                ScheduleModel.objects.filter(section=subject_section_id)
+            )
 
             if len(data) > len(schedules):
                 for a in range(len(data) - len(schedules)):

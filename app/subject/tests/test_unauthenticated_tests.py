@@ -1,7 +1,7 @@
 """Test unauthenticated user requests"""
 
 from django.test import TestCase
-from core.models import Subject as SubjectModel
+from selection.models import Subject as SubjectModel
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 from rest_framework import status

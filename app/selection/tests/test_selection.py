@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
 
-from core.models import Selection as SelectionModel
+from selection.models import Selection as SelectionModel
 from datetime import datetime
 import uuid
 import time

@@ -2,7 +2,7 @@
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from core.models import (
+from selection.models import (
     SectionSchedule,
     Weekday,
     SubjectSection,

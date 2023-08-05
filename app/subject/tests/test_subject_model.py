@@ -1,7 +1,7 @@
 """Test subject model."""
 
 from django.test import TestCase
-from core.models import Subject
+from subject.models import Subject
 
 PAYLOAD = {
     "code": "TST101",

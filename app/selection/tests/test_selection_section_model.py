@@ -2,7 +2,7 @@
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from core.models import Selection, Subject, SubjectSection
+from selection.models import Selection, Subject, SubjectSection
 
 PAYLOAD = {
     "section": 3,

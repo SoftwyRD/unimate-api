@@ -1,7 +1,7 @@
 """Weekday model tests."""
 
 from django.test import TestCase
-from core.models import Weekday
+from selection.models import Weekday
 
 PAYLOAD = {
     "name": "Monday",

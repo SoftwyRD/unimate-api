@@ -54,8 +54,6 @@ jobs:
       - name: Run migrations
         run: |
           cd app/
-          mkdir core/migrations/
-          touch core/migrations/__init__.py
           python manage.py makemigrations
           python manage.py migrate
       - name: Test

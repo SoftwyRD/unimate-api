@@ -1,6 +1,6 @@
 """Selection Serializers"""
 
-from core.models import (
+from selection.models import (
     SubjectSection,
     Subject,
     Selection as SelectionModel,
@@ -14,31 +14,32 @@ from rest_framework.serializers import (
 )
 
 
-
 class ScheduleSerializer(ModelSerializer):
     """Serializer for Schedule"""
 
     class Meta:
         model = ScheduleModel
         # fields = "__all__"
-        exclude = ("section","id")
+        exclude = ("section", "id")
         # read_only_fields = ["id"]
 
     def create(self, validated_data):
-        section = self.context.get('section')
-        instance, created = ScheduleModel.objects.update_or_create(section=section, defaults=validated_data)
+        section = self.context.get("section")
+        instance, created = ScheduleModel.objects.update_or_create(
+            section=section, defaults=validated_data
+        )
         return instance
 
 
 class ScheduleListSerializer(ListSerializer):
     """Serializer for Schedule"""
+
     child = ScheduleSerializer()
 
     class Meta:
         model = ScheduleModel
         fields = "__all__"
         read_only_fields = ["id"]
-
 
 
 class SelectionSerializer(ModelSerializer):
@@ -110,7 +111,7 @@ class SubjectSectionSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update de subject section"""
-        schedules = validated_data.pop('subject_schedule', [])
+        schedules = validated_data.pop("subject_schedule", [])
 
         # if "subject" in validated_data:
         #     subject_id = validated_data["subject"]
