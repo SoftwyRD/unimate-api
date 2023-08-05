@@ -1,7 +1,7 @@
 """Subject serializers."""
 
 from rest_framework import serializers
-from core.models import Subject as SubjectModel
+from subject.models import Subject as SubjectModel
 
 
 class SubjectSerializer(serializers.ModelSerializer):

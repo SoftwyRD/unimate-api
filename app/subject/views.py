@@ -9,7 +9,7 @@ from rest_framework.permissions import (
     SAFE_METHODS,
 )
 
-from core.models import Subject as SubjectModel
+from subject.models import Subject as SubjectModel
 from subject.serializers import SubjectSerializer
 from drf_spectacular.utils import extend_schema
 
