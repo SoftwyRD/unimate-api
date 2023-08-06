@@ -38,9 +38,8 @@ class SubjectsListView(views.APIView):
     serializer_class = SubjectSerializer
 
     @extend_schema(
-        request=None,
-        responses=SubjectSerializer,
-        operation_id="subjects_list_retrieve",
+        operation_id="Retreave subjects list",
+        description="Retrieves all the subjects.",
     )
     def get(self, req, format=None):
         """Get all subjects"""
@@ -64,9 +63,8 @@ class SubjectsListView(views.APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SubjectSerializer,
-        responses=SubjectSerializer,
-        operation_id="subject_create",
+        operation_id="Create subject",
+        description="Creates a new subject.",
     )
     def post(self, req, format=None):
         """Create new subject"""
@@ -118,9 +116,8 @@ class SubjectDetailView(views.APIView):
     serializer_class = SubjectSerializer
 
     @extend_schema(
-        request=None,
-        responses=SubjectSerializer,
-        operation_id="subject_details_retrieve",
+        operation_id="Retreave subject details",
+        description="Retrieves the specified subject details.",
     )
     def get(self, req, id, format=None):
         """Get subject details"""
@@ -157,9 +154,8 @@ class SubjectDetailView(views.APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SubjectSerializer,
-        responses=SubjectSerializer,
-        operation_id="subject_update",
+        operation_id="Partial update subject details",
+        description="Partially updates the specified subject details.",
     )
     def patch(self, req, id, format=None):
         """Update subject details"""
@@ -204,9 +200,8 @@ class SubjectDetailView(views.APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=None,
-        responses=None,
-        operation_id="subject_delete",
+        operation_id="Delete subject",
+        description="Deletes the specified subject.",
     )
     def delete(self, req, id, format=None):
         """Delete subject"""
