@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
     "corsheaders",
-    "rest_framework",
     "drf_spectacular",
+    "rest_framework",
+    "documentation",
     "selection",
     "subject",
     "user",
@@ -224,9 +225,16 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "University-API",
-    "DESCRIPTION": "Api which lets create a simulation of university subject selection",
-    "VERSION": "0.1.0",
+    "TITLE": "Unimate API",
+    "DESCRIPTION": "Api which lets create a simulation of university subject selection.",
+    "VERSION": "v1.0",
+    "TOS": None,
+    "CONTACT": {
+        "name": "Softwy",
+        "email": "contact@softwy.com",
+        "url": "https://softwy.com/contact",
+    },
+    "LICENSE": None,
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,

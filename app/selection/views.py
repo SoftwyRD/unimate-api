@@ -1,4 +1,4 @@
-"""Selection views"""
+from datetime import datetime
 
 from django.urls import reverse
 from rest_framework import status
@@ -8,23 +8,17 @@ from rest_framework.views import APIView
 from selection.serializers import (
     SubjectSectionSerializer,
     SelectionSerializer,
-    ScheduleListSerializer,
     ScheduleSerializer,
 )
+from drf_spectacular.utils import extend_schema
 
 from selection.models import (
     SubjectSection,
     Selection as SelectionModel,
     SectionSchedule as ScheduleModel,
-    Subject,
-    Weekday as WeekdayModel,
 )
 
-from drf_spectacular.utils import extend_schema
-
-from datetime import datetime
-
-schema_name = "selection"
+SCHEMA_NAME = "selection"
 
 
 def subject_section_location_url(selection_id, subject_section_id):
@@ -39,7 +33,7 @@ def selection_location_url(selection_id):
     return reverse("selection:selection-detail", args=[selection_id])
 
 
-@extend_schema(tags=[schema_name])
+@extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionListView(APIView):
     """View for list subject sections in api"""
 
@@ -47,9 +41,8 @@ class SubjectSectionListView(APIView):
     serializer_class = SubjectSectionSerializer
 
     @extend_schema(
-        request=None,
-        responses=SubjectSectionSerializer,
-        operation_id="subject_section_list_retrieve",
+        operation_id="Retrieve subject sections list",
+        description="Retrieves all the subject sections from the specified selection.",
     )
     def get(self, request, selection_id, format=None):
         """Get all subject sections"""
@@ -90,9 +83,8 @@ class SubjectSectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SubjectSectionSerializer,
-        responses=SubjectSectionSerializer,
-        operation_id="subject_section_list_create",
+        operation_id="Add subject section",
+        description="Adds a subject section to the specified selections.",
     )
     def post(self, request, selection_id, format=None):
         """Create a subject section"""
@@ -153,7 +145,7 @@ class SubjectSectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@extend_schema(tags=[schema_name])
+@extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionDetailsView(APIView):
     """View for subject section details in api"""
 
@@ -161,9 +153,8 @@ class SubjectSectionDetailsView(APIView):
     serializer_class = SubjectSectionSerializer
 
     @extend_schema(
-        request=None,
-        responses=SubjectSectionSerializer,
-        operation_id="subject_section_details_retrieve",
+        operation_id="Retrieve subject section details",
+        description="Retrieves the specified subject section.",
     )
     def get(self, request, selection_id, subject_section_id, format=None):
         """Get subject section details"""
@@ -214,9 +205,8 @@ class SubjectSectionDetailsView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SubjectSectionSerializer,
-        responses=SubjectSectionSerializer,
-        operation_id="subject_section_details_update",
+        operation_id="Partial update subject section",
+        description="Partially updates the specified subject section.",
     )
     def patch(self, request, selection_id, subject_section_id, format=None):
         """Update subject section details"""
@@ -282,9 +272,8 @@ class SubjectSectionDetailsView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=None,
-        responses=None,
-        operation_id="subject_section_details_delete",
+        operation_id="Delete subject section details",
+        description="Deletes the specified subject section.",
     )
     def delete(self, request, selection_id, subject_section_id, format=None):
         """Delete subject section"""
@@ -328,15 +317,14 @@ class SubjectSectionDetailsView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@extend_schema(tags=[schema_name])
+@extend_schema(tags=[SCHEMA_NAME])
 class SelectionListView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SelectionSerializer
 
     @extend_schema(
-        request=None,
-        responses=SelectionSerializer,
-        operation_id="selection_list_retrieve",
+        operation_id="Retrieve selections list",
+        description="Retrieves all the selections from the requesting user.",
     )
     def get(self, req, format=None):
         """Get all selections for a user"""
@@ -362,9 +350,8 @@ class SelectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SelectionSerializer,
-        responses=SelectionSerializer,
-        operation_id="selection_create",
+        operation_id="Create selection",
+        description="Retrieves all the selections from the requesting user.",
     )
     def post(self, req, format=None):
         """Create a new selection for a user"""
@@ -410,7 +397,7 @@ class SelectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@extend_schema(tags=[schema_name])
+@extend_schema(tags=[SCHEMA_NAME])
 class SelectionDetailView(APIView):
     """Get, update, or delete a selection instance."""
 
@@ -418,9 +405,8 @@ class SelectionDetailView(APIView):
     serializer_class = SelectionSerializer
 
     @extend_schema(
-        request=None,
-        responses=SelectionSerializer,
-        operation_id="selection_details_retrieve",
+        operation_id="Retrieve selection details",
+        description="Retrieves the specified selection.",
     )
     def get(self, req, id, format=None):
         """Get a selection for a user"""
@@ -456,9 +442,8 @@ class SelectionDetailView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=SelectionSerializer,
-        responses=SelectionSerializer,
-        operation_id="selection_details_update",
+        operation_id="Partial update selection",
+        description="Partially updates the specified selection.",
     )
     def patch(self, req, id, format=None):
         """Update a selection for a user"""
@@ -516,9 +501,8 @@ class SelectionDetailView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        request=None,
-        responses=None,
-        operation_id="selection_details_delete",
+        operation_id="Delete selection",
+        description="Deletes the specified selection.",
     )
     def delete(self, req, id, format=None):
         """Delete a selection for a user"""
@@ -550,7 +534,7 @@ class SelectionDetailView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@extend_schema(tags=[schema_name])
+@extend_schema(tags=[SCHEMA_NAME])
 class ScheduleListView(APIView):
     """List all schedules, or create a new schedule."""
 
@@ -558,9 +542,8 @@ class ScheduleListView(APIView):
     serializer_class = ScheduleSerializer
 
     @extend_schema(
-        request=serializer_class,
-        responses=serializer_class,
-        operation_id="schedule_list_put",
+        operation_id="Update subject schedule",
+        description="Updates the specified subject schedule.",
     )
     def put(self, request, selection_id, subject_section_id, format=None):
         """Update subject section details"""

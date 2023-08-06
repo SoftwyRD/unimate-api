@@ -9,7 +9,7 @@ app_name = "selection"
 urlpatterns = [
     path("", views.SelectionListView.as_view(), name="selection-list"),
     path(
-        "<uuid:id>",
+        "<uuid:id>/",
         views.SelectionDetailView.as_view(),
         name="selection-detail",
     ),
