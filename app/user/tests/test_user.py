@@ -1,11 +1,9 @@
-"""User app tests."""
-
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-from user.serializers import UserSerializer
 
+from user.serializers import SignUpSerializer
 
 LOGIN_URL = reverse("user:pair-token")
 LOGIN_REFRESH_URL = reverse("user:refresh-token")
@@ -14,7 +12,6 @@ ME_URL = reverse("user:me")
 
 
 def user_detail_url(user_id):
-    """Return user detail URL"""
     return reverse("user:details", args=[user_id])
 
 
@@ -219,7 +216,7 @@ class AdminUserApiTests(APITestCase):
         res_status = data["status"]
         res_data = data["data"]
         res_user = res_data["user"]
-        user = UserSerializer(self.user, many=False).data
+        user = SignUpSerializer(self.user, many=False).data
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 

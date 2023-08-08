@@ -1,11 +1,11 @@
 from django.urls import reverse
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from user.serializers import UserSerializer
+from user.serializers import ProfileSerializer, SignUpSerializer
 
 SCHEMA_NAME = "users"
 
@@ -24,20 +24,49 @@ class SignUpView(APIView):
     @extend_schema(
         operation_id="Sign up",
         description="Registers a new user.",
-        request=UserSerializer,
+        request=SignUpSerializer,
         responses={
-            201: UserSerializer,
+            201: SignUpSerializer,
         },
+        examples=[
+            # Requests
+            OpenApiExample(
+                name="Sign up",
+                value={
+                    "first_name": "Michael",
+                    "last_name": "Cruz",
+                    "username": "m.cruz",
+                    "email": "m.cruz@example.com",
+                    "password": "just_A R@nd0m-P4ssw0RD",
+                },
+                request_only=True,
+            ),
+            # Responses
+            OpenApiExample(
+                name="Signed up",
+                value={
+                    "id": 31,
+                    "first_name": "Michael",
+                    "last_name": "Cruz",
+                    "username": "m.cruz",
+                    "email": "m.cruz@example.com",
+                },
+                response_only=True,
+                status_codes=[201],
+            ),
+        ],
     )
     def post(self, request, format=None):
         try:
             data = request.data
-            serializer = UserSerializer(data=data)
+            serializer = SignUpSerializer(data=data)
 
             if not serializer.is_valid():
+                errors = serializer.errors
+
                 response = {
                     "title": "Could not sign up",
-                    "details": serializer.errors,
+                    "details": errors,
                 }
                 return Response(response, status.HTTP_400_BAD_REQUEST)
             serializer.save()
@@ -63,15 +92,28 @@ class ProfileView(APIView):
     @extend_schema(
         operation_id="Retrieve profile",
         description="Retrieves the requesting user profile.",
-        request=UserSerializer,
         responses={
-            200: UserSerializer,
+            200: ProfileSerializer,
         },
+        examples=[
+            # Responses
+            OpenApiExample(
+                name="Retrieved profile",
+                value={
+                    "id": 31,
+                    "first_name": "Ramón",
+                    "last_name": "Ramírez",
+                    "username": "r.ramirez",
+                    "email": "r.ramirez@example.com",
+                },
+                response_only=True,
+            ),
+        ],
     )
     def get(self, request, format=None):
         try:
             user = request.user
-            serializer = UserSerializer(user)
+            serializer = ProfileSerializer(user)
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
         except Exception:
@@ -82,49 +124,77 @@ class ProfileView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        operation_id="Update user profile",
-        description="Updates the requesting user profile.",
-        request=UserSerializer,
-        responses={
-            200: UserSerializer,
-        },
-    )
-    def put(self, request, format=None):
-        try:
-            user = request.user
-            data = request.data
-            serializer = UserSerializer(user, data=data)
-
-            if not serializer.is_valid():
-                response = {
-                    "title": "Could not update your profile",
-                    "details": serializer.errors,
-                }
-                return Response(response, status.HTTP_400_BAD_REQUEST)
-            serializer.save()
-
-            response = serializer.data
-            return Response(response, status.HTTP_200_OK)
-        except Exception:
-            response = {
-                "title": "Error",
-                "message": "There was an error trying to update your profile.",
-            }
-            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
         operation_id="Partial update user profile",
         description="Partially updates the requesting user profile.",
-        request=UserSerializer,
+        request=ProfileSerializer,
         responses={
-            200: UserSerializer,
+            200: ProfileSerializer,
         },
+        examples=[
+            # Requests
+            OpenApiExample(
+                name="Update email",
+                value={
+                    "email": "ramon.ramirez@example.com",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                name="Update password",
+                value={
+                    "password": "Not SO ranD0mPASSwoRd",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                name="Update email and password",
+                value={
+                    "email": "ramon.ramirez@example.com",
+                    "password": "Not SO cr34t1v3 P@S5W0RD",
+                },
+                request_only=True,
+            ),
+            # Responses
+            OpenApiExample(
+                name="Updated email",
+                value={
+                    "id": 31,
+                    "first_name": "Ramón",
+                    "last_name": "Ramírez",
+                    "username": "r.ramirez",
+                    "email": "ramon.ramirez@example.com",
+                },
+                response_only=True,
+            ),
+            OpenApiExample(
+                name="Updated password",
+                value={
+                    "id": 31,
+                    "first_name": "Ramón",
+                    "last_name": "Ramírez",
+                    "username": "r.ramirez",
+                    "email": "r.ramirez@example.com",
+                },
+                response_only=True,
+            ),
+            OpenApiExample(
+                name="Updated email and password",
+                value={
+                    "id": 31,
+                    "first_name": "Ramón",
+                    "last_name": "Ramírez",
+                    "username": "r.ramirez",
+                    "email": "ramon.ramirez@example.com",
+                },
+                response_only=True,
+            ),
+        ],
     )
     def patch(self, request, format=None):
         try:
             user = request.user
             data = request.data
-            serializer = UserSerializer(user, data=data, partial=True)
+            serializer = ProfileSerializer(user, data=data, partial=True)
 
             if not serializer.is_valid():
                 response = {
