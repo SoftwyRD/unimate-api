@@ -1,11 +1,9 @@
-"""Subject URLs."""
+from django.urls import path
+from subject.views import ListSubjectsView, RetrieveSubjectView
 
-from rest_framework.urls import path
-from subject.views import SubjectsListView, SubjectDetailView
-
-app_name = "subject"
+app_name = "subjects"
 
 urlpatterns = [
-    path("", SubjectsListView.as_view(), name="subject-list"),
-    path("<int:id>/", SubjectDetailView.as_view(), name="subject-detail"),
+    path("", ListSubjectsView.as_view(), name="list"),
+    path("<int:id>/", RetrieveSubjectView.as_view(), name="retrieve"),
 ]

@@ -1,0 +1,2 @@
+from subject.views.retrieve_subject_view import RetrieveSubjectView
+from subject.views.list_subjects_view import ListSubjectsView
