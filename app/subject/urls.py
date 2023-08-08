@@ -1,4 +1,5 @@
 from django.urls import path
+
 from subject.views import ListSubjectsView, RetrieveSubjectView
 
 app_name = "subjects"

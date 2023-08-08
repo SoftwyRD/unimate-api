@@ -1,7 +1,6 @@
-"""Selection URL Configuration"""
+from django.urls import path
 
 from selection import views
-from rest_framework.urls import path
 
 app_name = "selection"
 
