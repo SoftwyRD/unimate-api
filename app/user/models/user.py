@@ -1,59 +1,8 @@
-from __future__ import annotations
-from typing import Iterable, Optional
-
-from django.contrib.auth.models import (
-    AbstractUser,
-    BaseUserManager,
-)
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
-class UserManager(BaseUserManager):
-    def create(
-        self,
-        first_name,
-        last_name,
-        username,
-        email,
-        password,
-    ) -> User:
-        user = self.model(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password,
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(
-        self,
-        first_name,
-        last_name,
-        username,
-        email,
-        password,
-    ) -> User:
-        user = self.create(
-            first_name,
-            last_name,
-            username,
-            email,
-            password,
-        )
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using=self._db)
-        return user
-
-    def get_by_natural_key(self, username):
-        case_insensitive_username_field = "{}__iexact".format(
-            self.model.USERNAME_FIELD
-        )
-        return self.get(**{case_insensitive_username_field: username})
+from user.models import UserManager
 
 
 class User(AbstractUser):

@@ -1,8 +1,9 @@
-from django.contrib import admin
+from django.contrib.admin import register
+from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from user.models import User
 
 
+@register(get_user_model())
 class UserAdmin(BaseUserAdmin):
     ordering = ["id"]
     list_display = ["username", "email"]
@@ -58,6 +59,3 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-
-
-admin.site.register(User, UserAdmin)

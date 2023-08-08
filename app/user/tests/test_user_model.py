@@ -1,5 +1,3 @@
-"""User model tests."""
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -14,15 +12,11 @@ PAYLOAD = {
 
 
 def create_user(**params):
-    """Helper function to create a user"""
-
     user = get_user_model().objects.create(**params)
     return user
 
 
-class UserModelTests(TestCase):
-    """Test User Model"""
-
+class TestUserModel(TestCase):
     def test_create_user_success(self):
         """Test creating a user"""
 
