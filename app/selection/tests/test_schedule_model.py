@@ -1,13 +1,11 @@
-"""Test Schedule Model"""
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from selection.models import (
     SectionSchedule,
-    Weekday,
-    SubjectSection,
     Selection,
     Subject,
+    SubjectSection,
+    Weekday,
 )
 
 PAYLOAD = {
@@ -17,15 +15,11 @@ PAYLOAD = {
 
 
 def create_schedule(**params):
-    """Helper function to create a schedule"""
-
     schedule = SectionSchedule.objects.create(**params)
     return schedule
 
 
 class ScheduleModelTests(TestCase):
-    """Test Schedule Model"""
-
     def setUp(self) -> None:
         self.user = get_user_model().objects.create(
             first_name="Test",
@@ -34,7 +28,6 @@ class ScheduleModelTests(TestCase):
             email="testuser@example.com",
             password="testpass123",
         )
-        """Create a subject, selection, section, and weekday"""
 
         self.subject = Subject.objects.create(
             code="TST101",

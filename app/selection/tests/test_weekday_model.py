@@ -1,5 +1,3 @@
-"""Weekday model tests."""
-
 from django.test import TestCase
 from selection.models import Weekday
 
@@ -9,15 +7,11 @@ PAYLOAD = {
 
 
 def create_weekday(**params):
-    """Helper function to create a weekday"""
-
     weekday = Weekday.objects.create(**params)
     return weekday
 
 
 class WeekdayModelTests(TestCase):
-    """Test weekday model"""
-
     def test_create_weekday_success(self):
         """Test creating a weekday"""
 

@@ -1,11 +1,10 @@
 from django.contrib import admin
 from selection.models import (
+    SectionSchedule,
     Selection,
     SubjectSection,
-    SectionSchedule,
     Weekday,
 )
-
 
 admin.site.register(Selection)
 admin.site.register(SubjectSection)

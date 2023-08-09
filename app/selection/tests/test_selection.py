@@ -1,22 +1,17 @@
-"""Test module for Selection model"""
+import time
+import uuid
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
-
 from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
 from rest_framework.reverse import reverse
-
-from selection.models import Selection as SelectionModel
-from datetime import datetime
-import uuid
-import time
+from rest_framework.test import APIClient, APITestCase
+from selection.models import Selection as Selection
 
 SELECTION_URL = reverse("selection:selection-list")
 
 
 def selection_detail_url(id):
-    """Return selection detail url"""
-
     return reverse("selection:selection-detail", args=[str(id)])
 
 
@@ -27,8 +22,6 @@ def create_user(
     username="username",
     password="password",
 ):
-    """Helper function to create a new user"""
-
     data = {
         "first_name": first_name,
         "last_name": last_name,
@@ -41,15 +34,11 @@ def create_user(
 
 
 class SelectionTestsUnaythorized(APITestCase):
-    """Test unauthorized user selection"""
-
     payload = {
         "name": "name",
     }
 
     def setUp(self):
-        """Setup"""
-
         self.client = APIClient()
 
     def test_post_selection(self):
@@ -84,15 +73,11 @@ class SelectionTestsUnaythorized(APITestCase):
 
 
 class SelectionTestsAuthorized(APITestCase):
-    """Test authorized user selection"""
-
     payload = {
         "name": "selection name",
     }
 
     def setUp(self):
-        """Setup"""
-
         self.client = APIClient()
         self.user = create_user()
 
@@ -130,9 +115,7 @@ class SelectionTestsAuthorized(APITestCase):
         newUser = create_user(
             email="newmail@example.com", username="newsuusername"
         )
-        SelectionModel.objects.create(
-            user=newUser, name="other user selection"
-        )
+        Selection.objects.create(user=newUser, name="other user selection")
 
         resSelection = self.client.post(SELECTION_URL, payload)
 
@@ -176,14 +159,12 @@ class SelectionTestsAuthorized(APITestCase):
     def test_cant_get_selection_of_other_user(self):
         """Test get selection of other user should not be permited"""
 
-        SelectionModel.objects.create(
-            user=self.user, name="other user selection"
-        )
+        Selection.objects.create(user=self.user, name="other user selection")
 
         newUser = create_user(
             email="newmail@example.com", username="newsuusername"
         )
-        otherSelection = SelectionModel.objects.create(
+        otherSelection = Selection.objects.create(
             user=newUser, name="other user selection"
         )
 
@@ -201,7 +182,7 @@ class SelectionTestsAuthorized(APITestCase):
 
         res = self.client.delete(selection_detail_url(id))
 
-        selectionsNumber = SelectionModel.objects.all().count()
+        selectionsNumber = Selection.objects.all().count()
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(selectionsNumber, 0)
@@ -216,7 +197,7 @@ class SelectionTestsAuthorized(APITestCase):
         self.client.delete(selection_detail_url(id))
         res = self.client.delete(selection_detail_url(id))
 
-        selectionsNumber = SelectionModel.objects.all().count()
+        selectionsNumber = Selection.objects.all().count()
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(selectionsNumber, 0)
@@ -227,7 +208,7 @@ class SelectionTestsAuthorized(APITestCase):
         newUser = create_user(
             email="newmail@example.com", username="newsuusername"
         )
-        otherSelection = SelectionModel.objects.create(
+        otherSelection = Selection.objects.create(
             user=newUser, name="other user selection"
         )
 
@@ -235,7 +216,7 @@ class SelectionTestsAuthorized(APITestCase):
 
         res = self.client.delete(selection_detail_url(id))
 
-        selectionsNumber = SelectionModel.objects.all().count()
+        selectionsNumber = Selection.objects.all().count()
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(selectionsNumber, 1)
@@ -243,7 +224,7 @@ class SelectionTestsAuthorized(APITestCase):
     def test_patch_selection(self):
         """Test patch selection"""
 
-        selection = SelectionModel.objects.create(
+        selection = Selection.objects.create(
             user=self.user, name="my selection"
         )
         id = selection.id
@@ -261,7 +242,7 @@ class SelectionTestsAuthorized(APITestCase):
     def test_patch_selection_change_id_unsuccess(self):
         """Test patch selection change id should not be permited"""
 
-        selection = SelectionModel.objects.create(
+        selection = Selection.objects.create(
             user=self.user, name="my selection"
         )
         id = selection.id
@@ -277,12 +258,12 @@ class SelectionTestsAuthorized(APITestCase):
     def test_patch_selection_of_other_user(self):
         """Test patch selection of other user should not be permited"""
 
-        SelectionModel.objects.create(user=self.user, name="my selection")
+        Selection.objects.create(user=self.user, name="my selection")
 
         newUser = create_user(
             email="newmail@example.com", username="newsuusername"
         )
-        otherSelection = SelectionModel.objects.create(
+        otherSelection = Selection.objects.create(
             user=newUser, name="other user selection"
         )
 
@@ -298,7 +279,7 @@ class SelectionTestsAuthorized(APITestCase):
     def test_patch_selection_data_modified_succesfully(self):
         """Test patch selection data modified succesfuly"""
 
-        selection = SelectionModel.objects.create(
+        selection = Selection.objects.create(
             user=self.user,
             name="my selection",
         )

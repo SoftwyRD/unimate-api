@@ -1,5 +1,3 @@
-"""Test selection model"""
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from selection.models import Selection
@@ -10,15 +8,11 @@ PAYLOAD = {
 
 
 def create_selection(**params):
-    """Helper function to create a selection"""
-
     selection = Selection.objects.create(**params)
     return selection
 
 
 def create_user(**params):
-    """Helper function to create a user"""
-
     defauls = {
         "first_name": "Test",
         "last_name": "User",
@@ -32,11 +26,7 @@ def create_user(**params):
 
 
 class SubjectModelTests(TestCase):
-    """Test selection model"""
-
     def setUp(self) -> None:
-        """Create a user"""
-
         user = create_user()
         PAYLOAD.update({"user": user})
 

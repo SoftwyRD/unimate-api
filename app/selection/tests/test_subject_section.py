@@ -2,11 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
-from selection.models import (
-    Selection as SelectionModel,
-    Subject as SubjectModel,
-    SubjectSection as SubjectSectionModel,
-)
+from selection.models import Selection, Subject, SubjectSection
 
 
 def subject_section_url(selection_id, subject_section_id):
@@ -33,13 +29,13 @@ class SubjectSectionPublicAPITests(APITestCase):
         self.client = APIClient()
 
         self.user = create_user()
-        self.subject = SubjectModel.objects.create(
+        self.subject = Subject.objects.create(
             code="TST123", name="Test subject", credits=4, is_lab=False
         )
-        self.selection = SelectionModel.objects.create(
+        self.selection = Selection.objects.create(
             name="My Selection", user=self.user
         )
-        self.subject_section = SubjectSectionModel.objects.create(
+        self.subject_section = SubjectSection.objects.create(
             subject=self.subject,
             selection=self.selection,
             section=1,

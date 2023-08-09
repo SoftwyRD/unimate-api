@@ -1,68 +1,13 @@
-"""Selection Serializers"""
-
-from selection.models import (
-    SubjectSection,
-    Subject,
-    Selection as SelectionModel,
-    SectionSchedule as ScheduleModel,
-    Weekday as WeekdayModel,
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from selection.models import SectionSchedule, SubjectSection, Weekday
+from selection.serializers import (
+    ScheduleSerializer,
+    SelectionSerializer,
+    SubjectSerializer,
 )
-from rest_framework.serializers import (
-    ModelSerializer,
-    SerializerMethodField,
-    ListSerializer,
-)
-
-
-class ScheduleSerializer(ModelSerializer):
-    """Serializer for Schedule"""
-
-    class Meta:
-        model = ScheduleModel
-        # fields = "__all__"
-        exclude = ("section", "id")
-        # read_only_fields = ["id"]
-
-    def create(self, validated_data):
-        section = self.context.get("section")
-        instance, created = ScheduleModel.objects.update_or_create(
-            section=section, defaults=validated_data
-        )
-        return instance
-
-
-class ScheduleListSerializer(ListSerializer):
-    """Serializer for Schedule"""
-
-    child = ScheduleSerializer()
-
-    class Meta:
-        model = ScheduleModel
-        fields = "__all__"
-        read_only_fields = ["id"]
-
-
-class SelectionSerializer(ModelSerializer):
-    """Serializer for Selection"""
-
-    class Meta:
-        model = SelectionModel
-        fields = "__all__"
-        read_only_fields = ["id", "created_on", "user"]
-
-
-class SubjectSerializer(ModelSerializer):
-    """Serializer for Subject"""
-
-    class Meta:
-        model = Subject
-        fields = "__all__"
-        read_only_fields = ["id"]
 
 
 class SubjectSectionSerializer(ModelSerializer):
-    """Serializer for SubjectSection"""
-
     subject_code = SerializerMethodField()
     subject_name = SerializerMethodField()
     selection = SerializerMethodField()
@@ -89,7 +34,6 @@ class SubjectSectionSerializer(ModelSerializer):
         read_only_fields = ["id"]
 
     def create(self, validated_data):
-        """Create the subject section"""
         schedules = validated_data.pop("subject_schedule", [])
 
         # subject_id = validated_data["subject"]
@@ -102,15 +46,14 @@ class SubjectSectionSerializer(ModelSerializer):
         subject_section = SubjectSection.objects.create(**validated_data)
 
         for schedule in schedules:
-            weekday = WeekdayModel.objects.get(id=schedule["weekday"].id)
+            weekday = Weekday.objects.get(id=schedule["weekday"].id)
             schedule["weekday"] = weekday
             schedule["section"] = subject_section
-            ScheduleModel.objects.create(**schedule)
+            SectionSchedule.objects.create(**schedule)
 
         return subject_section
 
     def update(self, instance, validated_data):
-        """Update de subject section"""
         schedules = validated_data.pop("subject_schedule", [])
 
         # if "subject" in validated_data:
@@ -120,8 +63,6 @@ class SubjectSectionSerializer(ModelSerializer):
         return super().update(instance, validated_data)
 
     def get_selection(self, obj) -> str:
-        """Get the selection name"""
-
         selection = obj.selection
         serializer = SelectionSerializer(selection, many=False)
         data = serializer.data
@@ -129,8 +70,6 @@ class SubjectSectionSerializer(ModelSerializer):
         return selection
 
     def get_subject_code(self, obj) -> str:
-        """Get the subject code"""
-
         subject = obj.subject
         serializer = SubjectSerializer(subject, many=False)
         data = serializer.data
@@ -138,8 +77,6 @@ class SubjectSectionSerializer(ModelSerializer):
         return subject_code
 
     def get_subject_name(self, obj) -> str:
-        """Get the subject name"""
-
         subject = obj.subject
         serializer = SubjectSerializer(subject, many=False)
         data = serializer.data
@@ -147,7 +84,7 @@ class SubjectSectionSerializer(ModelSerializer):
         return subject_name
 
     # def get_subject_schedule(self, obj) -> str:
-    #     """Get the subject schedule"""
+    #
 
     #     schedule = obj.schedule
     #     serializer = ScheduleSerializer(schedule, many=True)
