@@ -1,16 +1,16 @@
 from drf_spectacular.utils import OpenApiExample, extend_schema
-from rest_framework.generics import RetrieveDestroyAPIView
-from rest_framework.mixins import UpdateModelMixin
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from user.serializers import ProfileSerializer
+from ..serializers import ProfileSerializer
 
 SCHEMA_NAME = "users"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class ProfileView(RetrieveDestroyAPIView, UpdateModelMixin):
-    serializer_class = ProfileSerializer
+class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
@@ -35,7 +35,17 @@ class ProfileView(RetrieveDestroyAPIView, UpdateModelMixin):
         ],
     )
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        try:
+            user = request.user
+            serializer = ProfileSerializer(user)
+            response = serializer.data
+            return Response(response, status.HTTP_200_OK)
+        except Exception:
+            response = {
+                "title": "Internal error",
+                "message": "There was an error trying to retrieve your profile.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
         operation_id="Partial update user profile",
@@ -105,7 +115,28 @@ class ProfileView(RetrieveDestroyAPIView, UpdateModelMixin):
         ],
     )
     def patch(self, request, *args, **kwargs):
-        return super().partial_update(request, *args, **kwargs)
+        try:
+            user = request.user
+            data = request.data
+            serializer = ProfileSerializer(user, data, partial=True)
+
+            if not serializer.is_valid():
+                errors = serializer.errors
+                response = {
+                    "title": "Could not update the user",
+                    "message": errors,
+                }
+                return Response(response, status.HTTP_400_BAD_REQUEST)
+
+            serializer.save()
+            response = serializer.data
+            return Response(response, status.HTTP_200_OK)
+        except Exception:
+            response = {
+                "title": "Internal error",
+                "message": "There was an error trying to update your profile.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
         operation_id="Delete user account",
@@ -115,9 +146,13 @@ class ProfileView(RetrieveDestroyAPIView, UpdateModelMixin):
         },
     )
     def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
-
-    def get_object(self):
-        request = self.request
-        user = request.user
-        return user
+        try:
+            user = request.user
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception:
+            response = {
+                "title": "Internal error",
+                "message": "There was an error trying to delete your profile.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)

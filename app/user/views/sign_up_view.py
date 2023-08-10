@@ -1,27 +1,23 @@
 from django.urls import reverse
 from drf_spectacular.utils import OpenApiExample, extend_schema
-from rest_framework.generics import CreateAPIView
+from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from user.serializers import SignUpSerializer
+from ..serializers import SignUpSerializer
 
 SCHEMA_NAME = "users"
 
 
-def user_profile_url(request):
-    user_profile_url = reverse("user:profile")
-    absolute_url = request.build_absolute_uri(user_profile_url)
-    return absolute_url
-
-
 @extend_schema(tags=[SCHEMA_NAME])
-class SignUpView(CreateAPIView):
-    serializer_class = SignUpSerializer
-    permission_classes = [AllowAny]
+class SignUpView(APIView):
     authentication_classes = []
+    permission_classes = [AllowAny]
 
     @extend_schema(
         operation_id="Sign up",
+        auth=[],
         description="Registers a new user.",
         request=SignUpSerializer,
         responses={
@@ -56,8 +52,32 @@ class SignUpView(CreateAPIView):
         ],
     )
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        try:
+            data = request.data
+            serializer = SignUpSerializer(data=data)
 
-    def get_success_headers(self, data):
+            if not serializer.is_valid():
+                response = {
+                    "title": "Could not register the user",
+                    "message": serializer.errors,
+                }
+                return Response(response, status.HTTP_400_BAD_REQUEST)
+
+            serializer.save()
+            headers = self.get_success_headers()
+            response = serializer.data
+            return Response(response, status.HTTP_201_CREATED, headers=headers)
+
+        except Exception:
+            response = {
+                "title": "error",
+                "message": "There was an error trying to sign you up.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get_success_headers(self):
         location = reverse("user:profile")
-        return {"Location": location}
+        headers = {
+            "Location": location,
+        }
+        return headers

@@ -37,10 +37,9 @@ class SignUpSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
         password = validated_data.pop("password", None)
-        user = super().update(instance, validated_data)
-
         if password:
-            user.set_password(password)
-            user.save()
+            instance.set_password(password)
+            instance.save()
 
+        user = super().update(instance, validated_data)
         return user
