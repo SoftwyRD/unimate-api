@@ -1,10 +1,10 @@
 from django.urls import path
 
-from subject.views import ListSubjectsView, RetrieveSubjectView
+from . import views
 
-app_name = "subjects"
+app_name = "subject"
 
 urlpatterns = [
-    path("", ListSubjectsView.as_view(), name="list"),
-    path("<int:id>/", RetrieveSubjectView.as_view(), name="retrieve"),
+    path("", views.ListSubjectsView.as_view(), name="list"),
+    path("<int:id>/", views.RetrieveSubjectView.as_view(), name="retrieve"),
 ]

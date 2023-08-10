@@ -1,17 +1,14 @@
-"""Test unauthenticated user requests"""
-
 from django.test import TestCase
-from selection.models import Subject as SubjectModel
+from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
-from rest_framework import status
+
+from ..models import Subject
 
 SUBJECT_URL = reverse("subject:subject-list")
 
 
 def detail_url(id):
-    """Get reverse url for subject details"""
-
     return reverse("subject:subject-detail", args=[id])
 
 
@@ -39,7 +36,7 @@ class SubjectUnauthenticatedTests(TestCase):
     def test_get_subject_test_success(self) -> None:
         """Test that unauthenticated user can get subjects"""
 
-        SubjectModel.objects.create(
+        Subject.objects.create(
             code="IDS222",
             name="Desarrollo de Software 1",
             credits=4,
