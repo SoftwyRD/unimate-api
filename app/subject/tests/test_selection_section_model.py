@@ -1,8 +1,8 @@
-"""Test selection section model."""
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from selection.models import Selection, Subject, SubjectSection
+from subject.models import Subject
+
+from ..models import Selection, SubjectSection
 
 PAYLOAD = {
     "section": 3,
@@ -12,18 +12,12 @@ PAYLOAD = {
 
 
 def create_selection_section(**params):
-    """Helper function to create a selection section"""
-
     selection_section = SubjectSection.objects.create(**params)
     return selection_section
 
 
 class SelectionSectionModelTests(TestCase):
-    """Test selection section model"""
-
-    def setUp(self) -> None:
-        """Create a user, selection, and subject"""
-
+    def setUp(self):
         self.user = get_user_model().objects.create(
             first_name="Test",
             last_name="User",

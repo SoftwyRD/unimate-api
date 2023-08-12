@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -11,10 +9,9 @@ class Subject(models.Model):
     credits = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     is_lab = models.BooleanField(default=False)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.code} - {self.name}"
 
     def save(self, *args, **kwargs):
-        """Save the subject with the code in uppercase."""
         self.code = self.code.upper()
         super().save(*args, **kwargs)

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
     "corsheaders",
+    "django_filters",
     "drf_spectacular",
     "rest_framework",
     "documentation",
@@ -58,6 +59,9 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
@@ -69,7 +73,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 25,
+    "PAGE_SIZE": 10,
 }
 
 SIMPLE_JWT = {
@@ -230,9 +234,9 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "v1.0",
     "TOS": None,
     "CONTACT": {
-        "name": "Softwy",
-        "email": "contact@softwy.com",
-        "url": "https://softwy.com/contact",
+        "name": env.str("OPENAPI_CONTACT_NAME", None),
+        "email": env.str("OPENAPI_CONTACT_EMAIL", None),
+        "url": env.str("OPENAPI_CONTACT_URL", None),
     },
     "LICENSE": None,
     "SERVE_INCLUDE_SCHEMA": False,

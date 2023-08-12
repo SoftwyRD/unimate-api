@@ -1,7 +1,6 @@
-"""Test subject model."""
-
 from django.test import TestCase
-from subject.models import Subject
+
+from ..models import Subject
 
 PAYLOAD = {
     "code": "TST101",
@@ -12,8 +11,7 @@ PAYLOAD = {
 
 
 def create_subject(**params):
-    """Helper function to create a subject"""\
-
+    """Helper function to create a subject"""
     subject = Subject.objects.create(**params)
     return subject
 
