@@ -1,6 +1,6 @@
-from django.contrib.admin import ModelAdmin, register
+from django.contrib.admin import ModelAdmin, register, site
 
-from .models import Subject
+from .models import Subject, SectionSchedule, Weekday, SubjectSection
 
 
 @register(Subject)
@@ -22,3 +22,8 @@ class SubjectAdmin(ModelAdmin):
             },
         ),
     )
+
+
+site.register(SectionSchedule)
+site.register(Weekday)
+site.register(SubjectSection)

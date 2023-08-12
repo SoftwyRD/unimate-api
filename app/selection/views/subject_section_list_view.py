@@ -7,7 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from subject_section.models import SubjectSection
+from subject.models import SubjectSection
 
 from ..models import Selection
 from ..permissions import IsOwner
@@ -98,7 +98,7 @@ class SubjectSectionListView(APIView):
 
     def get_success_headers(self, response):
         id = response["id"]
-        location = reverse("subject_section:detail", args=[id])
+        location = reverse("subject:section-detail", args=[id])
         headers = {
             "Location": location,
         }

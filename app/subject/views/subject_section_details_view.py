@@ -9,7 +9,7 @@ from ..models import SubjectSection
 from ..permissions import IsOwner
 from ..serializers import SubjectSectionSerializer
 
-SCHEMA_NAME = "subject-sections"
+SCHEMA_NAME = "subjects"
 
 
 @extend_schema(tags=[SCHEMA_NAME])

@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     "documentation",
     "selection",
     "subject",
-    "subject_section",
     "user",
 ]
 

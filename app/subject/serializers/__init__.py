@@ -1,1 +1,3 @@
-from subject.serializers.subject_serializer import SubjectSerializer
+from .schedule_serializer import ScheduleSerializer
+from .subject_section_serializer import SubjectSectionSerializer
+from .subject_serializer import SubjectSerializer

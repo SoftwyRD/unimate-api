@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from subject_section.models import SectionSchedule, SubjectSection, Weekday
+from subject.models import SectionSchedule, SubjectSection, Weekday
 
 
 class SubjectSectionSerializer(ModelSerializer):
