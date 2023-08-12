@@ -1,48 +1,51 @@
 from django.urls import reverse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from selection.models import Selection
-from selection.serializers import SelectionSerializer
+
+from ..models import Selection
+from ..serializers import SelectionSerializer
 
 SCHEMA_NAME = "selections"
-
-
-def selection_location_url(selection_id):
-    return reverse("selection:selection-detail", args=[selection_id])
 
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionListView(APIView):
     permission_classes = [IsAuthenticated]
+    queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering = ["id"]
+    ordering_fields = ["id", "name", "created_on", "modified_on"]
+    search_fields = ["name"]
 
     @extend_schema(
         operation_id="Retrieve selections list",
         description="Retrieves all the selections from the requesting user.",
+        responses={
+            200: serializer_class(many=True),
+        },
     )
-    def get(self, req, format=None):
-        """Get all selections for a user"""
+    def get(self, request, *args, **kwargs):
         try:
-            selection = Selection.objects.all().filter(user=req.user.id)
-
-            serializer = self.serializer_class(selection, many=True)
-
+            queryset = self.queryset
+            filtered_queryset = self.filter_queryset(queryset, request)
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(
+                filtered_queryset, request
+            )
+            serializer = self.serializer_class(paginated_queryset, many=True)
+            response = paginator.get_paginated_response(serializer.data)
+            return Response(response.data, status.HTTP_200_OK)
+        except Exception:
             response = {
-                "status": "success",
-                "data": {
-                    "count": selection.count(),
-                    "selections": serializer.data,
-                },
-            }
-
-            return Response(response, status.HTTP_200_OK)
-        except Exception as ex:
-            response = {
-                "status": "error",
-                "message": ex,
+                "status": "Internal error",
+                "message": "There was an error trying to list your selections.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -50,45 +53,37 @@ class SelectionListView(APIView):
         operation_id="Create selection",
         description="Retrieves all the selections from the requesting user.",
     )
-    def post(self, req, format=None):
-        """Create a new selection for a user"""
+    def post(self, request, *args, **kwargs):
         try:
-            data = req.data
-
-            serializer = self.serializer_class(data=data, many=False)
-
-            if serializer.is_valid():
-                serializer.save(user=req.user)
-
-                selection = serializer.data
-
-                headers = {
-                    "Location": selection_location_url(selection["id"]),
-                }
-
-                response = {
-                    "status": "success",
-                    "data": {
-                        "selection": selection,
-                    },
-                }
-                return Response(
-                    response, status.HTTP_201_CREATED, headers=headers
-                )
-
+            data = request.data
+            user = request.user
+            context = {"user": user}
+            serializer = self.serializer_class(
+                data=data, many=False, context=context
+            )
+            if not serializer.is_valid():
+                response = serializer.errors
+                return Response(response, status.HTTP_400_BAD_REQUEST)
+            serializer.save(user=user)
+            response = serializer.data
+            headers = self.get_success_headers(response)
+            return Response(response, status.HTTP_201_CREATED, headers=headers)
+        except Exception:
             response = {
-                "status": "fail",
-                "data": {
-                    "title": "Could not create selection",
-                    "details": serializer.errors,
-                },
+                "title": "Internal error",
+                "message": "There was an error trying to create your selection.",
             }
-            print(serializer.errors)
-            return Response(response, status.HTTP_400_BAD_REQUEST)
-        except Exception as ex:
-            response = {
-                "status": "error",
-                "message": ex,
-            }
-
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def filter_queryset(self, queryset, request):
+        for backend in self.filter_backends:
+            queryset = backend().filter_queryset(request, queryset, self)
+        return queryset
+
+    def get_success_headers(self, response):
+        id = response["id"]
+        location = reverse("selection:detail", args=[id])
+        headers = {
+            "Location": location,
+        }
+        return headers

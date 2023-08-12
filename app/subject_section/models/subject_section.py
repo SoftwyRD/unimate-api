@@ -12,5 +12,5 @@ class SubjectSection(models.Model):
     professor = models.CharField(max_length=60)
     taken = models.BooleanField(default=False)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.subject.code}-{self.section}"

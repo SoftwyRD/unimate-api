@@ -1,126 +1,105 @@
 from django.urls import reverse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from selection.models import Selection, SubjectSection
-from selection.serializers import SubjectSectionSerializer
+from subject_section.models import SubjectSection
+
+from ..models import Selection
+from ..permissions import IsOwner
+from ..serializers import SubjectSectionSerializer
 
 SCHEMA_NAME = "selections"
 
 
-def subject_section_location_url(selection_id, subject_section_id):
-    return reverse(
-        "selection:subject-detail", args=[selection_id, subject_section_id]
-    )
-
-
 @extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
+    queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering = ["id"]
+    ordering_fields = ["id", "subject__name", "professor"]
+    search_fields = ["subject__name", "professor"]
+    filterset_fields = ["is_taken"]
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
         description="Retrieves all the subject sections from the specified selection.",
+        responses={
+            200: serializer_class(many=True),
+        },
     )
-    def get(self, request, selection_id, format=None):
-        """Get all subject sections"""
+    def get(self, request, id, *args, **kwargs):
         try:
-            user = request.user
-            selection = Selection.objects.get(id=selection_id)
-
-            if selection.user != user:
-                response = {
-                    "status": "fail",
-                    "data": {
-                        "title": "Could not find selection",
-                        "message": "Could not find any matching"
-                        + " selections to add this subject section.",
-                    },
-                }
-                return Response(response, status=status.HTTP_404_NOT_FOUND)
-
-            subject_section = SubjectSection.objects.filter(
-                selection=selection
+            instance = Selection.objects.get(id=id)
+            self.check_object_permissions(request, instance)
+            queryset = self.queryset.filter(selection=instance)
+            filtered_queryset = self.filter_queryset(queryset, request)
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(
+                filtered_queryset, request
             )
-            serializer = self.serializer_class(subject_section, many=True)
-
+            serializer = self.serializer_class(paginated_queryset, many=True)
+            response = paginator.get_paginated_response(serializer.data)
+            return Response(response.data, status=status.HTTP_200_OK)
+        except (SubjectSection.DoesNotExist, PermissionDenied):
             response = {
-                "status": "success",
-                "data": {
-                    "count": subject_section.count(),
-                    "subject_sections": serializer.data,
-                },
+                "title": "Subject section does not exist",
+                "message": "Could not find any matching section.",
             }
-            return Response(response, status=status.HTTP_200_OK)
-        except Exception as e:
+            return Response(response, status.HTTP_404_NOT_FOUND)
+        except Exception:
             response = {
-                "status": "error",
+                "title": "Internal error",
                 "message": "There was an error trying to get the subjects.",
             }
-            print(e)
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
         operation_id="Add subject section",
         description="Adds a subject section to the specified selections.",
     )
-    def post(self, request, selection_id, format=None):
-        """Create a subject section"""
+    def post(self, request, id, *args, **kwargs):
         try:
-            user = request.user
-            selection = Selection.objects.get(id=selection_id)
-
-            if selection.user != user:
-                response = {
-                    "status": "fail",
-                    "data": {
-                        "title": "Could not find the selection",
-                        "message": "Could not find the selection you are"
-                        + " trying to add the subject.",
-                    },
-                }
-                return Response(response, status=status.HTTP_404_NOT_FOUND)
-
+            instance = Selection.objects.get(id=id)
+            self.check_object_permissions(request, instance)
             data = request.data
-
-            serializer = self.serializer_class(data=data, many=False)
-
-            if serializer.is_valid():
-                serializer.save(selection=selection)
-                subject_section = serializer.data
-
-                headers = {
-                    "Location": subject_section_location_url(
-                        selection_id, subject_section["id"]
-                    ),
-                }
-                response = {
-                    "status": "success",
-                    "data": {
-                        "subject_section": subject_section,
-                    },
-                }
-                return Response(
-                    response, status.HTTP_201_CREATED, headers=headers
-                )
-
+            serializer = self.serializer_class(data=data)
+            if not serializer.is_valid():
+                response = serializer.errors
+                return Response(response, status.HTTP_400_BAD_REQUEST)
+            serializer.save(selection=instance)
+            response = serializer.data
+            headers = self.get_success_headers(response)
+            return Response(response, status.HTTP_201_CREATED, headers=headers)
+        except (SubjectSection.DoesNotExist, PermissionDenied):
             response = {
-                "status": "fail",
-                "data": {
-                    "title": "Could not create the subject section",
-                    "message": serializer.errors,
-                },
+                "title": "Subject section does not exist",
+                "message": "Could not find any matching section.",
             }
-            return Response(response, status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
+            return Response(response, status.HTTP_404_NOT_FOUND)
+        except Exception:
             response = {
-                "status": "error",
-                "message": "There was an error trying to post the subjects.",
+                "title": "Internal error",
+                "message": "There was an error trying to add the subject section.",
             }
-            print("Exception:")
-            print(e)
-            e.__traceback__()
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def filter_queryset(self, queryset, request):
+        for backend in self.filter_backends:
+            queryset = backend().filter_queryset(request, queryset, self)
+        return queryset
+
+    def get_success_headers(self, response):
+        id = response["id"]
+        location = reverse("subject_section:detail", args=[id])
+        headers = {
+            "Location": location,
+        }
+        return headers

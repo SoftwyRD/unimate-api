@@ -1,6 +1,8 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from selection.models import SubjectSection, Weekday
+
+from .weekday import Weekday
+from .subject_section import SubjectSection
 
 
 class SectionSchedule(models.Model):
@@ -18,5 +20,5 @@ class SectionSchedule(models.Model):
         default=9, validators=[MinValueValidator(9), MaxValueValidator(22)]
     )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.id)

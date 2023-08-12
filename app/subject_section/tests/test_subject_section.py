@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
-from selection.models import Selection, Subject, SubjectSection
+from subject.models import Subject
+
+from ...selection.models import Selection, SubjectSection
 
 
 def subject_section_url(selection_id, subject_section_id):

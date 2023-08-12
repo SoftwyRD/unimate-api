@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from selection.models import Selection, Subject, SubjectSection
+from subject.models import Subject
+
+from ..models import Selection, SubjectSection
 
 PAYLOAD = {
     "section": 3,

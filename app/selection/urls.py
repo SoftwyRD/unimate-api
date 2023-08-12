@@ -1,5 +1,6 @@
 from django.urls import path
-from selection import views
+
+from . import views
 
 app_name = "selection"
 
@@ -11,18 +12,8 @@ urlpatterns = [
         name="detail",
     ),
     path(
-        "<uuid:selection_id>/subjects/",
+        "<uuid:id>/subjects/",
         views.SubjectSectionListView.as_view(),
-        name="subject-list",
-    ),
-    path(
-        "<uuid:selection_id>/sections/<int:subject_section_id>/",
-        views.SubjectSectionDetailsView.as_view(),
-        name="subject-detail",
-    ),
-    path(
-        "<uuid:selection_id>/sections/<int:subject_section_id>/schedules/",
-        views.ScheduleListView.as_view(),
-        name="schedule-list",
+        name="subjects",
     ),
 ]

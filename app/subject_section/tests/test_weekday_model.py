@@ -1,5 +1,6 @@
 from django.test import TestCase
-from selection.models import Weekday
+
+from ..models import Weekday
 
 PAYLOAD = {
     "name": "Monday",

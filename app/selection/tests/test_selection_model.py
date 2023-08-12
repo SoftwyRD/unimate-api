@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from selection.models import Selection
+
+from ..models import Selection
 
 PAYLOAD = {
     "name": "Test Subject",
