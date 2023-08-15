@@ -16,17 +16,13 @@ class Selection(models.Model):
     )
     name = models.CharField(
         verbose_name=_("name"),
-        help_text=_("Selection name."),
+        help_text=_("Selection name"),
         max_length=100,
-    )
-    name_slug = models.SlugField(
-        verbose_name=_("name slug"),
-        help_text=_("Selection name slug. This is unique to owner's scope."),
-        max_length=100,
+        default="My Selection",
     )
     user = models.ForeignKey(
         verbose_name=_("user"),
-        help_text=_("Selection's owner."),
+        help_text=_("Selection's owner"),
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="selection",
@@ -34,12 +30,12 @@ class Selection(models.Model):
     )
     created = models.DateTimeField(
         verbose_name=_("created"),
-        help_text=_("Creation date."),
+        help_text=_("Creation date"),
         auto_now_add=True,
     )
     modified = models.DateTimeField(
         verbose_name=_("modified"),
-        help_text=_("Last modification date."),
+        help_text=_("Last modification date"),
         auto_now=True,
     )
 
@@ -47,7 +43,6 @@ class Selection(models.Model):
         verbose_name = _("selection")
         verbose_name_plural = _("selections")
         db_table = "selection"
-        unique_together = ("name_slug", "user")
 
     def __str__(self):
         return self.name

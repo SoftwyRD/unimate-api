@@ -9,14 +9,14 @@ from .weekday import Weekday
 class SectionSchedule(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
-        help_text=_("Section's schedule id."),
+        help_text=_("Section's schedule id"),
         primary_key=True,
         unique=True,
         editable=False,
     )
     section = models.ForeignKey(
-        verbose_name=_("selection"),
-        help_text=_("Section's id."),
+        verbose_name=_("section"),
+        help_text=_("Section's id"),
         to=SubjectSection,
         on_delete=models.CASCADE,
         related_name="schedule",
@@ -24,22 +24,22 @@ class SectionSchedule(models.Model):
     )
     weekday = models.ForeignKey(
         verbose_name=_("weekday"),
-        help_text=_("Weekday id."),
+        help_text=_("Weekday id"),
         to=Weekday,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         null=True,
         related_name="weekday",
         related_query_name="weekday",
     )
     start_time = models.IntegerField(
         verbose_name=_("start time"),
-        help_text=_("Section's start time."),
+        help_text=_("Section's start time"),
         default=6,
         validators=[MinValueValidator(6), MaxValueValidator(20)],
     )
     end_time = models.IntegerField(
         verbose_name=_("end time"),
-        help_text=_("Section's end time."),
+        help_text=_("Section's end time"),
         default=8,
         validators=[MinValueValidator(8), MaxValueValidator(22)],
     )

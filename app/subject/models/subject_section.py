@@ -9,33 +9,33 @@ from .subject import Subject
 class SubjectSection(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
-        help_text=_("Subject's section id."),
+        help_text=_("Subject's section id"),
         primary_key=True,
         unique=True,
         editable=False,
     )
     selection = models.ForeignKey(
         verbose_name=_("selection"),
-        help_text=_("Selection's id."),
+        help_text=_("Selection's id"),
         to=Selection,
         on_delete=models.CASCADE,
         related_name="subject_section",
         related_query_name="subject_section",
     )
-    section = models.IntegerField(
-        verbose_name=_("section"),
-        help_text=_("Subject's section."),
-        default=1,
-        validators=[MinValueValidator(0)],
-    )
     subject = models.ForeignKey(
         verbose_name=_("subject"),
-        help_text=_("Subject's id."),
+        help_text=_("Subject's id"),
         to=Subject,
         on_delete=models.SET_NULL,
         null=True,
         related_name="subject_section",
         related_query_name="subject_section",
+    )
+    section = models.IntegerField(
+        verbose_name=_("section"),
+        help_text=_("Subject's section"),
+        default=1,
+        validators=[MinValueValidator(0)],
     )
     professor = models.CharField(
         verbose_name=_("professor"),

@@ -5,14 +5,14 @@ from django.utils.translation import gettext_lazy as _
 class Weekday(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
-        help_text=_("Weekday id."),
+        help_text=_("Weekday id"),
         primary_key=True,
         unique=True,
         editable=False,
     )
     name = models.CharField(
         verbose_name=_("name"),
-        help_text=_("Weekday name."),
+        help_text=_("Weekday name"),
         max_length=10,
         unique=True,
     )
