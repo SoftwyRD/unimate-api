@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from ..models import Selection
 from ..permissions import IsOwner
-from ..serializers import SelectionDetailSerializer
+from ..serializers import SelectionSerializer
 
 SCHEMA_NAME = "selections"
 
@@ -16,31 +16,7 @@ SCHEMA_NAME = "selections"
 class SelectionDetailView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = Selection.objects.all()
-    serializer_class = SelectionDetailSerializer
-
-    @extend_schema(
-        operation_id="Retrieve selection details",
-        description="Retrieves the specified selection.",
-    )
-    def get(self, request, id, *args, **kwargs):
-        try:
-            instance = self.queryset.get(id=id)
-            self.check_object_permissions(request, instance)
-            serializer = self.serializer_class(instance)
-            response = serializer.data
-            return Response(response, status.HTTP_200_OK)
-        except (Selection.DoesNotExist, PermissionDenied):
-            response = {
-                "title": "Selection does not exist",
-                "message": "Could not find any matching selection.",
-            }
-            return Response(response, status.HTTP_404_NOT_FOUND)
-        except Exception:
-            response = {
-                "status": "Internal error",
-                "message": "There was an error trying to retrieve the selection.",
-            }
-            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+    serializer_class = SelectionSerializer
 
     @extend_schema(
         operation_id="Partial update selection",

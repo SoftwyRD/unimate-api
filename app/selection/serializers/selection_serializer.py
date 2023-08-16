@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer
 from ..models import Selection
 
 
-class SelectionListSerializer(ModelSerializer):
+class SelectionSerializer(ModelSerializer):
     class Meta:
         model = Selection
         exclude = ("user",)

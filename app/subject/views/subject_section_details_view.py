@@ -66,7 +66,8 @@ class SubjectSectionDetailView(APIView):
                 "message": "Could not find a matching subject section.",
             }
             return Response(response, status=status.HTTP_404_NOT_FOUND)
-        except Exception:
+        except Exception as e:
+            print(e)
             response = {
                 "title": "Internal error",
                 "message": "There was an error trying to update the subject.",

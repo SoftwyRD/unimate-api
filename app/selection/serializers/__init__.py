@@ -1,4 +1,3 @@
-from .selection_detail_serializer import SelectionDetailSerializer
-from .selection_list_serializer import SelectionListSerializer
+from .selection_serializer import SelectionSerializer
 from .subject_section_serializer import SubjectSectionSerializer
 from .subject_serializer import SubjectSerializer

@@ -7,8 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from ..filters import OwnerFilter
 from ..models import Selection
-from ..serializers import SelectionListSerializer
+from ..serializers import SelectionSerializer
 
 SCHEMA_NAME = "selections"
 
@@ -17,9 +18,9 @@ SCHEMA_NAME = "selections"
 class SelectionListView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Selection.objects.all()
-    serializer_class = SelectionListSerializer
+    serializer_class = SelectionSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = [OwnerFilter, OrderingFilter, SearchFilter]
     ordering = ["id"]
     ordering_fields = ["id", "name", "created_on", "modified_on"]
     search_fields = ["name"]
