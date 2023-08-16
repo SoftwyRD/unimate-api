@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from ..models import Selection
 from ..permissions import IsOwner
-from ..serializers import SelectionSerializer
+from ..serializers import SelectionDetailSerializer
 
 SCHEMA_NAME = "selections"
 
@@ -16,7 +16,7 @@ SCHEMA_NAME = "selections"
 class SelectionDetailView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = Selection.objects.all()
-    serializer_class = SelectionSerializer
+    serializer_class = SelectionDetailSerializer
 
     @extend_schema(
         operation_id="Retrieve selection details",

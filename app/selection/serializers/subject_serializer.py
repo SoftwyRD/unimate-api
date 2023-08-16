@@ -6,4 +6,4 @@ class SubjectSerializer(ModelSerializer):
     class Meta:
         model = Subject
         fields = "__all__"
-        read_only_fields = ["id"]
+        read_only_fields = ("id",)

@@ -23,10 +23,10 @@ class SubjectSectionListView(APIView):
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering = ["id"]
-    ordering_fields = ["id", "subject__name", "professor"]
-    search_fields = ["subject__name", "professor"]
-    filterset_fields = ["is_taken"]
+    ordering = ("id",)
+    ordering_fields = ("id", "subject__name", "professor")
+    search_fields = ("subject__name", "professor")
+    filterset_fields = ("is_taken",)
 
     @extend_schema(
         operation_id="Retrieve subject sections list",

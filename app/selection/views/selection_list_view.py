@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..models import Selection
-from ..serializers import SelectionSerializer
+from ..serializers import SelectionListSerializer
 
 SCHEMA_NAME = "selections"
 
@@ -17,7 +17,7 @@ SCHEMA_NAME = "selections"
 class SelectionListView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Selection.objects.all()
-    serializer_class = SelectionSerializer
+    serializer_class = SelectionListSerializer
     pagination_class = PageNumberPagination
     filter_backends = [OrderingFilter, SearchFilter]
     ordering = ["id"]
