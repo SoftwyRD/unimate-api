@@ -44,7 +44,7 @@ class SubjectSectionDetailView(APIView):
 
     @extend_schema(
         operation_id="Partial update subject section",
-        description="Partially updates the specified subject section.",
+        description="Partially updates the specified subject section."
     )
     def patch(self, request, id, *args, **kwargs):
         try:
@@ -66,8 +66,7 @@ class SubjectSectionDetailView(APIView):
                 "message": "Could not find a matching subject section.",
             }
             return Response(response, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print(e)
+        except Exception:
             response = {
                 "title": "Internal error",
                 "message": "There was an error trying to update the subject.",

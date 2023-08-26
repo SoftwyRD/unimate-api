@@ -1,14 +1,14 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 from subject.models import SectionSchedule
+
+from .weekday_serializer import WeekdaySerializer
 
 
 class SectionScheduleSerializer(ModelSerializer):
+    weekday = WeekdaySerializer(read_only=True)
+    weekday_id = IntegerField(write_only=True)
+
     class Meta:
         model = SectionSchedule
         exclude = ("id", "section")
         read_only_fields = ("id",)
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["weekday"] = instance.weekday.name
-        return representation

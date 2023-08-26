@@ -46,8 +46,7 @@ class SubjectSectionListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.serializer_class(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response.data, status=status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except (
             Selection.DoesNotExist,
             SubjectSection.DoesNotExist,
@@ -92,8 +91,7 @@ class SubjectSectionListView(APIView):
                 "message": "Could not find any matching section.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print(e)
+        except Exception:
             response = {
                 "title": "Internal error",
                 "message": "There was an error trying to add the subject section.",

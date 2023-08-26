@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 
 from ..models import SubjectSection, SectionSchedule
 from .subject_serializer import SubjectSerializer
@@ -7,6 +7,8 @@ from .subject_schedule_serializer import SectionScheduleSerializer
 
 class SubjectSectionSerializer(ModelSerializer):
     schedule = SectionScheduleSerializer(many=True)
+    subject = SubjectSerializer(read_only=True)
+    subject_id = IntegerField(write_only=True)
 
     class Meta:
         model = SubjectSection
@@ -25,9 +27,3 @@ class SubjectSectionSerializer(ModelSerializer):
             SectionSchedule.objects.create(**schedule)
 
         return instance
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        serializer = SubjectSerializer(instance.subject)
-        representation["subject"] = serializer.data
-        return representation
