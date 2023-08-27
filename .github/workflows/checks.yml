@@ -14,7 +14,7 @@ jobs:
       - name: Cache dependencies
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.9'
+          python-version: '3.11.4'
           cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.dev.txt
@@ -47,16 +47,13 @@ jobs:
       - name: Cache dependencies
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.9'
+          python-version: '3.11.4'
           cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run migrations
         run: |
-          cd app/
           python manage.py makemigrations
-          python manage.py migrate
       - name: Test
         run: |
-          cd app/
           python manage.py test
