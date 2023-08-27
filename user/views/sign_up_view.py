@@ -1,5 +1,5 @@
 from django.urls import reverse
-from drf_spectacular.utils import OpenApiExample, extend_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,65 +12,29 @@ SCHEMA_NAME = "users"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SignUpView(APIView):
-    authentication_classes = []
-    permission_classes = [AllowAny]
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
+    serializer_class = SignUpSerializer
 
     @extend_schema(
         operation_id="Sign up",
-        auth=[],
         description="Registers a new user.",
-        request=SignUpSerializer,
-        responses={
-            201: SignUpSerializer,
-        },
-        examples=[
-            # Requests
-            OpenApiExample(
-                name="Sign up",
-                value={
-                    "first_name": "Michael",
-                    "last_name": "Cruz",
-                    "username": "m.cruz",
-                    "email": "m.cruz@example.com",
-                    "password": "just_A R@nd0m-P4ssw0RD",
-                },
-                request_only=True,
-            ),
-            # Responses
-            OpenApiExample(
-                name="Signed up",
-                value={
-                    "id": 31,
-                    "first_name": "Michael",
-                    "last_name": "Cruz",
-                    "username": "m.cruz",
-                    "email": "m.cruz@example.com",
-                },
-                response_only=True,
-                status_codes=[201],
-            ),
-        ],
     )
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
-            serializer = SignUpSerializer(data=data)
-
+            serializer = self.serializer_class(data=data)
             if not serializer.is_valid():
-                response = {
-                    "title": "Could not register the user",
-                    "message": serializer.errors,
-                }
+                response = serializer.errors
                 return Response(response, status.HTTP_400_BAD_REQUEST)
-
             serializer.save()
             headers = self.get_success_headers()
             response = serializer.data
             return Response(response, status.HTTP_201_CREATED, headers=headers)
-
-        except Exception:
+        except Exception as e:
+            print(e)
             response = {
-                "title": "error",
+                "title": "Internal error",
                 "message": "There was an error trying to sign you up.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
