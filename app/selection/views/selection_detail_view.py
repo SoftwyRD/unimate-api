@@ -19,30 +19,6 @@ class SelectionDetailView(APIView):
     serializer_class = SelectionSerializer
 
     @extend_schema(
-        operation_id="Retrieve selection details",
-        description="Retrieves the specified selection.",
-    )
-    def get(self, request, id, *args, **kwargs):
-        try:
-            instance = self.queryset.get(id=id)
-            self.check_object_permissions(request, instance)
-            serializer = self.serializer_class(instance)
-            response = serializer.data
-            return Response(response, status.HTTP_200_OK)
-        except (Selection.DoesNotExist, PermissionDenied):
-            response = {
-                "title": "Selection does not exist",
-                "message": "Could not find any matching selection.",
-            }
-            return Response(response, status.HTTP_404_NOT_FOUND)
-        except Exception:
-            response = {
-                "status": "Internal error",
-                "message": "There was an error trying to retrieve the selection.",
-            }
-            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
         operation_id="Partial update selection",
         description="Partially updates the specified selection.",
     )

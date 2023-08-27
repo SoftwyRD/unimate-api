@@ -23,10 +23,10 @@ class SubjectSectionListView(APIView):
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering = ["id"]
-    ordering_fields = ["id", "subject__name", "professor"]
-    search_fields = ["subject__name", "professor"]
-    filterset_fields = ["is_taken"]
+    ordering = ("id",)
+    ordering_fields = ("id", "subject__name", "professor")
+    search_fields = ("subject__name", "professor")
+    filterset_fields = ("is_taken",)
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
@@ -46,9 +46,12 @@ class SubjectSectionListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.serializer_class(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response.data, status=status.HTTP_200_OK)
-        except (SubjectSection.DoesNotExist, PermissionDenied):
+            return paginator.get_paginated_response(serializer.data)
+        except (
+            Selection.DoesNotExist,
+            SubjectSection.DoesNotExist,
+            PermissionDenied,
+        ):
             response = {
                 "title": "Subject section does not exist",
                 "message": "Could not find any matching section.",
@@ -78,7 +81,11 @@ class SubjectSectionListView(APIView):
             response = serializer.data
             headers = self.get_success_headers(response)
             return Response(response, status.HTTP_201_CREATED, headers=headers)
-        except (SubjectSection.DoesNotExist, PermissionDenied):
+        except (
+            Selection.DoesNotExist,
+            SubjectSection.DoesNotExist,
+            PermissionDenied,
+        ):
             response = {
                 "title": "Subject section does not exist",
                 "message": "Could not find any matching section.",

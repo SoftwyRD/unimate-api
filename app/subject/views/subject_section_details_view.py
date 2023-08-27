@@ -44,7 +44,7 @@ class SubjectSectionDetailView(APIView):
 
     @extend_schema(
         operation_id="Partial update subject section",
-        description="Partially updates the specified subject section.",
+        description="Partially updates the specified subject section."
     )
     def patch(self, request, id, *args, **kwargs):
         try:

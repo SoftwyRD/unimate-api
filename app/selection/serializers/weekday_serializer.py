@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
-from subject.models import Subject
+from subject.models import Weekday
 
 
-class SubjectSerializer(ModelSerializer):
+class WeekdaySerializer(ModelSerializer):
     class Meta:
-        model = Subject
+        model = Weekday
         fields = "__all__"
         read_only_fields = ("id",)
