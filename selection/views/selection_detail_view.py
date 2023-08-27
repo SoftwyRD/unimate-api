@@ -14,7 +14,7 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionDetailView(APIView):
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = (IsAuthenticated, IsOwner)
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
 
@@ -24,13 +24,10 @@ class SelectionDetailView(APIView):
     )
     def patch(self, request, id, *args, **kwargs):
         try:
-            instance = self.queryset.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            data = request.data
-            user = request.user
-            context = {"user": user}
             serializer = self.serializer_class(
-                instance, data=data, partial=True, context=context
+                instance, data=request.data, partial=True
             )
             if not serializer.is_valid():
                 response = {
@@ -60,7 +57,7 @@ class SelectionDetailView(APIView):
     )
     def delete(self, request, id, *args, **kwargs):
         try:
-            instance = self.queryset.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -76,3 +73,10 @@ class SelectionDetailView(APIView):
                 "message": "There was an error trying to delete the section.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get_obj(self, id):
+        queryset = self.get_queryset()
+        return queryset.get(id=id)
+
+    def get_queryset(self):
+        return self.queryset

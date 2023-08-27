@@ -18,11 +18,11 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionListView(APIView):
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = (IsAuthenticated, IsOwner)
     queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = (OrderingFilter, SearchFilter)
     ordering = ("id",)
     ordering_fields = ("id", "subject__name", "professor")
     search_fields = ("subject__name", "professor")
@@ -37,9 +37,9 @@ class SubjectSectionListView(APIView):
     )
     def get(self, request, id, *args, **kwargs):
         try:
-            instance = Selection.objects.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            queryset = self.queryset.filter(selection=instance)
+            queryset = self.get_queryset()
             filtered_queryset = self.filter_queryset(queryset, request)
             paginator = self.pagination_class()
             paginated_queryset = paginator.paginate_queryset(
@@ -70,12 +70,14 @@ class SubjectSectionListView(APIView):
     )
     def post(self, request, id, *args, **kwargs):
         try:
-            instance = Selection.objects.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            data = request.data
-            serializer = self.serializer_class(data=data)
+            serializer = self.serializer_class(data=request.data)
             if not serializer.is_valid():
-                response = serializer.errors
+                response = {
+                    "title": "Could not add the subject section",
+                    "message": serializer.errors,
+                }
                 return Response(response, status.HTTP_400_BAD_REQUEST)
             serializer.save(selection=instance)
             response = serializer.data
@@ -98,6 +100,14 @@ class SubjectSectionListView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def get_obj(self, id):
+        return Selection.objects.get(id=id)
+
+    def get_queryset(self):
+        id = self.kwargs.get("id")
+        instance = self.get_obj(id)
+        return self.queryset.filter(selection=instance)
+
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:
             queryset = backend().filter_queryset(request, queryset, self)
@@ -105,7 +115,7 @@ class SubjectSectionListView(APIView):
 
     def get_success_headers(self, response):
         id = response["id"]
-        location = reverse("subject:section-detail", args=[id])
+        location = reverse("subject:sections", args=[id])
         headers = {
             "Location": location,
         }
