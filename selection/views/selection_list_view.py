@@ -16,14 +16,14 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [OwnerFilter, OrderingFilter, SearchFilter]
-    ordering = ["id"]
-    ordering_fields = ["id", "name", "created_on", "modified_on"]
-    search_fields = ["name"]
+    filter_backends = (OwnerFilter, OrderingFilter, SearchFilter)
+    ordering = ("id",)
+    ordering_fields = ("id", "name", "created", "modified")
+    search_fields = ("name",)
 
     @extend_schema(
         operation_id="Retrieve selections list",
