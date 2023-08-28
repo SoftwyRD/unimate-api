@@ -1,8 +1,8 @@
-from rest_framework.serializers import ModelSerializer, IntegerField
+from rest_framework.serializers import IntegerField, ModelSerializer
 
-from ..models import SubjectSection, SectionSchedule
-from .subject_serializer import SubjectSerializer
+from ..models import SectionSchedule, SubjectSection
 from .subject_schedule_serializer import SectionScheduleSerializer
+from .subject_serializer import SubjectSerializer
 
 
 class SubjectSectionSerializer(ModelSerializer):

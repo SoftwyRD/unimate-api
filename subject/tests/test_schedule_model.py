@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from subject.models import Subject
 
-from ..models import SectionSchedule, Selection, SubjectSection, Weekday
+from selection.models import Selection
+
+from ..models import SectionSchedule, Subject, SubjectSection, Weekday
 
 PAYLOAD = {
     "start_time": 11,
@@ -10,39 +11,69 @@ PAYLOAD = {
 }
 
 
+def create_user(**kwargs):
+    defauls = {
+        "first_name": "Test",
+        "last_name": "User",
+        "username": "test.user",
+        "email": "test.user@example.com",
+        "password": "testpassword123",
+    }
+    defauls.update(**kwargs)
+    return get_user_model().objects.create(**defauls)
+
+
+def create_selection(**kwargs):
+    defaults = {
+        "name": "My Selection",
+    }
+    defaults.update(**kwargs)
+    return Selection.objects.create(**defaults)
+
+
+def create_subject(**kwargs):
+    defaults = {
+        "code": "TST101",
+        "name": "Test Subject",
+        "credits": 2,
+        "is_lab": False,
+    }
+    defaults.update(**kwargs)
+    return Subject.objects.create(**defaults)
+
+
+def create_section(**kwargs):
+    defaults = {
+        "section": 2,
+        "professor": "Michael",
+        "taken": True,
+    }
+    defaults.update(**kwargs)
+    return SubjectSection.objects.create(**defaults)
+
+
+def create_weekday(**kwargs):
+    defaults = {
+        "name": "Monday",
+    }
+    defaults.update(**kwargs)
+    return Weekday.objects.create(**defaults)
+
+
 def create_schedule(**params):
-    schedule = SectionSchedule.objects.create(**params)
-    return schedule
+    return SectionSchedule.objects.create(**params)
 
 
-class ScheduleModelTests(TestCase):
-    def setUp(self) -> None:
-        self.user = get_user_model().objects.create(
-            first_name="Test",
-            last_name="User",
-            username="testuser",
-            email="testuser@example.com",
-            password="testpass123",
-        )
+class TestScheduleModel(TestCase):
+    def setUp(self):
+        self.user = create_user()
 
-        self.subject = Subject.objects.create(
-            code="TST101",
-            name="Test Subject",
-            credits=2,
-            is_lab=False,
+        self.subject = create_subject()
+        self.selection = create_selection(user=self.user)
+        self.section = create_section(
+            selection=self.selection, subject=self.subject
         )
-        self.selection = Selection.objects.create(
-            name="My Selection",
-            user=self.user,
-        )
-        self.section = SubjectSection.objects.create(
-            selection=self.selection,
-            section=2,
-            subject=self.subject,
-            professor="Michael",
-            taken=True,
-        )
-        self.weekday = Weekday.objects.create(name="Monday")
+        self.weekday = create_weekday()
 
         PAYLOAD.update(
             {
@@ -61,16 +92,16 @@ class ScheduleModelTests(TestCase):
         self.assertEqual(schedule.start_time, PAYLOAD["start_time"])
         self.assertEqual(schedule.end_time, PAYLOAD["end_time"])
 
-    def test_partial_update_schedule(self):
+    def test_update_schedule(self):
         """Test that a schedule can be partially updated"""
 
-        new_weekday = Weekday.objects.create(name="Tuesday")
+        weekday = create_weekday(name="Tuesday")
         schedule = create_schedule(**PAYLOAD)
-        SectionSchedule.objects.update(weekday=new_weekday)
+        SectionSchedule.objects.update(weekday=weekday)
         schedule.refresh_from_db()
 
         self.assertEqual(schedule.section, PAYLOAD["section"])
-        self.assertEqual(schedule.weekday, new_weekday)
+        self.assertEqual(schedule.weekday, weekday)
         self.assertEqual(schedule.start_time, PAYLOAD["start_time"])
         self.assertEqual(schedule.end_time, PAYLOAD["end_time"])
 
@@ -81,23 +112,20 @@ class ScheduleModelTests(TestCase):
         schedule.delete()
         schedule = SectionSchedule.objects.filter(weekday=PAYLOAD["weekday"])
 
-        self.assertFalse(schedule)
+        self.assertFalse(schedule.exists())
 
     def test_get_schedule(self):
         """Test that a schedule can be retrieved"""
 
-        create_schedule(**PAYLOAD)
-        schedule = SectionSchedule.objects.get(weekday=PAYLOAD["weekday"])
+        schedule = create_schedule(**PAYLOAD)
+        schedule = SectionSchedule.objects.filter(section=schedule.section)
 
-        self.assertTrue(schedule)
+        self.assertTrue(schedule.exists())
 
-    def test_get_all_schedules(self):
+    def test_list_schedules(self):
         """Test that all schedules can be retrieved"""
 
         create_schedule(**PAYLOAD)
-        weekday = Weekday.objects.create(name="Friday")
-
-        PAYLOAD.update({"weekday": weekday})
         create_schedule(**PAYLOAD)
 
         schedules = SectionSchedule.objects.all()

@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from subject.models import Subject
 
-from ..models import Selection, SubjectSection
+from selection.models import Selection
+
+from ..models import Subject, SubjectSection
 
 PAYLOAD = {
     "section": 3,
@@ -12,11 +13,41 @@ PAYLOAD = {
 
 
 def create_selection_section(**params):
-    selection_section = SubjectSection.objects.create(**params)
-    return selection_section
+    return SubjectSection.objects.create(**params)
 
 
-class SelectionSectionModelTests(TestCase):
+def create_user(**kwargs):
+    defauls = {
+        "first_name": "Test",
+        "last_name": "User",
+        "username": "test.user",
+        "email": "test.user@example.com",
+        "password": "testpassword123",
+    }
+    defauls.update(**kwargs)
+    return get_user_model().objects.create(**defauls)
+
+
+def create_selection(**kwargs):
+    defaults = {
+        "name": "My Selection",
+    }
+    defaults.update(**kwargs)
+    return Selection.objects.create(**defaults)
+
+
+def create_subject(**kwargs):
+    defaults = {
+        "code": "TST101",
+        "name": "Test Subject",
+        "credits": 2,
+        "is_lab": False,
+    }
+    defaults.update(**kwargs)
+    return Subject.objects.create(**defaults)
+
+
+class TestSelectionSectionModel(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create(
             first_name="Test",
