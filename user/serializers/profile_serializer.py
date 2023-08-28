@@ -5,14 +5,14 @@ from rest_framework.serializers import ModelSerializer
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = [
+        fields = (
             "id",
             "first_name",
             "last_name",
             "username",
             "email",
             "password",
-        ]
+        )
         extra_kwargs = {
             "id": {
                 "read_only": True,

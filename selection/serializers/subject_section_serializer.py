@@ -6,7 +6,7 @@ from .subject_schedule_serializer import SectionScheduleSerializer
 
 
 class SubjectSectionSerializer(ModelSerializer):
-    schedule = SectionScheduleSerializer(many=True)
+    schedule = SectionScheduleSerializer(required=False, many=True)
     subject = SubjectSerializer(read_only=True)
     subject_id = IntegerField(write_only=True)
 
