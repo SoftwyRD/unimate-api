@@ -1,4 +1,5 @@
 from django.contrib.admin import ModelAdmin, TabularInline, register
+
 from subject.models import SubjectSection
 
 from ..models import Selection

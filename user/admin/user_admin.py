@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.contrib.admin import TabularInline, register
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
 from selection.models import Selection
 
 

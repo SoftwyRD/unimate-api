@@ -34,7 +34,7 @@ class SelectionListView(APIView):
     )
     def get(self, request, *args, **kwargs):
         try:
-            queryset = self.queryset
+            queryset = self.get_queryset()
             filtered_queryset = self.filter_queryset(queryset, request)
             paginator = self.pagination_class()
             paginated_queryset = paginator.paginate_queryset(
@@ -56,16 +56,14 @@ class SelectionListView(APIView):
     )
     def post(self, request, *args, **kwargs):
         try:
-            data = request.data
-            user = request.user
-            context = {"user": user}
-            serializer = self.serializer_class(
-                data=data, many=False, context=context
-            )
+            serializer = self.serializer_class(data=request.data)
             if not serializer.is_valid():
-                response = serializer.errors
+                response = {
+                    "title": "Could not create the selection",
+                    "message": serializer.errors,
+                }
                 return Response(response, status.HTTP_400_BAD_REQUEST)
-            serializer.save(user=user)
+            serializer.save(user=request.user)
             response = serializer.data
             headers = self.get_success_headers(response)
             return Response(response, status.HTTP_201_CREATED, headers=headers)
@@ -75,6 +73,9 @@ class SelectionListView(APIView):
                 "message": "There was an error trying to create your selection.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get_queryset(self):
+        return self.queryset
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer, IntegerField
+from rest_framework.serializers import IntegerField, ModelSerializer
+
 from subject.models import SectionSchedule
 
 from .weekday_serializer import WeekdaySerializer

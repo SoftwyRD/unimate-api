@@ -2,18 +2,17 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
-from subject.models import Subject
 
-from ...selection.models import Selection, SubjectSection
+from selection.models import Selection
 
-
-def subject_section_url(selection_id, subject_section_id):
-    return reverse(
-        "selection:subject-detail", args=[selection_id, subject_section_id]
-    )
+from ..models import Subject, SubjectSection
 
 
-def create_user(**payload):
+def subject_section_url(id):
+    return reverse("subject:sections", args=[id])
+
+
+def create_user(**kwargs):
     defaults = {
         "first_name": "first_name",
         "last_name": "last_name",
@@ -21,86 +20,94 @@ def create_user(**payload):
         "username": "username",
         "password": "password123",
     }
-    defaults.update(payload)
-    user = get_user_model().objects.create(**defaults)
-    return user
+    defaults.update(**kwargs)
+    return get_user_model().objects.create(**defaults)
+
+
+def create_selection(**kwargs):
+    defaults = {
+        "name": "My Selection",
+    }
+    defaults.update(**kwargs)
+    return Selection.objects.create(**defaults)
+
+
+def create_subject(**kwargs):
+    defaults = {
+        "code": "TST101",
+        "name": "Test Subject",
+        "credits": 2,
+        "is_lab": False,
+    }
+    defaults.update(**kwargs)
+    return Subject.objects.create(**defaults)
+
+
+def create_subject_section(**kwargs):
+    defaults = {
+        "section": 1,
+        "professor": "Marco Antonio",
+        "taken": True,
+    }
+    defaults.update(**kwargs)
+    return SubjectSection.objects.create(**defaults)
 
 
 class SubjectSectionPublicAPITests(APITestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.user = create_user()
-        self.subject = Subject.objects.create(
-            code="TST123", name="Test subject", credits=4, is_lab=False
-        )
-        self.selection = Selection.objects.create(
-            name="My Selection", user=self.user
-        )
-        self.subject_section = SubjectSection.objects.create(
-            subject=self.subject,
-            selection=self.selection,
-            section=1,
-            professor="Marco Antonio",
-            taken=True,
+        user = create_user()
+        self.client.force_authenticate(user=user)
+
+        self.subject = create_subject()
+        self.selection = create_selection(user=user)
+        self.subject_section = create_subject_section(
+            subject=self.subject, selection=self.selection
         )
 
-        self.payload = {
-            "selection": self.selection.id,
-            "section": 1,
-            "subject": self.subject.id,
-            "professor": "Marco Antonio",
-            "taken": True,
-        }
-        self.client.force_authenticate(user=self.user)
+        self.payload = self.subject_section.__dict__
 
     def test_retireve_subject_sections(self):
         """Test that the subject sections can be retrieved"""
-        res = self.client.get(
-            reverse("selection:subject-list", args=[self.selection.id])
-        )
-        data = res.data
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertIn("status", data)
-        self.assertIn("data", data)
-        self.assertIn("count", data["data"])
-        self.assertIn("subject_sections", data["data"])
+        response = self.client.get(
+            reverse("selection:subjects", args=[self.selection.id])
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("next", response.data)
+        self.assertIn("previous", response.data)
+        self.assertIn("results", response.data)
+        self.assertIn("count", response.data)
 
     def test_create_subject_section(self):
         """Test that the subject section can be created"""
-        res = self.client.post(
-            reverse("selection:subject-list", args=[self.selection.id]),
-            self.payload,
-            format="json",
-        )
-        data = res.data
 
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        self.assertIn("status", data)
-        self.assertIn("data", data)
-        self.assertIn("subject_section", data["data"])
+        response = self.client.post(
+            reverse("selection:subjects", args=[self.selection.id]),
+            self.payload,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_subject_section(self):
         """Test that the subject section can be updated"""
-        res = self.client.patch(
-            subject_section_url(self.selection.id, self.subject_section.id),
-            self.payload,
-            format="json",
-        )
-        data = res.data
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertIn("status", data)
-        self.assertIn("data", data)
-        self.assertIn("subject_section", data["data"])
+        response = self.client.patch(
+            subject_section_url(self.subject_section.id),
+            self.payload,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_subject_section(self):
         """Test that the subject section can be deleted"""
-        res = self.client.delete(
-            subject_section_url(self.selection.id, self.subject_section.id)
-        )
-        data = res.data
 
-        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.delete(
+            subject_section_url(self.subject_section.id)
+        )
+        data = response.data
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(data, None)
