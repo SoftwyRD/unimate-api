@@ -1,1 +1,2 @@
+from .access_token_serializer import AccessTokenSerializer
 from .sign_up_serializer import SignUpSerializer

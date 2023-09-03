@@ -1,3 +1,3 @@
-from .sign_up_view import SignUpView
-from .pair_token_view import PairTokenView
+from .access_token_view import AccessTokenView
 from .refresh_token_view import RefreshTokenView
+from .sign_up_view import SignUpView

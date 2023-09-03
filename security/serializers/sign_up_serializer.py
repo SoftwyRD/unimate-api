@@ -32,13 +32,13 @@ class SignUpSerializer(ModelSerializer):
     def validate_username(self, value):
         user = get_user_model().objects.filter(username__iexact=value)
         if user.exists():
-            raise ValidationError("A user with that username already exists")
+            raise ValidationError("A user with that username already exists.")
         return value
 
     def validate_email(self, value):
         user = get_user_model().objects.filter(email__iexact=value)
         if user.exists():
-            raise ValidationError("A user with that email already exists")
+            raise ValidationError("A user with that email already exists.")
         return value
 
     def validate_password(self, value):
