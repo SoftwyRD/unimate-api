@@ -4,17 +4,12 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from ..serializers import AccessTokenSerializer
 
 SCHEMA_NAME = "auth"
 
 
-@extend_schema(
-    tags=[SCHEMA_NAME],
-)
+@extend_schema(tags=[SCHEMA_NAME])
 class AccessTokenView(TokenObtainPairView):
-    serializer_class = AccessTokenSerializer
-
     @extend_schema(
         operation_id="Obtain access token",
     )
@@ -29,8 +24,8 @@ class AccessTokenView(TokenObtainPairView):
             return Response(response, status=status.HTTP_401_UNAUTHORIZED)
         except Exception:
             response = {
-                "title": "Invalid credentials",
-                "message": "No active account found with the given credentials",
+                "title": "Internal error",
+                "message": "There was an error trying to generate your token",
             }
             return Response(
                 response, status=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -25,8 +25,8 @@ class RefreshTokenView(TokenRefreshView):
             return Response(response, status=status.HTTP_401_UNAUTHORIZED)
         except Exception:
             response = {
-                "title": "Invalid credentials",
-                "message": "No active account found with the given credentials",
+                "title": "Internal error",
+                "message": "There was an error trying to generate your token",
             }
             return Response(
                 response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
