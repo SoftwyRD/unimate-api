@@ -3,9 +3,9 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-LOGIN_URL = reverse("user:pair-token")
-LOGIN_REFRESH_URL = reverse("user:refresh-token")
-SIGN_UP_URL = reverse("user:sign-up")
+LOGIN_URL = reverse("security:pair-token")
+LOGIN_REFRESH_URL = reverse("security:refresh-token")
+SIGN_UP_URL = reverse("security:sign-up")
 PROFILE_URL = reverse("user:profile")
 
 

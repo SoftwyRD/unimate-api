@@ -26,7 +26,9 @@ class ProfileView(APIView):
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to retrieve your profile.",
+                "message": (
+                    "There was an error trying to retrieve your profile."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 

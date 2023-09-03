@@ -47,7 +47,9 @@ class SelectionDetailView(APIView):
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to update your selection.",
+                "message": (
+                    "There was an error trying to update your selection."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 

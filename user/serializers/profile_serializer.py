@@ -40,14 +40,18 @@ class ProfileSerializer(ModelSerializer):
         if password and not password_confirm:
             raise ValidationError(
                 {
-                    "password_confirm": "This field is required if password is present."
+                    "password_confirm": (
+                        "This field is required if password is present."
+                    )
                 }
             )
 
         if not password and password_confirm:
             raise ValidationError(
                 {
-                    "password": "This field is required if password_confirm is present."
+                    "password": (
+                        "This field is required if password_confirm is present."
+                    )
                 }
             )
 
