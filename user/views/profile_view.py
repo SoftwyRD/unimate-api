@@ -20,14 +20,15 @@ class ProfileView(APIView):
     )
     def get(self, request, *args, **kwargs):
         try:
-            user = request.user
-            serializer = self.serializer_class(user)
+            serializer = self.serializer_class(request.user)
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to retrieve your profile.",
+                "message": (
+                    "There was an error trying to retrieve your profile."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -37,9 +38,9 @@ class ProfileView(APIView):
     )
     def patch(self, request, *args, **kwargs):
         try:
-            user = request.user
-            data = request.data
-            serializer = self.serializer_class(user, data, partial=True)
+            serializer = self.serializer_class(
+                request.user, request.data, partial=True
+            )
             if not serializer.is_valid():
                 response = serializer.errors
                 return Response(response, status.HTTP_400_BAD_REQUEST)
@@ -59,8 +60,7 @@ class ProfileView(APIView):
     )
     def delete(self, request, *args, **kwargs):
         try:
-            user = request.user
-            user.delete()
+            request.user.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception:
             response = {

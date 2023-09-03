@@ -31,7 +31,9 @@ class SubjectSectionListView(APIView):
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
-        description="Retrieves all the subject sections from the specified selection.",
+        description=(
+            "Retrieves all the subject sections from the specified selection."
+        ),
         responses={
             200: serializer_class(many=True),
         },
@@ -97,7 +99,9 @@ class SubjectSectionListView(APIView):
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to add the subject section.",
+                "message": (
+                    "There was an error trying to add the subject section."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
