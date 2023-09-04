@@ -43,8 +43,9 @@ class SelectionListView(APIView):
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
             response = paginator.get_paginated_response(serializer.data)
-            return Response(response.data, status.HTTP_200_OK)
-        except Exception:
+            return Response(response, status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
             response = {
                 "status": "Internal error",
                 "message": "There was an error trying to list your selections.",

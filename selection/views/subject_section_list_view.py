@@ -50,7 +50,8 @@ class SubjectSectionListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            return paginator.get_paginated_response(serializer.data)
+            response = paginator.get_paginated_response(serializer.data)
+            return Response(response, status.HTTP_200_OK)
         except (
             Selection.DoesNotExist,
             SubjectSection.DoesNotExist,
