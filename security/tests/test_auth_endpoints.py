@@ -9,8 +9,8 @@ SIGN_UP_URL = reverse("security:sign-up")
 PROFILE_URL = reverse("user:profile")
 
 
-class TestPublicUserEndpoints(APITestCase):
-    def setUp(self) -> None:
+class TestAuthEndpoints(APITestCase):
+    def setUp(self):
         self.client = APIClient()
         self.PAYLOAD = {
             "first_name": "Test",

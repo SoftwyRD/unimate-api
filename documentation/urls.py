@@ -3,7 +3,7 @@ from drf_spectacular import views
 
 app_name = "documentation"
 
-urlpatterns = (
+urlpatterns = [
     path("schema/", views.SpectacularAPIView.as_view(), name="api-schema"),
     path(
         "swagger/",
@@ -17,4 +17,4 @@ urlpatterns = (
         views.SpectacularRedocView.as_view(url_name="documentation:api-schema"),
         name="redoc-documentation",
     ),
-)
+]

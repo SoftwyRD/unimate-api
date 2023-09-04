@@ -53,7 +53,7 @@ def create_subject_section(**kwargs):
     return SubjectSection.objects.create(**defaults)
 
 
-class SubjectSectionPublicAPITests(APITestCase):
+class TestSubjectSectionEndpoints(APITestCase):
     def setUp(self):
         self.client = APIClient()
 

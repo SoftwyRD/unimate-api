@@ -16,7 +16,7 @@ def create_subject(**params):
     return subject
 
 
-class SubjectModelTests(TestCase):
+class TestSubjectModel(TestCase):
     """Test subject model"""
 
     def test_create_subject_success(self):

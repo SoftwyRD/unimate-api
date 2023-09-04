@@ -36,7 +36,7 @@ def create_selection(**kwargs):
     return selection
 
 
-class TestProtectedSelectionEndpoints(APITestCase):
+class TestSelectionEndpoints(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = create_user()

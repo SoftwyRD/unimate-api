@@ -8,8 +8,8 @@ LOGIN_REFRESH_URL = reverse("security:refresh-token")
 PROFILE_URL = reverse("user:profile")
 
 
-class TestProtectedUserEndpoints(APITestCase):
-    def setUp(self) -> None:
+class TestProfileEndpoints(APITestCase):
+    def setUp(self):
         self.client = APIClient()
 
         self.PAYLOAD = {

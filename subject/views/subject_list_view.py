@@ -15,7 +15,7 @@ SCHEMA_NAME = "subjects"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class ListSubjectsView(APIView):
+class SubjectListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
     queryset = Subject.objects.all()
