@@ -6,4 +6,5 @@ from ..models import Subject
 class SubjectSerializer(ModelSerializer):
     class Meta:
         model = Subject
-        fields = "__all__"
+        fields = ["id", "code", "name", "credits", "is_lab"]
+        read_only_fields = ["id"]

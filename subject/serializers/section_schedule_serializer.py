@@ -1,7 +1,6 @@
-from rest_framework.serializers import IntegerField, ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 
-from subject.models import SectionSchedule
-
+from ..models import SectionSchedule
 from .weekday_serializer import WeekdaySerializer
 
 
@@ -11,5 +10,4 @@ class SectionScheduleSerializer(ModelSerializer):
 
     class Meta:
         model = SectionSchedule
-        exclude = ("id", "section")
-        read_only_fields = ("id",)
+        fields = ["weekday", "weekday_id", "start_time", "end_time"]

@@ -9,25 +9,25 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from subject.models import SubjectSection
+from subject.serializers import SubjectSectionSerializer
 
 from ..models import Selection
 from ..permissions import IsOwner
-from ..serializers import SubjectSectionSerializer
 
 SCHEMA_NAME = "selections"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionListView(APIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = [IsAuthenticated, IsOwner]
     queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
     filter_backends = (OrderingFilter, SearchFilter)
-    ordering = ("id",)
-    ordering_fields = ("id", "subject__name", "professor")
-    search_fields = ("subject__name", "professor")
-    filterset_fields = ("is_taken",)
+    ordering = ["id"]
+    ordering_fields = ["id", "subject__name", "professor"]
+    search_fields = ["subject__name", "professor"]
+    filterset_fields = ["is_taken"]
 
     @extend_schema(
         operation_id="Retrieve subject sections list",

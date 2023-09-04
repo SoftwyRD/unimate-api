@@ -24,9 +24,9 @@ class SubjectSectionDetailView(APIView):
     )
     def get(self, request, id, *args, **kwargs):
         try:
-            instance = self.queryset.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            serializer = self.serializer_class(instance)
+            serializer = self.get_serializer(instance)
             response = serializer.data
             return Response(response, status=status.HTTP_200_OK)
         except (SubjectSection.DoesNotExist, PermissionDenied):
@@ -34,7 +34,7 @@ class SubjectSectionDetailView(APIView):
                 "title": "Section does not exists",
                 "message": "Could not find a matching section.",
             }
-            return Response(response, status=status.HTTP_404_NOT_FOUND)
+            return Response(response, status.HTTP_404_NOT_FOUND)
         except Exception:
             response = {
                 "title": "Internal error",
@@ -44,15 +44,14 @@ class SubjectSectionDetailView(APIView):
 
     @extend_schema(
         operation_id="Partial update subject section",
-        description="Partially updates the specified subject section."
+        description="Partially updates the specified subject section.",
     )
     def patch(self, request, id, *args, **kwargs):
         try:
-            instance = self.queryset.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            data = request.data
-            serializer = self.serializer_class(
-                instance, data=data, partial=True
+            serializer = self.get_serializer(
+                instance, data=request.data, partial=True
             )
             if not serializer.is_valid():
                 response = serializer.errors
@@ -65,7 +64,7 @@ class SubjectSectionDetailView(APIView):
                 "title": "Could not find the subject section",
                 "message": "Could not find a matching subject section.",
             }
-            return Response(response, status=status.HTTP_404_NOT_FOUND)
+            return Response(response, status.HTTP_404_NOT_FOUND)
         except Exception:
             response = {
                 "title": "Internal error",
@@ -79,7 +78,7 @@ class SubjectSectionDetailView(APIView):
     )
     def delete(self, request, id, *args, **kwargs):
         try:
-            instance = self.queryset.get(id=id)
+            instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -95,3 +94,13 @@ class SubjectSectionDetailView(APIView):
                 "message": "There was an error trying to delete the subject.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get_obj(self, id):
+        queryset = self.get_queryset()
+        return queryset.get(id=id)
+
+    def get_queryset(self):
+        return self.queryset
+
+    def get_serializer(self, instance=None, data=None, **kwargs):
+        return self.serializer_class(instance, data, **kwargs)
