@@ -5,3 +5,7 @@ exclude =
     manage.py,
     settings.py,
     admin.py
+    venv
+    __init__.py
+
+max-line-length = 80

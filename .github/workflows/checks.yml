@@ -14,8 +14,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10.9"
-          cache: "pip"
+          python-version: '3.11.4'
+          cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.dev.txt
       - name: Lint
@@ -50,18 +50,11 @@ jobs:
       - name: Cache dependencies
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10.9"
-          cache: "pip"
+          python-version: '3.11.4'
+          cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run migrations
-        run: |
-          cd app/
-          mkdir core/migrations/
-          touch core/migrations/__init__.py
-          python manage.py makemigrations
-          python manage.py migrate
+        run: python manage.py makemigrations
       - name: Test
-        run: |
-          cd app/
-          python manage.py test
+        run: python manage.py test
