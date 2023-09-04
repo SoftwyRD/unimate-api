@@ -14,7 +14,7 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionDetailView(APIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = [IsAuthenticated, IsOwner]
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
 

@@ -25,7 +25,7 @@ def create_subject(**kwargs):
     return Subject.objects.create(**defaults)
 
 
-class SubjectUnauthenticatedTests(TestCase):
+class TestSubjectEndpoints(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.subject = create_subject()

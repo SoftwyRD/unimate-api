@@ -12,7 +12,7 @@ def create_weekday(**params):
     return weekday
 
 
-class WeekdayModelTests(TestCase):
+class TestWeekdayModel(TestCase):
     def test_create_weekday_success(self):
         """Test creating a weekday"""
 

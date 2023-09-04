@@ -53,7 +53,7 @@ def create_subject_section(**kwargs):
     return SubjectSection.objects.create(**defaults)
 
 
-class SubjectSectionPublicAPITests(APITestCase):
+class TestSubjectSectionEndpoints(APITestCase):
     def setUp(self):
         self.client = APIClient()
 
@@ -107,7 +107,6 @@ class SubjectSectionPublicAPITests(APITestCase):
         response = self.client.delete(
             subject_section_url(self.subject_section.id)
         )
-        data = response.data
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(data, None)
+        self.assertEqual(response.data, None)

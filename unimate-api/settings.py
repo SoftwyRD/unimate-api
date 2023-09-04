@@ -85,8 +85,8 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": None,
+    "SIGNING_KEY": env.str("JWT_SIGNING_KEY", default=SECRET_KEY),
+    "VERIFYING_KEY": env.str("JWT_VERIFYING_KEY", default=None),
     "AUDIENCE": env.str("JWT_AUDIENCE", default=None),
     "ISSUER": env.str("JWT_ISSUER", default=None),
     "JWK_URL": env.str("JWK_URL", default=None),
@@ -96,22 +96,14 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-    "AUTH_TOKEN_CLASSES": [
-        "rest_framework_simplejwt.tokens.AccessToken",
-        "rest_framework_simplejwt.tokens.SlidingToken",
-    ],
+    "AUTH_TOKEN_CLASSES": ["rest_framework_simplejwt.tokens.AccessToken"],
     "TOKEN_TYPE_CLAIM": "token_type",
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
-    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=30),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(minutes=30),
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "security.serializers.AccessTokenSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "security.serializers.RefreshTokenSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
 MIDDLEWARE = [
@@ -210,6 +202,10 @@ MEDIA_URL = "media/"
 
 STATIC_ROOT = path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
+STATIC_ROOT = path.join(BASE_DIR, "static/")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = path.join(BASE_DIR, "media")
 
 STATIC_FILES_DIR = [
     BASE_DIR / "static",
@@ -233,12 +229,12 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 SPECTACULAR_SETTINGS = {
     "TITLE": "Unimate API",
     "DESCRIPTION": "Api which lets create a simulation of university subject selection.",
-    "VERSION": "v1.0",
+    "VERSION": "v0.2.0",
     "TOS": None,
     "CONTACT": {
-        "name": env.str("OPENAPI_CONTACT_NAME", None),
-        "email": env.str("OPENAPI_CONTACT_EMAIL", None),
-        "url": env.str("OPENAPI_CONTACT_URL", None),
+        "name": "Softwy",
+        "email": "contact@softwy.com",
+        "url": "https://softwy.com/unimate",
     },
     "LICENSE": None,
     "SERVE_INCLUDE_SCHEMA": False,

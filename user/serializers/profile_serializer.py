@@ -8,11 +8,13 @@ from rest_framework.serializers import (
 
 
 class ProfileSerializer(ModelSerializer):
+    email = CharField(min_length=5)
+    password = CharField(write_only=True, min_length=9)
     password_confirm = CharField(write_only=True, min_length=9)
 
     class Meta:
         model = get_user_model()
-        fields = (
+        fields = [
             "id",
             "first_name",
             "last_name",
@@ -20,18 +22,9 @@ class ProfileSerializer(ModelSerializer):
             "email",
             "password",
             "password_confirm",
-        )
+        ]
 
-        read_only_fields = ("id", "first_name", "last_name", "username")
-        extra_kwargs = {
-            "email": {
-                "min_length": 5,
-            },
-            "password": {
-                "write_only": True,
-                "min_length": 9,
-            },
-        }
+        read_only_fields = ["id", "first_name", "last_name", "username"]
 
     def validate(self, attrs):
         password = attrs.get("password", None)

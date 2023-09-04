@@ -3,14 +3,14 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-LOGIN_URL = reverse("security:pair-token")
+LOGIN_URL = reverse("security:access-token")
 LOGIN_REFRESH_URL = reverse("security:refresh-token")
 SIGN_UP_URL = reverse("security:sign-up")
 PROFILE_URL = reverse("user:profile")
 
 
-class TestPublicUserEndpoints(APITestCase):
-    def setUp(self) -> None:
+class TestAuthEndpoints(APITestCase):
+    def setUp(self):
         self.client = APIClient()
         self.PAYLOAD = {
             "first_name": "Test",

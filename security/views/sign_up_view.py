@@ -18,7 +18,7 @@ class SignUpView(APIView):
 
     @extend_schema(
         operation_id="Sign up",
-        description="Registers a new user.",
+        description="Registers a new user",
     )
     def post(self, request, *args, **kwargs):
         try:

@@ -19,8 +19,7 @@ class SectionSchedule(models.Model):
         help_text=_("Section's id"),
         to=SubjectSection,
         on_delete=models.CASCADE,
-        related_name="schedule",
-        related_query_name="schedule",
+        related_name="schedules",
     )
     weekday = models.ForeignKey(
         verbose_name=_("weekday"),
@@ -28,8 +27,7 @@ class SectionSchedule(models.Model):
         to=Weekday,
         on_delete=models.PROTECT,
         null=True,
-        related_name="weekday",
-        related_query_name="weekday",
+        related_name="weekdays",
     )
     start_time = models.IntegerField(
         verbose_name=_("start time"),

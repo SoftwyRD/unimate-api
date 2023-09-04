@@ -25,8 +25,7 @@ class Selection(models.Model):
         help_text=_("Selection's owner"),
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="selection",
-        related_query_name="selection",
+        related_name="selections",
     )
     created = models.DateTimeField(
         verbose_name=_("created"),

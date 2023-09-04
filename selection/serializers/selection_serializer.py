@@ -6,5 +6,6 @@ from ..models import Selection
 class SelectionSerializer(ModelSerializer):
     class Meta:
         model = Selection
-        exclude = ("user",)
-        read_only_fields = ("id", "created", "modified")
+        fields = ["id", "name", "created", "modified"]
+
+        read_only_fields = ["id", "created", "modified"]
