@@ -225,12 +225,12 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 SPECTACULAR_SETTINGS = {
     "TITLE": "Unimate API",
     "DESCRIPTION": "Api which lets create a simulation of university subject selection.",
-    "VERSION": "v1.0.0",
+    "VERSION": "v0.2.0",
     "TOS": None,
     "CONTACT": {
-        "name": env.str("OPENAPI_CONTACT_NAME", None),
-        "email": env.str("OPENAPI_CONTACT_EMAIL", None),
-        "url": env.str("OPENAPI_CONTACT_URL", None),
+        "name": "Softwy",
+        "email": "contact@softwy.com",
+        "url": "https://softwy.com/unimate",
     },
     "LICENSE": None,
     "SERVE_INCLUDE_SCHEMA": False,
