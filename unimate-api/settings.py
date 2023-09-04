@@ -101,7 +101,7 @@ SIMPLE_JWT = {
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
     "TOKEN_OBTAIN_SERIALIZER": "security.serializers.AccessTokenSerializer",
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "security.serializers.RefreshTokenSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
 }
@@ -225,7 +225,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 SPECTACULAR_SETTINGS = {
     "TITLE": "Unimate API",
     "DESCRIPTION": "Api which lets create a simulation of university subject selection.",
-    "VERSION": "v1.0",
+    "VERSION": "v1.0.0",
     "TOS": None,
     "CONTACT": {
         "name": env.str("OPENAPI_CONTACT_NAME", None),
