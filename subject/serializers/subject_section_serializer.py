@@ -8,7 +8,7 @@ from .subject_serializer import SubjectSerializer
 class SubjectSectionSerializer(ModelSerializer):
     subject = SubjectSerializer(read_only=True)
     subject_id = IntegerField(write_only=True)
-    schedule = SectionScheduleSerializer(many=True)
+    schedules = SectionScheduleSerializer(required=False, many=True)
 
     class Meta:
         model = SubjectSection
@@ -19,12 +19,13 @@ class SubjectSectionSerializer(ModelSerializer):
             "section",
             "professor",
             "taken",
-            "schedule",
+            "schedules",
         ]
+
         read_only_fields = ["id"]
 
     def create(self, validated_data):
-        schedules = validated_data.pop("schedule", [])
+        schedules = validated_data.pop("schedules", [])
         instance = super().create(validated_data)
 
         for schedule in schedules:
@@ -34,10 +35,10 @@ class SubjectSectionSerializer(ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        schedules = validated_data.pop("schedule", [])
+        schedules = validated_data.pop("schedules", [])
         instance = super().update(instance, validated_data)
 
-        for schedule in instance.schedule.all():
+        for schedule in instance.schedules.all():
             schedule.delete()
 
         for schedule in schedules:

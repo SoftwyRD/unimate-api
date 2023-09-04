@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.fields import empty
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -102,5 +103,5 @@ class SubjectSectionDetailView(APIView):
     def get_queryset(self):
         return self.queryset
 
-    def get_serializer(self, instance=None, data=None, **kwargs):
+    def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)

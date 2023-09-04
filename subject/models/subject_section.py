@@ -20,8 +20,7 @@ class SubjectSection(models.Model):
         help_text=_("Selection's id"),
         to=Selection,
         on_delete=models.CASCADE,
-        related_name="subject_section",
-        related_query_name="subject_section",
+        related_name="subjects",
     )
     subject = models.ForeignKey(
         verbose_name=_("subject"),
@@ -29,8 +28,7 @@ class SubjectSection(models.Model):
         to=Subject,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="subject_section",
-        related_query_name="subject_section",
+        related_name="sections",
     )
     section = models.IntegerField(
         verbose_name=_("section"),

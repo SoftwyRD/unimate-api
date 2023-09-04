@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -62,5 +63,5 @@ class ListSubjectsView(APIView):
     def get_paginator(self):
         return self.pagination_class()
 
-    def get_serializer(self, instance=None, data=None, **kwargs):
+    def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)

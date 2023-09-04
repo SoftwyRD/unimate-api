@@ -7,4 +7,5 @@ class WeekdaySerializer(ModelSerializer):
     class Meta:
         model = Weekday
         fields = ["id", "name"]
+
         read_only_fields = ["id"]

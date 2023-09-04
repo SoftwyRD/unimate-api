@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from rest_framework.pagination import (
     PageNumberPagination as BasePageNumberPagination,
 )
@@ -14,11 +12,9 @@ class PageNumberPagination(BasePageNumberPagination):
         next = self.get_next_link()
         previous = self.get_previous_link()
 
-        return OrderedDict(
-            [
-                ("count", count),
-                ("next", next),
-                ("previous", previous),
-                ("results", data),
-            ]
-        )
+        return {
+            "count": count,
+            "next": next,
+            "previous": previous,
+            "results": data,
+        }
