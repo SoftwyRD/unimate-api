@@ -28,6 +28,12 @@ class Selection(models.Model):
         on_delete=models.CASCADE,
         related_name="selections",
     )
+    views_count = models.IntegerField(
+        verbose_name=_("views count"),
+        help_text=_("Views count"),
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     stars_count = models.IntegerField(
         verbose_name=_("stars count"),
         help_text=_("Stars count"),
