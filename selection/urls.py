@@ -12,8 +12,18 @@ urlpatterns = [
         name="detail",
     ),
     path(
+        "<uuid:id>/stars/",
+        views.SelectionStarDetailView.as_view(),
+        name="star",
+    ),
+    path(
         "<uuid:id>/subjects/",
         views.SubjectSectionListView.as_view(),
         name="subjects",
+    ),
+    path(
+        "stars/",
+        views.SelectionStarListView.as_view(),
+        name="starred",
     ),
 ]
