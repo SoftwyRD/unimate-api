@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.conf import settings
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -26,6 +27,12 @@ class Selection(models.Model):
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="selections",
+    )
+    stars_count = models.IntegerField(
+        verbose_name=_("stars count"),
+        help_text=_("Stars count"),
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     created = models.DateTimeField(
         verbose_name=_("created"),
