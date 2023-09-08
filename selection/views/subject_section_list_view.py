@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from subject.models import SubjectSection
 from subject.serializers import SubjectSectionSerializer
 
-from ..models import Selection
+from ..models import Selection, SelectionView
 from ..pagination import PageNumberPagination
 from ..permissions import IsOwner
 
@@ -24,7 +24,7 @@ class SubjectSectionListView(APIView):
     queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["id"]
     ordering_fields = ["id", "subject__name", "professor"]
     search_fields = ["subject__name", "professor"]
@@ -41,9 +41,8 @@ class SubjectSectionListView(APIView):
     )
     def get(self, request, id, *args, **kwargs):
         try:
-            instance = self.get_obj(id)
-            self.check_object_permissions(request, instance)
             queryset = self.get_queryset()
+            self.add_view_history(request, id)
             filtered_queryset = self.filter_queryset(queryset, request)
             paginator = self.get_paginator()
             paginated_queryset = paginator.paginate_queryset(
@@ -110,10 +109,17 @@ class SubjectSectionListView(APIView):
     def get_obj(self, id):
         return Selection.objects.get(id=id)
 
+    def add_view_history(self, request, id):
+        page = request.query_params.get("page", None)
+        if page and page != 1:
+            return
+
+        instance = self.get_obj(id)
+        SelectionView.objects.create(viewed_by=request.user, selection=instance)
+
     def get_queryset(self):
         id = self.kwargs.get("id")
-        instance = self.get_obj(id)
-        return self.queryset.filter(selection=instance)
+        return self.queryset.filter(selection__id=id)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:
