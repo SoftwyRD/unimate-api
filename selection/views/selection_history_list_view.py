@@ -6,28 +6,26 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import SelectionStar
+from ..models import SelectionView
 from ..pagination import PageNumberPagination
-from ..serializers import SelectionStarSerializer
+from ..serializers import SelectionHistorySerializer
 
 SCHEMA_NAME = "selections"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class SelectionStarListView(APIView):
+class SelectionHistoryListView(APIView):
     permission_classes = [IsAuthenticated]
-    queryset = SelectionStar.objects.all()
-    serializer_class = SelectionStarSerializer
+    queryset = SelectionView.objects.all()
+    serializer_class = SelectionHistorySerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter, OrderingFilter]
-    ordering = ["created"]
-    ordering_fields = ["selection__name", "created"]
+    ordering = ["-created"]
     search_fields = ["selection__name"]
 
     @extend_schema(
-        operation_id="List starred selections",
-        description="List starred selections.",
-        request=None,
+        operation_id="Retrieve selections history",
+        description="Retrieves selections history.",
         responses={
             200: serializer_class(many=True),
         },
@@ -35,8 +33,8 @@ class SelectionStarListView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
-            filtered_queryset = self.filter_queryset(queryset, request)
             paginator = self.get_paginator()
+            filtered_queryset = self.filter_queryset(queryset, request)
             paginated_queryset = paginator.paginate_queryset(
                 filtered_queryset, request
             )
@@ -47,14 +45,13 @@ class SelectionStarListView(APIView):
             response = {
                 "title": "Internal error",
                 "message": (
-                    "There was an error trying to retrieve your"
-                    + "starred selections."
+                    "There was an error trying to update your selection."
                 ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_queryset(self):
-        return self.queryset.filter(starred_by=self.request.user)
+        return self.queryset.filter(viewed_by=self.request.user)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:
