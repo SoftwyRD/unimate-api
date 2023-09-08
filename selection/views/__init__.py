@@ -1,3 +1,5 @@
 from .selection_detail_view import SelectionDetailView
 from .selection_list_view import SelectionListView
+from .selection_star_list_view import SelectionStarListView
+from .selection_star_detail_view import SelectionStarDetailView
 from .subject_section_list_view import SubjectSectionListView
