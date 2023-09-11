@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import SelectionView
+from ..models import ViewHistory
 from ..pagination import PageNumberPagination
 from ..serializers import SelectionHistorySerializer
 
@@ -16,7 +16,7 @@ SCHEMA_NAME = "selections"
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionHistoryListView(APIView):
     permission_classes = [IsAuthenticated]
-    queryset = SelectionView.objects.all()
+    queryset = ViewHistory.objects.all()
     serializer_class = SelectionHistorySerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter, OrderingFilter]
