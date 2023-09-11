@@ -5,7 +5,7 @@ from rest_framework.test import APIClient, APITestCase
 
 from selection.models import Selection
 
-from ..models import Subject, SubjectSection
+from ..models import Subject, SubjectSection, SelectedSection
 
 
 def subject_section_url(id):
@@ -43,14 +43,15 @@ def create_subject(**kwargs):
     return Subject.objects.create(**defaults)
 
 
-def create_subject_section(**kwargs):
+def create_subject_section(selection, subject, **kwargs):
     defaults = {
         "section": 1,
         "professor": "Marco Antonio",
-        "taken": True,
     }
-    defaults.update(**kwargs)
-    return SubjectSection.objects.create(**defaults)
+    defaults.update(subject=subject, **kwargs)
+    section = SubjectSection.objects.create(**defaults)
+    SelectedSection.objects.create(selection=selection, section=section)
+    return section
 
 
 class TestSubjectSectionEndpoints(APITestCase):
@@ -63,7 +64,7 @@ class TestSubjectSectionEndpoints(APITestCase):
         self.subject = create_subject()
         self.selection = create_selection(user=user)
         self.subject_section = create_subject_section(
-            subject=self.subject, selection=self.selection
+            self.selection, self.subject
         )
 
         self.payload = self.subject_section.__dict__
