@@ -32,9 +32,9 @@ class ViewHistory(models.Model):
         help_text=_("Hidden from history"),
         default=False,
     )
-    viewed = models.DateTimeField(
-        verbose_name=_("created"),
-        help_text=_("Creation date"),
+    viewed_at = models.DateTimeField(
+        verbose_name=_("viewed at"),
+        help_text=_("Viewed at"),
         auto_now_add=True,
     )
 

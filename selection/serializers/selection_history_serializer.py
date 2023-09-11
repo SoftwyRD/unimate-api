@@ -10,6 +10,6 @@ class SelectionHistorySerializer(ModelSerializer):
 
     class Meta:
         model = ViewHistory
-        fields = ["selection", "viewed"]
+        fields = ["selection", "viewed_at"]
 
-        read_only_fields = ["viewed"]
+        read_only_fields = ["viewed_at"]

@@ -20,7 +20,7 @@ class SelectionHistoryListView(APIView):
     serializer_class = SelectionHistorySerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter, OrderingFilter]
-    ordering = ["-created"]
+    ordering = ["-viewed_at"]
     search_fields = ["selection__name"]
 
     @extend_schema(
