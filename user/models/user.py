@@ -55,6 +55,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
+        db_table = "user"
 
     def __str__(self):
         return self.username
