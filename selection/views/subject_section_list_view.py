@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
@@ -11,7 +12,7 @@ from rest_framework.views import APIView
 from subject.models import SubjectSection
 from subject.serializers import SubjectSectionSerializer
 
-from ..models import Selection, SelectionView
+from ..models import Selection, ViewHistory
 from ..pagination import PageNumberPagination
 from ..permissions import IsOwner
 
@@ -24,11 +25,11 @@ class SubjectSectionListView(APIView):
     queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     ordering = ["id"]
     ordering_fields = ["id", "subject__name", "professor"]
     search_fields = ["subject__name", "professor"]
-    filterset_fields = ["is_taken"]
+    filterset_fields = ["selected_on__is_active"]
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
@@ -48,7 +49,11 @@ class SubjectSectionListView(APIView):
             paginated_queryset = paginator.paginate_queryset(
                 filtered_queryset, request
             )
-            serializer = self.get_serializer(paginated_queryset, many=True)
+            selection = self.get_selection(id)
+            context = self.get_serializer_context(selection=selection)
+            serializer = self.get_serializer(
+                paginated_queryset, many=True, context=context
+            )
             response = paginator.get_paginated_response(serializer.data)
             return Response(response, status.HTTP_200_OK)
         except (
@@ -74,16 +79,17 @@ class SubjectSectionListView(APIView):
     )
     def post(self, request, id, *args, **kwargs):
         try:
-            instance = self.get_obj(id)
-            self.check_object_permissions(request, instance)
-            serializer = self.get_serializer(data=request.data)
+            selection = self.get_selection(id)
+            self.check_object_permissions(request, selection)
+            context = self.get_serializer_context(selection=selection)
+            serializer = self.get_serializer(data=request.data, context=context)
             if not serializer.is_valid():
                 response = {
                     "title": "Could not add the subject section",
                     "message": serializer.errors,
                 }
                 return Response(response, status.HTTP_400_BAD_REQUEST)
-            serializer.save(selection=instance)
+            serializer.save()
             response = serializer.data
             headers = self.get_success_headers(response)
             return Response(response, status.HTTP_201_CREATED, headers=headers)
@@ -106,7 +112,7 @@ class SubjectSectionListView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get_obj(self, id):
+    def get_selection(self, id):
         return Selection.objects.get(id=id)
 
     def add_view_history(self, request, id):
@@ -114,12 +120,16 @@ class SubjectSectionListView(APIView):
         if page and page != 1:
             return
 
-        instance = self.get_obj(id)
-        SelectionView.objects.create(viewed_by=request.user, selection=instance)
+        selection = self.get_selection(id)
+        ViewHistory.objects.create(viewed_by=request.user, selection=selection)
+
+    def get_serializer_context(self, **kwargs):
+        selection = kwargs.pop("selection")
+        return {"selection": selection}
 
     def get_queryset(self):
         id = self.kwargs.get("id")
-        return self.queryset.filter(selection__id=id)
+        return self.queryset.filter(selected_on__selection__id=id)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from .selection import Selection
 
 
-class SelectionView(models.Model):
+class ViewHistory(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Selection view id"),
@@ -27,9 +27,14 @@ class SelectionView(models.Model):
         on_delete=models.CASCADE,
         related_name="views",
     )
-    created = models.DateTimeField(
-        verbose_name=_("created"),
-        help_text=_("Creation date"),
+    is_hidden = models.BooleanField(
+        verbose_name=_("is hidden"),
+        help_text=_("Hidden from history"),
+        default=False,
+    )
+    viewed_at = models.DateTimeField(
+        verbose_name=_("viewed at"),
+        help_text=_("Viewed at"),
         auto_now_add=True,
     )
 

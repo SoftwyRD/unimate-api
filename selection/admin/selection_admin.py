@@ -1,15 +1,6 @@
-from django.contrib.admin import ModelAdmin, TabularInline, register
-
-from subject.models import SubjectSection
+from django.contrib.admin import ModelAdmin, register
 
 from ..models import Selection
-
-
-class SubjectSectionInline(TabularInline):
-    model = SubjectSection
-    extra = 0
-    verbose_name = "section"
-    verbose_name_plural = "sections"
 
 
 @register(Selection)
@@ -54,8 +45,6 @@ class SelectionAdmin(ModelAdmin):
             },
         ),
     )
-
-    inlines = (SubjectSectionInline,)
 
     def get_fieldsets(self, request, obj=None):
         if not obj:

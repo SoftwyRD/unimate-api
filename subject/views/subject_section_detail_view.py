@@ -27,7 +27,10 @@ class SubjectSectionDetailView(APIView):
         try:
             instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
-            serializer = self.get_serializer(instance)
+            context = self.get_serializer_context(
+                request=request, instance=instance
+            )
+            serializer = self.get_serializer(instance, context=context)
             response = serializer.data
             return Response(response, status=status.HTTP_200_OK)
         except (SubjectSection.DoesNotExist, PermissionDenied):
@@ -51,8 +54,14 @@ class SubjectSectionDetailView(APIView):
         try:
             instance = self.get_obj(id)
             self.check_object_permissions(request, instance)
+            context = self.get_serializer_context(
+                request=request, instance=instance
+            )
             serializer = self.get_serializer(
-                instance, data=request.data, partial=True
+                instance,
+                data=request.data,
+                partial=True,
+                context=context,
             )
             if not serializer.is_valid():
                 response = serializer.errors
@@ -105,3 +114,13 @@ class SubjectSectionDetailView(APIView):
 
     def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)
+
+    def get_selection(self, request, instance):
+        selected_on = instance.selected_on.get(selection__user=request.user)
+        return selected_on.selection
+
+    def get_serializer_context(self, **kwargs):
+        request = kwargs.pop("request")
+        instance = kwargs.pop("instance")
+        selection = self.get_selection(request, instance)
+        return {"selection": selection}

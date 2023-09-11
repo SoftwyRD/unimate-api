@@ -2,8 +2,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from selection.models import Selection
-
 from .subject import Subject
 
 
@@ -14,13 +12,6 @@ class SubjectSection(models.Model):
         primary_key=True,
         unique=True,
         editable=False,
-    )
-    selection = models.ForeignKey(
-        verbose_name=_("selection"),
-        help_text=_("Selection's id"),
-        to=Selection,
-        on_delete=models.CASCADE,
-        related_name="subjects",
     )
     subject = models.ForeignKey(
         verbose_name=_("subject"),
@@ -40,11 +31,6 @@ class SubjectSection(models.Model):
         verbose_name=_("professor"),
         help_text=_("Professor's name"),
         max_length=60,
-    )
-    taken = models.BooleanField(
-        verbose_name=_("taken"),
-        help_text=_("Are you going to take this subject?"),
-        default=False,
     )
 
     class Meta:
