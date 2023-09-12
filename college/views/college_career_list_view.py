@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import College, Career
+from ..models import Career, College
 from ..pagination import PageNumberPagination
 from ..serializers import CareerSerializer
 
@@ -27,8 +27,8 @@ class CollegeCareerListView(APIView):
     search_fields = ["name"]
 
     @extend_schema(
-        operation_id="Retrieve college's syllabuses",
-        description="Retrieve college's syllabuses.",
+        operation_id="Retrieve college's careers",
+        description="Retrieve college's careers.",
         responses={
             200: serializer_class(many=True),
         },
@@ -61,8 +61,8 @@ class CollegeCareerListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_college(self):
-        id = self.kwargs.get("id")
-        return College.objects.get(id=id)
+        name = self.kwargs.get("name")
+        return College.objects.get(name__iexact=name)
 
     def get_queryset(self):
         college = self.get_college()

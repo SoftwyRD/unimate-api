@@ -56,7 +56,7 @@ class SyllabusSubject(models.Model):
     def __str__(self):
         return (
             f"{self.syllabus.career.name} ({self.syllabus.year}) - "
-            + f"{self.syllabus.career.college.short_name} | {self.subject}"
+            + f"{self.syllabus.career.college.full_name} | {self.subject}"
         )
 
     def save(self, *args, **kwargs):

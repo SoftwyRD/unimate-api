@@ -10,8 +10,8 @@ class SyllabusAdmin(ModelAdmin):
     list_filter = ("is_active",)
     search_fields = (
         "career__name",
-        "career__college__short_name",
         "career__college__name",
+        "career__college__full_name",
         "version",
     )
     readonly_fields = ("credits", "subjects_count", "created_at", "modified_at")

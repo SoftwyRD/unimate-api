@@ -20,10 +20,10 @@ class CollegeListView(APIView):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [OrderingFilter, SearchFilter]
-    ordering = ["short_name", "name"]
-    ordering_fields = ["short_name", "name", "created_at", "modified_at"]
-    search_fields = ["short_name", "name"]
+    filter_backends = [SearchFilter, OrderingFilter]
+    ordering = ["name"]
+    ordering_fields = ["name", "full_name"]
+    search_fields = ["name", "full_name"]
 
     @extend_schema(
         operation_id="Retrieve colleges list",

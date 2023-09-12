@@ -10,7 +10,7 @@ class SyllabusSubjectAdmin(ModelAdmin):
     search_fields = ("syllabus__career__name", "subject__name")
     list_filter = (
         "syllabus__career__name",
-        "syllabus__career__college__short_name",
+        "syllabus__career__college__full_name",
     )
     readonly_fields = ("created_at", "modified_at")
     show_full_result_count = True

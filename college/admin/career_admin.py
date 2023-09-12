@@ -7,7 +7,7 @@ from ..models import Career
 class CareerAdmin(ModelAdmin):
     ordering = ("name",)
     list_display = ("name", "college", "is_active")
-    search_fields = ("name", "college__short_name", "college__name")
+    search_fields = ("name", "college__full_name", "college__name")
     readonly_fields = ("created_at", "modified_at")
     show_full_result_count = True
     list_per_page = 25

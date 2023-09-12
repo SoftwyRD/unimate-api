@@ -46,7 +46,7 @@ class Career(models.Model):
         db_table = "career"
 
     def __str__(self):
-        return f"{self.name} - {self.college.short_name}"
+        return f"{self.name} - {self.college.full_name}"
 
     def save(self, *args, **kwargs):
         try:

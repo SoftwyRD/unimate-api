@@ -13,10 +13,9 @@ class CareerSerializer(ModelSerializer):
         model = Career
         fields = [
             "id",
+            "name",
             "college",
             "college_id",
-            "name",
-            "is_active",
         ]
 
         read_only_fields = ["id"]

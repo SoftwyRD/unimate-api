@@ -66,8 +66,8 @@ class CollegeSyllabusListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_college(self):
-        id = self.kwargs.get("id")
-        return College.objects.get(id=id)
+        name = self.kwargs.get("name")
+        return College.objects.get(name__iexact=name)
 
     def get_queryset(self):
         college = self.get_college()

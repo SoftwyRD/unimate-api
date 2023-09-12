@@ -7,12 +7,12 @@ app_name = "college"
 urlpatterns = [
     path("", views.CollegeListView.as_view(), name="list"),
     path(
-        "<int:id>/careers/",
+        "<str:name>/careers/",
         views.CollegeCareerListView.as_view(),
         name="careers",
     ),
     path(
-        "<int:id>/syllabuses/",
+        "<str:name>/syllabuses/",
         views.CollegeSyllabusListView.as_view(),
         name="syllabuses",
     ),

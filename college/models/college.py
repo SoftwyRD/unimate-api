@@ -11,15 +11,17 @@ class College(models.Model):
         unique=True,
         editable=False,
     )
-    short_name = models.CharField(
-        verbose_name=_("short name"),
-        help_text=_("College's short name"),
-        max_length=50,
-    )
     name = models.CharField(
         verbose_name=_("name"),
         help_text=_("College's name"),
         max_length=255,
+        unique=True,
+    )
+    full_name = models.CharField(
+        verbose_name=_("full name"),
+        help_text=_("College's full name"),
+        max_length=50,
+        unique=True,
     )
     careers_count = models.IntegerField(
         verbose_name=_("careers"),
@@ -44,4 +46,4 @@ class College(models.Model):
         db_table = "college"
 
     def __str__(self):
-        return f"{self.short_name} - {self.name}"
+        return f"{self.full_name} - {self.name}"
