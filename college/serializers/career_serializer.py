@@ -1,0 +1,22 @@
+from rest_framework.serializers import ModelSerializer, IntegerField
+
+from ..models import Career
+
+from .college_serializer import CollegeSerializer
+
+
+class CareerSerializer(ModelSerializer):
+    college = CollegeSerializer(read_only=True)
+    college_id = IntegerField(write_only=True)
+
+    class Meta:
+        model = Career
+        fields = [
+            "id",
+            "college",
+            "college_id",
+            "name",
+            "is_active",
+        ]
+
+        read_only_fields = ["id"]
