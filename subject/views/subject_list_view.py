@@ -22,10 +22,17 @@ class SubjectListView(APIView):
     serializer_class = SubjectSerializer
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    ordering = ["id"]
-    ordering_fields = ["id", "code", "name"]
-    search_fields = ["code", "name"]
-    filterset_fields = ["is_lab"]
+    ordering = ["name"]
+    ordering_fields = ["code", "name"]
+    search_fields = [
+        "code",
+        "name",
+        "syllabuses__syllabus__career__college__short_name",
+    ]
+    filterset_fields = [
+        "syllabuses__syllabus__career__college__short_name",
+        "is_lab",
+    ]
 
     @extend_schema(
         operation_id="Retreave ubjects list",
