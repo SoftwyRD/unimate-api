@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from college.models import College
+
 from ..managers import UserManager
 
 
@@ -46,6 +48,15 @@ class User(AbstractUser):
         _("password"),
         help_text=_("User hashed password"),
         max_length=128,
+    )
+    college = models.ForeignKey(
+        verbose_name=_("college"),
+        help_text=_("College"),
+        to=College,
+        on_delete=models.CASCADE,
+        related_name="students",
+        null=True,
+        blank=True,
     )
 
     objects = UserManager()

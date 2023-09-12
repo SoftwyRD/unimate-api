@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import AllowAny
@@ -22,10 +23,17 @@ class SubjectListView(APIView):
     serializer_class = SubjectSerializer
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    ordering = ["id"]
-    ordering_fields = ["id", "code", "name"]
-    search_fields = ["code", "name"]
-    filterset_fields = ["is_lab"]
+    ordering = ["name"]
+    ordering_fields = ["code", "name"]
+    search_fields = [
+        "code",
+        "name",
+        "syllabuses__syllabus__career__college__name",
+    ]
+    filterset_fields = [
+        "syllabuses__syllabus__career__college__name",
+        "is_lab",
+    ]
 
     @extend_schema(
         operation_id="Retreave ubjects list",
@@ -45,6 +53,12 @@ class SubjectListView(APIView):
             serializer = self.get_serializer(paginated_queryset, many=True)
             response = paginator.get_paginated_response(serializer.data)
             return Response(response, status.HTTP_200_OK)
+        except NotFound:
+            response = {
+                "status": "Out of range",
+                "message": "Requested page is out of range.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception:
             response = {
                 "title": "Internal error",

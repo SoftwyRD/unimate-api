@@ -22,11 +22,9 @@ class SubjectSectionAdmin(ModelAdmin):
             "Subject section information",
             {
                 "fields": (
-                    "selection",
-                    "section",
                     "subject",
+                    "section",
                     "professor",
-                    "taken",
                 ),
             },
         ),

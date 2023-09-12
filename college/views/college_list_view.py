@@ -3,30 +3,32 @@ from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import ViewHistory
+from ..models import College
 from ..pagination import PageNumberPagination
-from ..serializers import SelectionHistorySerializer
+from ..serializers import CollegeSerializer
 
-SCHEMA_NAME = "selections"
+SCHEMA_NAME = "colleges"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class SelectionHistoryListView(APIView):
-    permission_classes = [IsAuthenticated]
-    queryset = ViewHistory.objects.all()
-    serializer_class = SelectionHistorySerializer
+class CollegeListView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    queryset = College.objects.all()
+    serializer_class = CollegeSerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter, OrderingFilter]
-    ordering = ["-viewed_at"]
-    search_fields = ["selection__name"]
+    ordering = ["name"]
+    ordering_fields = ["name", "full_name"]
+    search_fields = ["name", "full_name"]
 
     @extend_schema(
-        operation_id="Retrieve selections history",
-        description="Retrieves selections history.",
+        operation_id="Retrieve colleges list",
+        description="Retrieves all the colleges.",
         responses={
             200: serializer_class(many=True),
         },
@@ -34,8 +36,8 @@ class SelectionHistoryListView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
-            paginator = self.get_paginator()
             filtered_queryset = self.filter_queryset(queryset, request)
+            paginator = self.get_paginator()
             paginated_queryset = paginator.paginate_queryset(
                 filtered_queryset, request
             )
@@ -50,15 +52,13 @@ class SelectionHistoryListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception:
             response = {
-                "title": "Internal error",
-                "message": (
-                    "There was an error trying to update your selection."
-                ),
+                "status": "Internal error",
+                "message": "There was an error trying to list the colleges.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_queryset(self):
-        return self.queryset.filter(viewed_by=self.request.user)
+        return self.queryset
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

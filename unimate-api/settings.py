@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "rest_framework",
+    "college",
     "documentation",
     "security",
     "selection",

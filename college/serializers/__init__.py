@@ -1,0 +1,4 @@
+from .career_serializer import CareerSerializer
+from .college_serializer import CollegeSerializer
+from .syllabus_serializer import SyllabusSerializer
+from .syllabus_subject_serializer import SyllabusSubjectSerializer
