@@ -2,7 +2,7 @@ from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
@@ -66,6 +66,12 @@ class SubjectSectionListView(APIView):
                 "message": "Could not find any matching section.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
+        except NotFound:
+            response = {
+                "status": "Out of range",
+                "message": "Requested page is out of range.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception:
             response = {
                 "title": "Internal error",
