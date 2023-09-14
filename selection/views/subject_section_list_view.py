@@ -29,7 +29,7 @@ class SubjectSectionListView(APIView):
     ordering = ["id"]
     ordering_fields = ["id", "subject__name", "professor"]
     search_fields = ["subject__name", "professor"]
-    filterset_fields = ["selected_on__is_active"]
+    filterset_fields = ["selections__is_active"]
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
@@ -135,7 +135,7 @@ class SubjectSectionListView(APIView):
 
     def get_queryset(self):
         id = self.kwargs.get("id")
-        return self.queryset.filter(selected_on__selection__id=id)
+        return self.queryset.filter(selections__selection__id=id)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

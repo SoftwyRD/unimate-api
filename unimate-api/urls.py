@@ -4,14 +4,14 @@ from django.urls import include, path
 urlpatterns = (
     path("admin/", admin.site.urls, name="admin"),
     path("auth/", include("security.urls"), name="security"),
-    path("colleges/", include("college.urls"), name="college"),
+    path("colleges/", include("college.urls"), name="colleges"),
     path(
         "documentation/",
         include("documentation.urls"),
         name="api-documentation",
     ),
-    path("selections/", include("selection.urls"), name="selection-resource"),
-    path("subjects/", include("subject.urls"), name="subject-resource"),
-    path("syllabus/", include("syllabus.urls"), name="syllabus-resource"),
-    path("users/", include("user.urls"), name="users-resource"),
+    path("selections/", include("selection.urls"), name="selections"),
+    path("subjects/", include("subject.urls"), name="subjects"),
+    path("syllabuses/", include("syllabus.urls"), name="syllabuses"),
+    path("users/", include("user.urls"), name="users"),
 )
