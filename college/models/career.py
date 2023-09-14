@@ -1,4 +1,5 @@
 from django.db import models, transaction
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
 from .college import College
@@ -19,10 +20,21 @@ class Career(models.Model):
         on_delete=models.CASCADE,
         related_name="careers",
     )
+    code = models.CharField(
+        verbose_name=_("code"),
+        help_text=_("Career's code"),
+        max_length=10,
+    )
     name = models.CharField(
         verbose_name=_("name"),
         help_text=_("Career's name"),
         max_length=255,
+    )
+    syllabuses_count = models.IntegerField(
+        verbose_name=_("syllabuses"),
+        help_text=_("Syllabuses count"),
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     is_active = models.BooleanField(
         verbose_name=_("is active"),
@@ -46,9 +58,10 @@ class Career(models.Model):
         db_table = "career"
 
     def __str__(self):
-        return f"{self.name} - {self.college.full_name}"
+        return f"{self.name} - {self.college.name}"
 
     def save(self, *args, **kwargs):
+        self.code = self.code.upper()
         try:
             with transaction.atomic():
                 if not self.id:

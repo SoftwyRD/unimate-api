@@ -11,9 +11,4 @@ urlpatterns = [
         views.CollegeCareerListView.as_view(),
         name="careers",
     ),
-    path(
-        "<str:name>/syllabuses/",
-        views.CollegeSyllabusListView.as_view(),
-        name="syllabuses",
-    ),
 ]

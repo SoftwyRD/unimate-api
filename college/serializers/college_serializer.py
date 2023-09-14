@@ -8,4 +8,4 @@ class CollegeSerializer(ModelSerializer):
         model = College
         fields = ["id", "name", "full_name", "careers_count"]
 
-        read_only_fields = ["id", "careers_count"]
+        read_only_fields = ["id"]

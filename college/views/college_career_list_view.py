@@ -1,4 +1,3 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -8,9 +7,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Career, College
+from syllabus.models import Career
+from syllabus.serializers import CareerSerializer
+
+from ..models import College
 from ..pagination import PageNumberPagination
-from ..serializers import CareerSerializer
 
 SCHEMA_NAME = "colleges"
 
@@ -22,7 +23,7 @@ class CollegeCareerListView(APIView):
     queryset = Career.objects.all()
     serializer_class = CareerSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["name"]
     search_fields = ["name"]
 
