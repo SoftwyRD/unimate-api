@@ -1,15 +1,15 @@
 from rest_framework.serializers import ModelSerializer
 
-from user.serializers import ProfileSerializer
+from user.serializers import UserSerializer
 
 from ..models import Selection
 
 
 class SelectionSerializer(ModelSerializer):
-    user = ProfileSerializer(read_only=True)
+    owner = UserSerializer(read_only=True)
 
     class Meta:
         model = Selection
-        fields = ["id", "user", "name", "created", "modified"]
+        fields = ["id", "name", "owner", "stars_count"]
 
-        read_only_fields = ["id", "created", "modified"]
+        read_only_fields = ["id"]

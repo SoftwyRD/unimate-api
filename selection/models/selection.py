@@ -18,8 +18,8 @@ class Selection(models.Model):
         max_length=100,
         default="My Selection",
     )
-    user = models.ForeignKey(
-        verbose_name=_("user"),
+    owner = models.ForeignKey(
+        verbose_name=_("owner"),
         help_text=_("Selection's owner"),
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -37,13 +37,13 @@ class Selection(models.Model):
         validators=[MinValueValidator(0)],
         default=0,
     )
-    created = models.DateTimeField(
-        verbose_name=_("created"),
+    created_at = models.DateTimeField(
+        verbose_name=_("created at"),
         help_text=_("Creation date"),
         auto_now_add=True,
     )
-    modified = models.DateTimeField(
-        verbose_name=_("modified"),
+    modified_at = models.DateTimeField(
+        verbose_name=_("modified at"),
         help_text=_("Last modification date"),
         auto_now=True,
     )
