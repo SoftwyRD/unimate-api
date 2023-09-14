@@ -12,5 +12,6 @@ urlpatterns = (
     ),
     path("selections/", include("selection.urls"), name="selection-resource"),
     path("subjects/", include("subject.urls"), name="subject-resource"),
+    path("syllabus/", include("syllabus.urls"), name="syllabus-resource"),
     path("users/", include("user.urls"), name="users-resource"),
 )

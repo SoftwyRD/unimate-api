@@ -1,0 +1,2 @@
+from .syllabus_list_view import SyllabusListView
+from .syllabus_subject_list_view import SyllabusSubjectListView

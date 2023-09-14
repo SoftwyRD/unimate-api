@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "security",
     "selection",
     "subject",
+    "syllabus",
     "user",
 ]
 
