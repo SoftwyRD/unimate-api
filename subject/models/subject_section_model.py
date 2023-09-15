@@ -53,4 +53,7 @@ class SubjectSectionModel(models.Model):
         db_table = "subject_section"
 
     def __str__(self):
-        return f"{self.subject.code}-{self.section} - {self.subject.name} | {self.subject.college.name}"
+        return (
+            f"{self.subject.code}-{self.section} - {self.subject.name}"
+            + " | {self.subject.college.name}"
+        )

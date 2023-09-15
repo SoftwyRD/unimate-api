@@ -1,6 +1,5 @@
 from django.urls import reverse
 from drf_spectacular.utils import extend_schema
-from django.db.utils import IntegrityError
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
