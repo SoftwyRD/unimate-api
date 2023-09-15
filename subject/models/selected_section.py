@@ -26,7 +26,7 @@ class SelectedSection(models.Model):
         help_text=_("Section"),
         to=SubjectSection,
         on_delete=models.CASCADE,
-        related_name="selected_on",
+        related_name="selections",
     )
     is_active = models.BooleanField(
         verbose_name=_("is active"),

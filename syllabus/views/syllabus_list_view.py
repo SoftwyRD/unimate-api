@@ -9,9 +9,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from college.models import College
+from core.pagination import HeaderPagination
 
 from ..models import Career, Syllabus
-from ..pagination import PageNumberPagination
 from ..serializers import SyllabusSerializer
 
 SCHEMA_NAME = "syllabuses"
@@ -23,7 +23,7 @@ class SyllabusListView(APIView):
     permission_classes = [AllowAny]
     queryset = Syllabus.objects.all()
     serializer_class = SyllabusSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     ordering = ["career__name"]
     ordering_fields = ["career__name", "credits", "subjects_count"]
@@ -49,8 +49,7 @@ class SyllabusListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except College.DoesNotExist:
             response = {
                 "title": "College does not exist",
@@ -81,9 +80,9 @@ class SyllabusListView(APIView):
         return College.objects.get(name__iexact=college)
 
     def get_career(self):
-        code = self.kwargs.get("code")
+        career = self.kwargs.get("career")
         college = self.get_college()
-        return Career.objects.get(college=college, code__iexact=code)
+        return Career.objects.get(college=college, code__iexact=career)
 
     def get_queryset(self):
         career = self.get_career()

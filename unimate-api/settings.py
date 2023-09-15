@@ -24,16 +24,11 @@ env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str(
     "SECRET_KEY",
     default="django-insecure--#ai)^-*l*2v&qkhez=psv32m$075@eza6=%b_hd3kw2)+uw)(",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
@@ -52,6 +47,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "rest_framework",
+    "core",
     "college",
     "documentation",
     "security",
@@ -59,6 +55,7 @@ INSTALLED_APPS = [
     "subject",
     "syllabus",
     "user",
+    "users",
 ]
 
 REST_FRAMEWORK = {
@@ -69,15 +66,15 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": (
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.HeaderPagination",
+    "PAGE_SIZE": 25,
 }
 
 SIMPLE_JWT = {
@@ -222,7 +219,7 @@ api_settings.MEDIA_URL = MEDIA_URL
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "user.User"
+AUTH_USER_MODEL = "user.UserModel"
 
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 

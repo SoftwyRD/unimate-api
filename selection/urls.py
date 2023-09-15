@@ -7,28 +7,13 @@ app_name = "selection"
 urlpatterns = [
     path("", views.SelectionListView.as_view(), name="list"),
     path(
-        "<int:id>/",
+        "<str:owner>/<str:selection>/",
         views.SelectionDetailView.as_view(),
         name="detail",
     ),
     path(
-        "<int:id>/stars/",
-        views.SelectionStarDetailView.as_view(),
-        name="star",
-    ),
-    path(
-        "<int:id>/subjects/",
+        "<str:owner>/<str:selection>/subjects/",
         views.SubjectSectionListView.as_view(),
         name="subjects",
-    ),
-    path(
-        "stars/",
-        views.SelectionStarListView.as_view(),
-        name="starred",
-    ),
-    path(
-        "history/",
-        views.SelectionHistoryListView.as_view(),
-        name="history",
     ),
 ]

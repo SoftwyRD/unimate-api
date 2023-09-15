@@ -1,30 +1,35 @@
 from django.contrib.admin import ModelAdmin, register
 
 from ..models import SubjectSection
+from .inlines import SectionScheduleInline
 
 
 @register(SubjectSection)
 class SubjectSectionAdmin(ModelAdmin):
-    ordering = ("subject",)
-    list_display = ("subject", "section")
-    list_filter = ("selected_on__is_active",)
+    ordering = ("subject", "-section", "-cycle", "-year")
+    list_display = ("subject", "section", "cycle", "year")
+    list_filter = ("selections__is_active",)
     search_fields = (
-        "selected_on__selection__name",
+        "selections__selection__name",
         "subject__name",
         "subject__code",
-        "selected_on__selection__user__username",
+        "selections__selection__user__username",
     )
     show_full_result_count = True
     list_per_page = 25
 
+    inlines = (SectionScheduleInline,)
+
     fieldsets = (
         (
-            "Subject section information",
+            "Section information",
             {
                 "fields": (
                     "subject",
                     "section",
                     "professor",
+                    "cycle",
+                    "year",
                 ),
             },
         ),

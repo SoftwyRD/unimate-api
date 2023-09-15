@@ -1,8 +1,8 @@
 from rest_framework.serializers import ModelSerializer
 
-from .selection_serializer import SelectionSerializer
+from selection.serializers import SelectionSerializer
 
-from ..models import ViewHistory
+from selection.models import ViewHistory
 
 
 class SelectionHistorySerializer(ModelSerializer):

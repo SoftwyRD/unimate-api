@@ -9,11 +9,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.pagination import HeaderPagination
 from subject.models import SubjectSection
 from subject.serializers import SubjectSectionSerializer
 
 from ..models import Selection, ViewHistory
-from ..pagination import PageNumberPagination
 from ..permissions import IsOwner
 
 SCHEMA_NAME = "selections"
@@ -24,7 +24,7 @@ class SubjectSectionListView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = SubjectSection.objects.all()
     serializer_class = SubjectSectionSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     ordering = ["id"]
     ordering_fields = ["id", "subject__name", "professor"]
@@ -54,8 +54,7 @@ class SubjectSectionListView(APIView):
             serializer = self.get_serializer(
                 paginated_queryset, many=True, context=context
             )
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except (
             Selection.DoesNotExist,
             SubjectSection.DoesNotExist,

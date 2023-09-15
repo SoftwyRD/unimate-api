@@ -1,44 +1,35 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
+from selection.models import SelectionStar
 
-from ..models import Subject
-from ..serializers import SubjectSerializer
+from ..serializers import SelectionStarSerializer
 
-SCHEMA_NAME = "subjects"
+SCHEMA_NAME = "user"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class SubjectListView(APIView):
-    authentication_classes = []
-    permission_classes = [AllowAny]
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
+class SelectionStarListView(APIView):
+    permission_classes = [IsAuthenticated]
+    queryset = SelectionStar.objects.all()
+    serializer_class = SelectionStarSerializer
     pagination_class = HeaderPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    ordering = ["name"]
-    ordering_fields = ["code", "name"]
-    search_fields = [
-        "code",
-        "name",
-        "syllabuses__syllabus__career__college__name",
-    ]
-    filterset_fields = [
-        "syllabuses__syllabus__career__college__name",
-        "is_lab",
-    ]
+    filter_backends = [SearchFilter, OrderingFilter]
+    ordering = ["starred"]
+    ordering_fields = ["selection__name", "starred"]
+    search_fields = ["selection__name"]
 
     @extend_schema(
-        operation_id="Retreave ubjects list",
-        description="Retrieves all the subjects.",
+        operation_id="List starred selections",
+        description="List starred selections.",
+        request=None,
         responses={
             200: serializer_class(many=True),
         },
@@ -62,12 +53,15 @@ class SubjectListView(APIView):
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to list the subjects.",
+                "message": (
+                    "There was an error trying to retrieve your"
+                    + "starred selections."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_queryset(self):
-        return self.queryset
+        return self.queryset.filter(starred_by=self.request.user)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

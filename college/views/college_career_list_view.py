@@ -7,11 +7,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.pagination import HeaderPagination
 from syllabus.models import Career
 from syllabus.serializers import CareerSerializer
 
 from ..models import College
-from ..pagination import PageNumberPagination
 
 SCHEMA_NAME = "colleges"
 
@@ -22,7 +22,7 @@ class CollegeCareerListView(APIView):
     permission_classes = [AllowAny]
     queryset = Career.objects.all()
     serializer_class = CareerSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["name"]
     search_fields = ["name"]
@@ -43,8 +43,7 @@ class CollegeCareerListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except (
             College.DoesNotExist,
             PermissionDenied,

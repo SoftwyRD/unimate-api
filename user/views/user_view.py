@@ -6,12 +6,12 @@ from rest_framework.views import APIView
 
 from ..serializers import ProfileSerializer
 
-SCHEMA_NAME = "users"
+SCHEMA_NAME = "user"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class ProfileView(APIView):
-    permission_classes = (IsAuthenticated,)
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
 
     @extend_schema(

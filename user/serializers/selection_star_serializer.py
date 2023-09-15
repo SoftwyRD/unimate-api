@@ -1,7 +1,7 @@
 from rest_framework.serializers import IntegerField, ModelSerializer
 
-from ..models import SelectionStar
-from .selection_serializer import SelectionSerializer
+from selection.models import SelectionStar
+from selection.serializers import SelectionSerializer
 
 
 class SelectionStarSerializer(ModelSerializer):
@@ -10,6 +10,6 @@ class SelectionStarSerializer(ModelSerializer):
 
     class Meta:
         model = SelectionStar
-        fields = ["selection", "selection_id", "created"]
+        fields = ["selection", "selection_id", "starred"]
 
-        read_only_fields = ["created"]
+        read_only_fields = ["starred"]

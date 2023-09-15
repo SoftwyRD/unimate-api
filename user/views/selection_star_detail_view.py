@@ -1,4 +1,4 @@
-from django.db.utils import IntegrityError
+from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.fields import empty
@@ -6,10 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Selection, SelectionStar
-from ..serializers import SelectionStarSerializer
+from selection.models import Selection, SelectionStar
+from user.serializers import SelectionStarSerializer
 
-SCHEMA_NAME = "selections"
+SCHEMA_NAME = "user"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
@@ -26,17 +26,15 @@ class SelectionStarDetailView(APIView):
             204: None,
         },
     )
-    def post(self, request, id, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         try:
-            serializer = self.get_serializer(data={"selection": id})
-            if not serializer.is_valid():
-                response = {
-                    "title": "Could not add the subject section",
-                    "message": serializer.errors,
-                }
-                return Response(response, status.HTTP_400_BAD_REQUEST)
-            serializer.save(user=request.user)
-            response = serializer.data
+            selection = self.get_selection()
+            starred_by = request.user
+            _, created = SelectionStar.objects.get_or_create(
+                selection=selection, starred_by=starred_by
+            )
+            if not created:
+                return Response(status=status.HTTP_304_NOT_MODIFIED)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Selection.DoesNotExist:
             response = {
@@ -44,12 +42,6 @@ class SelectionStarDetailView(APIView):
                 "message": "Could not find any matching selection.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except IntegrityError:
-            response = {
-                "title": "Could not star selection",
-                "message": "You already starred this selection.",
-            }
-            return Response(response, status.HTTP_304_NOT_MODIFIED)
         except Exception:
             response = {
                 "title": "Internal error",
@@ -63,18 +55,13 @@ class SelectionStarDetailView(APIView):
         operation_id="Unstar selection",
         description="Unstar a selection.",
     )
-    def delete(self, request, *args, **kwargs):
+    def delete(self, *args, **kwargs):
         try:
-            queryset = self.get_queryset()
-            star = queryset.get(user=request.user)
-            star.delete()
+            instance = self.get_obj()
+            instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SelectionStar.DoesNotExist:
-            response = {
-                "title": "Could not unstar",
-                "message": "You have not starred this selection.",
-            }
-            return Response(response, status.HTTP_304_NOT_MODIFIED)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
         except Selection.DoesNotExist:
             response = {
                 "title": "Selection does not exist",
@@ -90,10 +77,20 @@ class SelectionStarDetailView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get_queryset(self):
-        id = self.kwargs.get("id")
-        instance = self.get_obj(id)
-        return self.queryset.filter(selection=instance)
+    def get_owner(self):
+        owner = self.kwargs.get("owner")
+        return get_user_model().objects.get(username__iexact=owner)
+
+    def get_selection(self):
+        owner = self.get_owner()
+        selection = self.kwargs.get("selection")
+        return Selection.objects.get(slug__iexact=selection, owner=owner)
+
+    def get_obj(self):
+        selection = self.get_selection()
+        return self.queryset.get(
+            selection=selection, starred_by=self.request.user
+        )
 
     def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)

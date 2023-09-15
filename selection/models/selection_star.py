@@ -27,9 +27,9 @@ class SelectionStar(models.Model):
         on_delete=models.CASCADE,
         related_name="starred_selections",
     )
-    created = models.DateTimeField(
-        verbose_name=_("created"),
-        help_text=_("Creation date"),
+    starred = models.DateTimeField(
+        verbose_name=_("starred"),
+        help_text=_("Starred date"),
         auto_now_add=True,
     )
 
@@ -51,4 +51,4 @@ class SelectionStar(models.Model):
         return super().delete(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.selection.name} - {self.starred_by.username}"
+        return f"{self.selection} | {self.starred_by.username}"

@@ -10,7 +10,7 @@ from syllabus.models import Career, SyllabusSubject, Syllabus
 
 from syllabus.serializers import SyllabusSubjectSerializer
 
-SCHEMA_NAME = "syllabuses"
+SCHEMA_NAME = "subjects"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
@@ -61,8 +61,8 @@ class SyllabusSubjectListView(APIView):
 
     def get_career(self):
         college = self.get_college()
-        career = self.kwargs.get("career")
-        return Career.objects.get(college=college, code__iexact=career)
+        code = self.kwargs.get("code")
+        return Career.objects.get(college=college, code__iexact=code)
 
     def get_syllabus(self):
         career = self.get_career()

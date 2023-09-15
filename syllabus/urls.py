@@ -6,12 +6,12 @@ app_name = "syllabus"
 
 urlpatterns = [
     path(
-        "<str:college>/<str:code>/",
+        "<str:college>/<str:career>/",
         views.SyllabusListView.as_view(),
         name="list",
     ),
     path(
-        "<str:college>/<str:code>/subjects/<str:version>/",
+        "<str:college>/<str:career>/subjects/<str:version>/",
         views.SyllabusSubjectListView.as_view(),
         name="subjects",
     ),

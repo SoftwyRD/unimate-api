@@ -1,4 +1,6 @@
+from django.urls import reverse
 from drf_spectacular.utils import extend_schema
+from django.db.utils import IntegrityError
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
@@ -7,20 +9,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.pagination import HeaderPagination
 from selection.models import Selection
 from selection.serializers import SelectionSerializer
 
-from ..pagination import PageNumberPagination
-
-SCHEMA_NAME = "users"
+SCHEMA_NAME = "user"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class ProfileSelectionsListView(APIView):
+class SelectionsListView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["name"]
     ordering_fields = ["name", "stars_count"]
@@ -42,8 +43,7 @@ class ProfileSelectionsListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except NotFound:
             response = {
                 "title": "Out of range",
@@ -54,6 +54,33 @@ class ProfileSelectionsListView(APIView):
             response = {
                 "title": "Internal error",
                 "message": "There was an error trying to retrieve the users.",
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id="Create selection",
+        description="Retrieves all the selections from the requesting user.",
+    )
+    def post(self, request, *args, **kwargs):
+        try:
+            context = self.get_serializer_context()
+            serializer = self.get_serializer(data=request.data, context=context)
+            if not serializer.is_valid():
+                response = {
+                    "title": "Could not create the selection",
+                    "message": serializer.errors,
+                }
+                return Response(response, status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            response = serializer.data
+            headers = self.get_success_headers(response)
+            return Response(response, status.HTTP_201_CREATED, headers=headers)
+        except Exception:
+            response = {
+                "title": "Internal error",
+                "message": (
+                    "There was an error trying to create your selection."
+                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -68,5 +95,17 @@ class ProfileSelectionsListView(APIView):
     def get_paginator(self):
         return self.pagination_class()
 
+    def get_serializer_context(self):
+        return {"owner": self.request.user}
+
     def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)
+
+    def get_success_headers(self, response):
+        owner = self.request.user.username
+        name = response.get("name")
+        location = reverse("selection:detail", args=[owner, name])
+        headers = {
+            "Location": location,
+        }
+        return headers

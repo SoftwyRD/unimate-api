@@ -1,16 +1,15 @@
-from django.urls import reverse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..filters import OwnerFilter
+from core.pagination import HeaderPagination
+
 from ..models import Selection
-from ..pagination import PageNumberPagination
 from ..serializers import SelectionSerializer
 
 SCHEMA_NAME = "selections"
@@ -18,13 +17,14 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionListView(APIView):
-    permission_classes = [IsAuthenticated]
+    authentication_classes = []
+    permission_classes = [AllowAny]
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
-    pagination_class = PageNumberPagination
-    filter_backends = [OwnerFilter, OrderingFilter, SearchFilter]
+    pagination_class = HeaderPagination
+    filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["id"]
-    ordering_fields = ["id", "name", "created", "modified"]
+    ordering_fields = ["id", "name", "created_at", "modified_at"]
     search_fields = ["name"]
 
     @extend_schema(
@@ -43,8 +43,7 @@ class SelectionListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except NotFound:
             response = {
                 "status": "Out of range",
@@ -55,32 +54,6 @@ class SelectionListView(APIView):
             response = {
                 "status": "Internal error",
                 "message": "There was an error trying to list your selections.",
-            }
-            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id="Create selection",
-        description="Retrieves all the selections from the requesting user.",
-    )
-    def post(self, request, *args, **kwargs):
-        try:
-            serializer = self.get_serializer(data=request.data)
-            if not serializer.is_valid():
-                response = {
-                    "title": "Could not create the selection",
-                    "message": serializer.errors,
-                }
-                return Response(response, status.HTTP_400_BAD_REQUEST)
-            serializer.save(user=request.user)
-            response = serializer.data
-            headers = self.get_success_headers(response)
-            return Response(response, status.HTTP_201_CREATED, headers=headers)
-        except Exception:
-            response = {
-                "title": "Internal error",
-                "message": (
-                    "There was an error trying to create your selection."
-                ),
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -97,11 +70,3 @@ class SelectionListView(APIView):
 
     def get_serializer(self, instance=None, data=empty, **kwargs):
         return self.serializer_class(instance, data, **kwargs)
-
-    def get_success_headers(self, response):
-        id = response["id"]
-        location = reverse("selection:detail", args=[id])
-        headers = {
-            "Location": location,
-        }
-        return headers

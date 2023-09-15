@@ -2,6 +2,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from college.models import College
+
 
 class Subject(models.Model):
     id = models.AutoField(
@@ -11,17 +13,22 @@ class Subject(models.Model):
         unique=True,
         editable=False,
     )
+    college = models.ForeignKey(
+        verbose_name=_("college"),
+        help_text=_("College"),
+        to=College,
+        on_delete=models.CASCADE,
+        related_name="subjects",
+    )
     code = models.CharField(
         verbose_name=_("code"),
         help_text=_("Subject code"),
         max_length=7,
-        unique=True,
     )
     name = models.CharField(
         verbose_name=_("name"),
         help_text=_("Subject name"),
         max_length=255,
-        unique=True,
     )
     credits = models.IntegerField(
         verbose_name=_("credits"),
@@ -30,8 +37,8 @@ class Subject(models.Model):
         validators=[MinValueValidator(0)],
     )
     is_lab = models.BooleanField(
-        verbose_name=_("is_lab"),
-        help_text=_("Is this section a laboratory?"),
+        verbose_name=_("is lab"),
+        help_text=_("Is this subject a laboratory?"),
         default=False,
     )
 
@@ -41,7 +48,7 @@ class Subject(models.Model):
         db_table = "subject"
 
     def __str__(self):
-        return f"{self.code} - {self.name}"
+        return f"{self.code} - {self.name} | {self.college.name}"
 
     def save(self, *args, **kwargs):
         self.code = self.code.upper()

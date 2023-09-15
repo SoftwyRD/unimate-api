@@ -8,25 +8,23 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from selection.models import Selection
-from selection.serializers import SelectionSerializer
-
-from ..pagination import PageNumberPagination
+from core.pagination import HeaderPagination
+from ..serializers import UserSerializer
 
 SCHEMA_NAME = "users"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class UserSelectionsListView(APIView):
+class UserListView(APIView):
     authentication_classes = []
     permission_classes = (AllowAny,)
-    queryset = Selection.objects.all()
-    serializer_class = SelectionSerializer
-    pagination_class = PageNumberPagination
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]
-    ordering = ["name"]
-    ordering_fields = ["name", "stars_count"]
-    search_fields = ["name"]
+    ordering = ["username"]
+    ordering_fields = ["first_name", "last_name", "username", "college__name"]
+    search_fields = ["first_name", "last_name", "username", "college__name"]
 
     @extend_schema(
         operation_id="Retrieve all users",
@@ -44,14 +42,7 @@ class UserSelectionsListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
-        except get_user_model().DoesNotExist:
-            response = {
-                "title": "User not found",
-                "message": "Could not find any matching user.",
-            }
-            return Response(response, status.HTTP_400_BAD_REQUEST)
+            return paginator.get_paginated_response(serializer.data)
         except NotFound:
             response = {
                 "title": "Out of range",
@@ -65,15 +56,8 @@ class UserSelectionsListView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get_owner(self):
-        owner = self.kwargs.get("owner")
-        return get_user_model().objects.get(
-            username__iexact=owner, is_active=True
-        )
-
     def get_queryset(self):
-        owner = self.get_owner()
-        return self.queryset.filter(owner=owner)
+        return self.queryset.filter(is_active=True)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:
