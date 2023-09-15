@@ -63,7 +63,7 @@ class SelectionModel(models.Model):
         unique_together = ("name", "owner")
 
     def __str__(self):
-        return self.name
+        return f"{self.owner.username}/{self.slug}"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
