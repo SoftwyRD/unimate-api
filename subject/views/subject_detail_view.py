@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from college.models import CollegeModel
+
 from ..models import SubjectModel
 from ..serializers import SubjectSerializer
 
@@ -25,9 +27,9 @@ class SubjectDetailView(APIView):
             200: serializer_class,
         },
     )
-    def get(self, request, id, *args, **kwargs):
+    def get(self, *args, **kwargs):
         try:
-            instance = self.get_obj(id)
+            instance = self.get_obj()
             serializer = self.get_serializer(instance)
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
@@ -44,9 +46,15 @@ class SubjectDetailView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get_obj(self, id):
+    def get_college(self):
+        college = self.kwargs.get("college")
+        return CollegeModel.objects.get(name__iexact=college)
+
+    def get_obj(self):
+        college = self.get_college()
+        subject = self.kwargs.get("subject")
         queryset = self.get_queryset()
-        return queryset.get(id=id)
+        return queryset.get(college=college, code__iexact=subject)
 
     def get_queryset(self):
         return self.queryset

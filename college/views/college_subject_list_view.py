@@ -1,7 +1,6 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import AllowAny
@@ -9,29 +8,29 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
+from subject.models import SubjectModel
+from subject.serializers import SubjectSerializer
 
-from ..models import SubjectModel
-from ..serializers import SubjectSerializer
+from ..models import CollegeModel
 
-SCHEMA_NAME = "subjects"
+SCHEMA_NAME = "colleges"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class SubjectListView(APIView):
+class CollegeSubjectListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
     queryset = SubjectModel.objects.all()
     serializer_class = SubjectSerializer
     pagination_class = HeaderPagination
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["id"]
-    ordering_fields = ["id", "code", "name", "college__name"]
+    ordering_fields = ["id", "code", "name"]
     search_fields = ["name"]
-    filterset_fields = ["is_lab"]
 
     @extend_schema(
-        operation_id="Retreave ubjects list",
-        description="Retrieves all the subjects.",
+        operation_id="Retrieve college's subjects",
+        description="Retrieve college's subjects.",
         responses={
             200: serializer_class(many=True),
         },
@@ -46,6 +45,15 @@ class SubjectListView(APIView):
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
             return paginator.get_paginated_response(serializer.data)
+        except (
+            CollegeModel.DoesNotExist,
+            PermissionDenied,
+        ):
+            response = {
+                "title": "College does not exist",
+                "message": "Could not find any matching college.",
+            }
+            return Response(response, status.HTTP_404_NOT_FOUND)
         except NotFound:
             response = {
                 "status": "Out of range",
@@ -55,12 +63,17 @@ class SubjectListView(APIView):
         except Exception:
             response = {
                 "title": "Internal error",
-                "message": "There was an error trying to list the subjects.",
+                "message": "There was an error trying to get the careers.",
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def get_college(self):
+        name = self.kwargs.get("name")
+        return CollegeModel.objects.get(name__iexact=name)
+
     def get_queryset(self):
-        return self.queryset
+        college = self.get_college()
+        return self.queryset.filter(college=college)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

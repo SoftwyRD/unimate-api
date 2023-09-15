@@ -11,7 +11,7 @@ urlpatterns = (
         name="api-documentation",
     ),
     path("selections/", include("selection.urls"), name="selections"),
-    # path("subjects/", include("subject.urls"), name="subjects"),
+    path("subjects/", include("subject.urls"), name="subjects"),
     path("syllabuses/", include("syllabus.urls"), name="syllabuses"),
     path("user/", include("user.urls"), name="user"),
     path("users/", include("users.urls"), name="users"),
