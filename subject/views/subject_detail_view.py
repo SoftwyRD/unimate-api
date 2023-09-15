@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Subject
+from ..models import SubjectModel
 from ..serializers import SubjectSerializer
 
 SCHEMA_NAME = "subjects"
@@ -15,7 +15,7 @@ SCHEMA_NAME = "subjects"
 class SubjectDetailView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Subject.objects.all()
+    queryset = SubjectModel.objects.all()
     serializer_class = SubjectSerializer
 
     @extend_schema(
@@ -31,7 +31,7 @@ class SubjectDetailView(APIView):
             serializer = self.get_serializer(instance)
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
-        except Subject.DoesNotExist:
+        except SubjectModel.DoesNotExist:
             response = {
                 "title": "Subject does not exist",
                 "message": "Could not find any matching subject",

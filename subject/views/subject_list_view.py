@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
 
-from ..models import Subject
+from ..models import SubjectModel
 from ..serializers import SubjectSerializer
 
 SCHEMA_NAME = "subjects"
@@ -20,7 +20,7 @@ SCHEMA_NAME = "subjects"
 class SubjectListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Subject.objects.all()
+    queryset = SubjectModel.objects.all()
     serializer_class = SubjectSerializer
     pagination_class = HeaderPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]

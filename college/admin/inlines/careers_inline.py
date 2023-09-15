@@ -1,10 +1,10 @@
 from django.contrib.admin import TabularInline
 
-from syllabus.models import Career
+from syllabus.models import CareerModel
 
 
 class CareersInline(TabularInline):
-    model = Career
+    model = CareerModel
     extra = 0
     verbose_name = "career"
     verbose_name_plural = "careers"

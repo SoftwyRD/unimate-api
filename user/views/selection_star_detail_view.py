@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from selection.models import Selection, SelectionStar
+from selection.models import SelectionModel, SelectionStarModel
 from user.serializers import SelectionStarSerializer
 
 SCHEMA_NAME = "user"
@@ -15,7 +15,7 @@ SCHEMA_NAME = "user"
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionStarDetailView(APIView):
     permission_classes = [IsAuthenticated]
-    queryset = SelectionStar.objects.all()
+    queryset = SelectionStarModel.objects.all()
     serializer_class = SelectionStarSerializer
 
     @extend_schema(
@@ -30,13 +30,13 @@ class SelectionStarDetailView(APIView):
         try:
             selection = self.get_selection()
             starred_by = request.user
-            _, created = SelectionStar.objects.get_or_create(
+            _, created = SelectionStarModel.objects.get_or_create(
                 selection=selection, starred_by=starred_by
             )
             if not created:
                 return Response(status=status.HTTP_304_NOT_MODIFIED)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except Selection.DoesNotExist:
+        except SelectionModel.DoesNotExist:
             response = {
                 "title": "Selection does not exist",
                 "message": "Could not find any matching selection.",
@@ -60,9 +60,9 @@ class SelectionStarDetailView(APIView):
             instance = self.get_obj()
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except SelectionStar.DoesNotExist:
+        except SelectionStarModel.DoesNotExist:
             return Response(status=status.HTTP_304_NOT_MODIFIED)
-        except Selection.DoesNotExist:
+        except SelectionModel.DoesNotExist:
             response = {
                 "title": "Selection does not exist",
                 "message": "Could not find any matching selection.",
@@ -84,7 +84,7 @@ class SelectionStarDetailView(APIView):
     def get_selection(self):
         owner = self.get_owner()
         selection = self.kwargs.get("selection")
-        return Selection.objects.get(slug__iexact=selection, owner=owner)
+        return SelectionModel.objects.get(slug__iexact=selection, owner=owner)
 
     def get_obj(self):
         selection = self.get_selection()

@@ -2,10 +2,10 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .selection import Selection
+from .selection_model import SelectionModel
 
 
-class ViewHistory(models.Model):
+class ViewHistoryModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Selection view id"),
@@ -23,7 +23,7 @@ class ViewHistory(models.Model):
     selection = models.ForeignKey(
         verbose_name=_("selection"),
         help_text=_("Viewed selection"),
-        to=Selection,
+        to=SelectionModel,
         on_delete=models.CASCADE,
         related_name="views",
     )

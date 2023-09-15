@@ -2,11 +2,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .subject_section import SubjectSection
-from .weekday import Weekday
+from .subject_section_model import SubjectSectionModel
+from .weekday_model import WeekdayModel
 
 
-class SectionSchedule(models.Model):
+class SectionScheduleModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Section's schedule id"),
@@ -17,14 +17,14 @@ class SectionSchedule(models.Model):
     section = models.ForeignKey(
         verbose_name=_("section"),
         help_text=_("Section's id"),
-        to=SubjectSection,
+        to=SubjectSectionModel,
         on_delete=models.CASCADE,
         related_name="schedules",
     )
     weekday = models.ForeignKey(
         verbose_name=_("weekday"),
         help_text=_("Weekday id"),
-        to=Weekday,
+        to=WeekdayModel,
         on_delete=models.PROTECT,
         null=True,
         related_name="weekdays",

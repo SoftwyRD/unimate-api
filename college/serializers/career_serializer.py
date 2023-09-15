@@ -2,7 +2,7 @@ from rest_framework.serializers import IntegerField, ModelSerializer
 
 from .college_serializer import CollegeSerializer
 
-from syllabus.models import Career
+from syllabus.models import CareerModel
 
 
 class CareerSerializer(ModelSerializer):
@@ -10,7 +10,7 @@ class CareerSerializer(ModelSerializer):
     college_id = IntegerField(write_only=True)
 
     class Meta:
-        model = Career
+        model = CareerModel
         fields = [
             "id",
             "code",

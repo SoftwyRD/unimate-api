@@ -1,10 +1,10 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import College
+from ..models import CollegeModel
 from .inlines import CareersInline
 
 
-@register(College)
+@register(CollegeModel)
 class CollegeAdmin(ModelAdmin):
     ordering = ("name", "full_name")
     list_display = ("name", "full_name", "careers_count")

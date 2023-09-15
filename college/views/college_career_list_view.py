@@ -8,10 +8,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
-from syllabus.models import Career
+from syllabus.models import CareerModel
 from syllabus.serializers import CareerSerializer
 
-from ..models import College
+from ..models import CollegeModel
 
 SCHEMA_NAME = "colleges"
 
@@ -20,7 +20,7 @@ SCHEMA_NAME = "colleges"
 class CollegeCareerListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Career.objects.all()
+    queryset = CareerModel.objects.all()
     serializer_class = CareerSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]
@@ -45,7 +45,7 @@ class CollegeCareerListView(APIView):
             serializer = self.get_serializer(paginated_queryset, many=True)
             return paginator.get_paginated_response(serializer.data)
         except (
-            College.DoesNotExist,
+            CollegeModel.DoesNotExist,
             PermissionDenied,
         ):
             response = {
@@ -68,7 +68,7 @@ class CollegeCareerListView(APIView):
 
     def get_college(self):
         name = self.kwargs.get("name")
-        return College.objects.get(name__iexact=name)
+        return CollegeModel.objects.get(name__iexact=name)
 
     def get_queryset(self):
         college = self.get_college()

@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from college.models import College
-from syllabus.models import Career, SyllabusSubject, Syllabus
+from college.models import CollegeModel
+from syllabus.models import CareerModel, SyllabusSubjectModel, SyllabusModel
 
 from syllabus.serializers import SyllabusSubjectSerializer
 
@@ -17,7 +17,7 @@ SCHEMA_NAME = "syllabuses"
 class SyllabusSubjectListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = SyllabusSubject.objects.all()
+    queryset = SyllabusSubjectModel.objects.all()
     serializer_class = SyllabusSubjectSerializer
 
     @extend_schema(
@@ -30,19 +30,19 @@ class SyllabusSubjectListView(APIView):
             serializer = self.get_serializer(queryset, many=True)
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
-        except College.DoesNotExist:
+        except CollegeModel.DoesNotExist:
             response = {
                 "title": "College does not exist",
                 "message": "Could not find any matching college.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except Career.DoesNotExist:
+        except CareerModel.DoesNotExist:
             response = {
                 "title": "Career does not exist",
                 "message": "Could not find any matching career.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except Syllabus.DoesNotExist:
+        except SyllabusModel.DoesNotExist:
             response = {
                 "title": "Syllabus does not exist",
                 "message": "Could not find any matching syllabus.",
@@ -57,17 +57,17 @@ class SyllabusSubjectListView(APIView):
 
     def get_college(self):
         college = self.kwargs.get("college")
-        return College.objects.get(name__iexact=college)
+        return CollegeModel.objects.get(name__iexact=college)
 
     def get_career(self):
         college = self.get_college()
         career = self.kwargs.get("career")
-        return Career.objects.get(college=college, code__iexact=career)
+        return CareerModel.objects.get(college=college, code__iexact=career)
 
     def get_syllabus(self):
         career = self.get_career()
         version = self.kwargs.get("version")
-        return Syllabus.objects.get(
+        return SyllabusModel.objects.get(
             career=career, version__iexact=version, is_active=True
         )
 

@@ -1,11 +1,11 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import Career
+from ..models import CareerModel
 
 # from .inlines import CareerSyllabusesInline
 
 
-@register(Career)
+@register(CareerModel)
 class CareerAdmin(ModelAdmin):
     ordering = ("name",)
     list_display = ("name", "college", "syllabuses_count", "is_active")

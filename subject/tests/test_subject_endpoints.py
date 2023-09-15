@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from ..models import Subject
+from ..models import SubjectModel
 
 
 def list_url():
@@ -22,7 +22,7 @@ def create_subject(**kwargs):
         "is_lab": 0,
     }
     defaults.update(**kwargs)
-    return Subject.objects.create(**defaults)
+    return SubjectModel.objects.create(**defaults)
 
 
 class TestSubjectEndpoints(TestCase):

@@ -1,9 +1,9 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import Selection
+from ..models import SelectionModel
 
 
-@register(Selection)
+@register(SelectionModel)
 class SelectionAdmin(ModelAdmin):
     ordering = ("name", "owner")
     list_display = ("name", "owner")

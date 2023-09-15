@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
 
-from ..models import College
+from ..models import CollegeModel
 from ..serializers import CollegeSerializer
 
 SCHEMA_NAME = "colleges"
@@ -19,7 +19,7 @@ SCHEMA_NAME = "colleges"
 class CollegeListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = College.objects.all()
+    queryset = CollegeModel.objects.all()
     serializer_class = CollegeSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]

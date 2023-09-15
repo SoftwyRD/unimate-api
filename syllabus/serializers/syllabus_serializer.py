@@ -1,6 +1,6 @@
 from rest_framework.serializers import IntegerField, ModelSerializer
 
-from ..models import Syllabus
+from ..models import SyllabusModel
 from college.serializers import CareerSerializer
 
 
@@ -10,7 +10,7 @@ class SyllabusSerializer(ModelSerializer):
     subjects = IntegerField(read_only=True, source="subjects_count")
 
     class Meta:
-        model = Syllabus
+        model = SyllabusModel
         fields = [
             "id",
             "career",

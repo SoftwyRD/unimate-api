@@ -2,10 +2,10 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from college.models import College
+from college.models import CollegeModel
 
 
-class Subject(models.Model):
+class SubjectModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Subject id"),
@@ -16,7 +16,7 @@ class Subject(models.Model):
     college = models.ForeignKey(
         verbose_name=_("college"),
         help_text=_("College"),
-        to=College,
+        to=CollegeModel,
         on_delete=models.CASCADE,
         related_name="subjects",
     )

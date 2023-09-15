@@ -4,11 +4,11 @@ from django.contrib.admin import TabularInline, register
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from selection.models import Selection
+from selection.models import SelectionModel
 
 
 class SubjectSectionInline(TabularInline):
-    model = Selection
+    model = SelectionModel
     extra = 0
     verbose_name = "selection"
     verbose_name_plural = "selections"

@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
 
-from ..models import Selection
+from ..models import SelectionModel
 from ..serializers import SelectionSerializer
 
 SCHEMA_NAME = "selections"
@@ -19,7 +19,7 @@ SCHEMA_NAME = "selections"
 class SelectionListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Selection.objects.all()
+    queryset = SelectionModel.objects.all()
     serializer_class = SelectionSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]

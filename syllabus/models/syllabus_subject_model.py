@@ -2,12 +2,12 @@ from django.core.validators import MinValueValidator
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
-from subject.models import Subject
+from subject.models import SubjectModel
 
-from .syllabus import Syllabus
+from .syllabus_model import SyllabusModel
 
 
-class SyllabusSubject(models.Model):
+class SyllabusSubjectModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Syllabus subject id"),
@@ -18,14 +18,14 @@ class SyllabusSubject(models.Model):
     syllabus = models.ForeignKey(
         verbose_name=_("syllabus"),
         help_text=_("Syllabus"),
-        to=Syllabus,
+        to=SyllabusModel,
         on_delete=models.CASCADE,
         related_name="subjects",
     )
     subject = models.ForeignKey(
         verbose_name=_("subject"),
         help_text=_("Syllabus' subject"),
-        to=Subject,
+        to=SubjectModel,
         on_delete=models.CASCADE,
         related_name="syllabuses",
     )
@@ -67,7 +67,9 @@ class SyllabusSubject(models.Model):
             self.syllabus.subjects_count += 1
             credits_count = self.subject.credits
 
-        for syllabus in SyllabusSubject.objects.filter(syllabus=self.syllabus):
+        for syllabus in SyllabusSubjectModel.objects.filter(
+            syllabus=self.syllabus
+        ):
             if syllabus.id == self.id:
                 credits_count += self.subject.credits - syllabus.subject.credits
 
@@ -88,7 +90,7 @@ class SyllabusSubject(models.Model):
         self.syllabus.credits -= self.subject.credits
         self.syllabus.subjects_count -= 1
 
-        syllabus = SyllabusSubject.objects.order_by("cycles_count").first()
+        syllabus = SyllabusSubjectModel.objects.order_by("cycles_count").first()
         self.syllabus.cycles_count = syllabus.syllabus.cycles_count
 
         try:

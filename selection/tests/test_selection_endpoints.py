@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from ..models import Selection
+from ..models import SelectionModel
 
 SELECTION_LIST_URL = reverse("selection:list")
 
@@ -32,7 +32,7 @@ def create_user(**kwargs):
 def create_selection(**kwargs):
     defauls = PAYLOAD.copy()
     defauls.update(**kwargs)
-    selection = Selection.objects.create(**defauls)
+    selection = SelectionModel.objects.create(**defauls)
     return selection
 
 
@@ -68,7 +68,7 @@ class TestSelectionEndpoints(APITestCase):
         selection = create_selection(user=self.user)
         response = self.client.delete(selection_detail_url(selection.id))
 
-        selections = Selection.objects.filter(user=self.user)
+        selections = SelectionModel.objects.filter(user=self.user)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(selections.count(), 0)

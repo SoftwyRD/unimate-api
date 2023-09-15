@@ -3,9 +3,9 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from selection.models import Selection
+from selection.models import SelectionModel
 
-from ..models import Subject, SubjectSection, SelectedSection
+from ..models import SubjectModel, SubjectSectionModel, SelectedSectionModel
 
 
 def subject_section_url(id):
@@ -29,7 +29,7 @@ def create_selection(**kwargs):
         "name": "My Selection",
     }
     defaults.update(**kwargs)
-    return Selection.objects.create(**defaults)
+    return SelectionModel.objects.create(**defaults)
 
 
 def create_subject(**kwargs):
@@ -40,7 +40,7 @@ def create_subject(**kwargs):
         "is_lab": False,
     }
     defaults.update(**kwargs)
-    return Subject.objects.create(**defaults)
+    return SubjectModel.objects.create(**defaults)
 
 
 def create_subject_section(selection, subject, **kwargs):
@@ -49,8 +49,8 @@ def create_subject_section(selection, subject, **kwargs):
         "professor": "Marco Antonio",
     }
     defaults.update(subject=subject, **kwargs)
-    section = SubjectSection.objects.create(**defaults)
-    SelectedSection.objects.create(selection=selection, section=section)
+    section = SubjectSectionModel.objects.create(**defaults)
+    SelectedSectionModel.objects.create(selection=selection, section=section)
     return section
 
 

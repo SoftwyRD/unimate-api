@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Selection
+from ..models import SelectionModel
 from ..permissions import IsOwner
 from ..serializers import SelectionSerializer
 
@@ -17,7 +17,7 @@ SCHEMA_NAME = "selections"
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionDetailView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
-    queryset = Selection.objects.all()
+    queryset = SelectionModel.objects.all()
     serializer_class = SelectionSerializer
 
     @extend_schema(
@@ -42,7 +42,7 @@ class SelectionDetailView(APIView):
             return Response(response, status.HTTP_200_OK)
         except (
             get_user_model().DoesNotExist,
-            Selection.DoesNotExist,
+            SelectionModel.DoesNotExist,
             PermissionDenied,
         ):
             response = {
@@ -71,7 +71,7 @@ class SelectionDetailView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except (
             get_user_model().DoesNotExist,
-            Selection.DoesNotExist,
+            SelectionModel.DoesNotExist,
             PermissionDenied,
         ):
             response = {

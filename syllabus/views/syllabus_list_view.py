@@ -8,10 +8,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from college.models import College
+from college.models import CollegeModel
 from core.pagination import HeaderPagination
 
-from ..models import Career, Syllabus
+from ..models import CareerModel, SyllabusModel
 from ..serializers import SyllabusSerializer
 
 SCHEMA_NAME = "syllabuses"
@@ -21,7 +21,7 @@ SCHEMA_NAME = "syllabuses"
 class SyllabusListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Syllabus.objects.all()
+    queryset = SyllabusModel.objects.all()
     serializer_class = SyllabusSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
@@ -50,13 +50,13 @@ class SyllabusListView(APIView):
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
             return paginator.get_paginated_response(serializer.data)
-        except College.DoesNotExist:
+        except CollegeModel.DoesNotExist:
             response = {
                 "title": "College does not exist",
                 "message": "Could not find any matching college.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except Career.DoesNotExist:
+        except CareerModel.DoesNotExist:
             response = {
                 "title": "Career does not exist",
                 "message": "Could not find any matching career.",
@@ -77,12 +77,12 @@ class SyllabusListView(APIView):
 
     def get_college(self):
         college = self.kwargs.get("college")
-        return College.objects.get(name__iexact=college)
+        return CollegeModel.objects.get(name__iexact=college)
 
     def get_career(self):
         career = self.kwargs.get("career")
         college = self.get_college()
-        return Career.objects.get(college=college, code__iexact=career)
+        return CareerModel.objects.get(college=college, code__iexact=career)
 
     def get_queryset(self):
         career = self.get_career()

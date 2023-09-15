@@ -1,2 +1,2 @@
-from .career import Career
-from .college import College
+from .career_model import CareerModel
+from .college_model import CollegeModel

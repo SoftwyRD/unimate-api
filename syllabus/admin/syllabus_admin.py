@@ -1,9 +1,9 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import Syllabus
+from ..models import SyllabusModel
 
 
-@register(Syllabus)
+@register(SyllabusModel)
 class SyllabusAdmin(ModelAdmin):
     ordering = ("career", "-version")
     list_display = (

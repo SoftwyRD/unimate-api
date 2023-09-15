@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
-from selection.models import SelectionStar
+from selection.models import SelectionStarModel
 
 from ..serializers import SelectionStarSerializer
 
@@ -18,7 +18,7 @@ SCHEMA_NAME = "user"
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionStarListView(APIView):
     permission_classes = [IsAuthenticated]
-    queryset = SelectionStar.objects.all()
+    queryset = SelectionStarModel.objects.all()
     serializer_class = SelectionStarSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]

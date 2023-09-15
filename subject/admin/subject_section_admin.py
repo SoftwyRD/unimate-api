@@ -1,10 +1,10 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import SubjectSection
+from ..models import SubjectSectionModel
 from .inlines import SectionScheduleInline
 
 
-@register(SubjectSection)
+@register(SubjectSectionModel)
 class SubjectSectionAdmin(ModelAdmin):
     ordering = ("subject", "-section", "-cycle", "-year")
     list_display = ("subject", "section", "cycle", "year")

@@ -1,9 +1,9 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import Subject
+from ..models import SubjectModel
 
 
-@register(Subject)
+@register(SubjectModel)
 class SubjectAdmin(ModelAdmin):
     ordering = ("code",)
     list_display = ("code", "name", "college", "is_lab")

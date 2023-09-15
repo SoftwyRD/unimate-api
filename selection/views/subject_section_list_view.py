@@ -10,10 +10,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import HeaderPagination
-from subject.models import SubjectSection
+from subject.models import SubjectSectionModel
 from subject.serializers import SubjectSectionSerializer
 
-from ..models import Selection, ViewHistory
+from ..models import SelectionModel, ViewHistoryModel
 from ..permissions import IsOwner
 
 SCHEMA_NAME = "selections"
@@ -22,7 +22,7 @@ SCHEMA_NAME = "selections"
 @extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionListView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
-    queryset = SubjectSection.objects.all()
+    queryset = SubjectSectionModel.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = HeaderPagination
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
@@ -56,8 +56,8 @@ class SubjectSectionListView(APIView):
             )
             return paginator.get_paginated_response(serializer.data)
         except (
-            Selection.DoesNotExist,
-            SubjectSection.DoesNotExist,
+            SelectionModel.DoesNotExist,
+            SubjectSectionModel.DoesNotExist,
             PermissionDenied,
         ):
             response = {
@@ -99,8 +99,8 @@ class SubjectSectionListView(APIView):
             headers = self.get_success_headers(response)
             return Response(response, status.HTTP_201_CREATED, headers=headers)
         except (
-            Selection.DoesNotExist,
-            SubjectSection.DoesNotExist,
+            SelectionModel.DoesNotExist,
+            SubjectSectionModel.DoesNotExist,
             PermissionDenied,
         ):
             response = {
@@ -118,7 +118,7 @@ class SubjectSectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_selection(self, id):
-        return Selection.objects.get(id=id)
+        return SelectionModel.objects.get(id=id)
 
     def add_view_history(self, request, id):
         page = request.query_params.get("page", None)
@@ -126,7 +126,9 @@ class SubjectSectionListView(APIView):
             return
 
         selection = self.get_selection(id)
-        ViewHistory.objects.create(viewed_by=request.user, selection=selection)
+        ViewHistoryModel.objects.create(
+            viewed_by=request.user, selection=selection
+        )
 
     def get_serializer_context(self, **kwargs):
         selection = kwargs.pop("selection")

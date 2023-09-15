@@ -2,21 +2,21 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 
 from users.serializers import UserSerializer
 
-from ..models import Selection
+from ..models import SelectionModel
 
 
 class SelectionSerializer(ModelSerializer):
     owner = UserSerializer(read_only=True)
 
     class Meta:
-        model = Selection
+        model = SelectionModel
         fields = ["id", "name", "slug", "owner", "stars_count"]
 
         read_only_fields = ["id", "slug", "stars_count"]
 
     def validate_name(self, value):
         owner = self.context.get("owner")
-        selection = Selection.objects.filter(name=value, owner=owner)
+        selection = SelectionModel.objects.filter(name=value, owner=owner)
 
         if self.instance is not None:
             selection = selection.exclude(id=self.instance.id)

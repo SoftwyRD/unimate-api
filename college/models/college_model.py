@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class College(models.Model):
+class CollegeModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("College id"),

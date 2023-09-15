@@ -5,7 +5,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
-class Selection(models.Model):
+class SelectionModel(models.Model):
     id = models.AutoField(
         verbose_name=_("id"),
         help_text=_("Selection id"),

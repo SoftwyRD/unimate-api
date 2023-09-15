@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import SubjectSection
+from ..models import SubjectSectionModel
 from ..permissions import IsOwner
 from ..serializers import SubjectSectionSerializer
 
@@ -16,7 +16,7 @@ SCHEMA_NAME = "subjects"
 @extend_schema(tags=[SCHEMA_NAME])
 class SubjectSectionDetailView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
-    queryset = SubjectSection.objects.all()
+    queryset = SubjectSectionModel.objects.all()
     serializer_class = SubjectSectionSerializer
 
     @extend_schema(
@@ -33,7 +33,7 @@ class SubjectSectionDetailView(APIView):
             serializer = self.get_serializer(instance, context=context)
             response = serializer.data
             return Response(response, status=status.HTTP_200_OK)
-        except (SubjectSection.DoesNotExist, PermissionDenied):
+        except (SubjectSectionModel.DoesNotExist, PermissionDenied):
             response = {
                 "title": "Section does not exists",
                 "message": "Could not find a matching section.",
@@ -69,7 +69,7 @@ class SubjectSectionDetailView(APIView):
             serializer.save()
             response = serializer.data
             return Response(response, status.HTTP_200_OK)
-        except (SubjectSection.DoesNotExist, PermissionDenied):
+        except (SubjectSectionModel.DoesNotExist, PermissionDenied):
             response = {
                 "title": "Could not find the subject section",
                 "message": "Could not find a matching subject section.",
@@ -92,7 +92,7 @@ class SubjectSectionDetailView(APIView):
             self.check_object_permissions(request, instance)
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except (SubjectSection.DoesNotExist, PermissionDenied):
+        except (SubjectSectionModel.DoesNotExist, PermissionDenied):
             response = {
                 "title": "Could not find the subject section",
                 "message": "Could not find a matching subject section.",

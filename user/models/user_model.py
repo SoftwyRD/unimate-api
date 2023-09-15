@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from college.models import College
+from college.models import CollegeModel
 
 from ..managers import UserManager
 
@@ -52,7 +52,7 @@ class UserModel(AbstractUser):
     college = models.ForeignKey(
         verbose_name=_("college"),
         help_text=_("College"),
-        to=College,
+        to=CollegeModel,
         on_delete=models.CASCADE,
         related_name="students",
         null=True,
