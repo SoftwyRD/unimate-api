@@ -8,8 +8,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Subject
-from ..pagination import PageNumberPagination
+from core.pagination import HeaderPagination
+
+from ..models import SubjectModel
 from ..serializers import SubjectSerializer
 
 SCHEMA_NAME = "subjects"
@@ -19,21 +20,14 @@ SCHEMA_NAME = "subjects"
 class SubjectListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = Subject.objects.all()
+    queryset = SubjectModel.objects.all()
     serializer_class = SubjectSerializer
-    pagination_class = PageNumberPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    ordering = ["name"]
-    ordering_fields = ["code", "name"]
-    search_fields = [
-        "code",
-        "name",
-        "syllabuses__syllabus__career__college__name",
-    ]
-    filterset_fields = [
-        "syllabuses__syllabus__career__college__name",
-        "is_lab",
-    ]
+    pagination_class = HeaderPagination
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    ordering = ["id"]
+    ordering_fields = ["id", "code", "name", "college__name"]
+    search_fields = ["name"]
+    filterset_fields = ["is_lab"]
 
     @extend_schema(
         operation_id="Retreave ubjects list",
@@ -51,8 +45,7 @@ class SubjectListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except NotFound:
             response = {
                 "status": "Out of range",

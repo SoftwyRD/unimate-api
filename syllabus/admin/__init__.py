@@ -1,0 +1,2 @@
+from .syllabus_admin import SyllabusAdmin
+from .syllabus_subject_admin import SyllabusSubjectAdmin

@@ -4,7 +4,11 @@ from rest_framework.serializers import (
     ModelSerializer,
 )
 
-from ..models import SectionSchedule, SelectedSection, SubjectSection
+from ..models import (
+    SectionScheduleModel,
+    SelectedSectionModel,
+    SubjectSectionModel,
+)
 from .section_schedule_serializer import SectionScheduleSerializer
 from .subject_serializer import SubjectSerializer
 
@@ -16,7 +20,7 @@ class SubjectSectionSerializer(ModelSerializer):
     is_active = BooleanField(required=False)
 
     class Meta:
-        model = SubjectSection
+        model = SubjectSectionModel
         fields = [
             "id",
             "subject",
@@ -36,10 +40,10 @@ class SubjectSectionSerializer(ModelSerializer):
 
         for schedule in schedules:
             schedule["section"] = instance
-            SectionSchedule.objects.create(**schedule)
+            SectionScheduleModel.objects.create(**schedule)
 
         selection = self.context.get("selection")
-        SelectedSection.objects.create(
+        SelectedSectionModel.objects.create(
             selection=selection, section=instance, is_active=is_active
         )
 
@@ -55,10 +59,10 @@ class SubjectSectionSerializer(ModelSerializer):
 
         for schedule in schedules:
             schedule["section"] = instance
-            SectionSchedule.objects.create(**schedule)
+            SectionScheduleModel.objects.create(**schedule)
 
         selection = self.context.get("selection")
-        section = SelectedSection.objects.get(
+        section = SelectedSectionModel.objects.get(
             selection=selection, section=instance
         )
 
@@ -70,7 +74,7 @@ class SubjectSectionSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         selection = self.context.get("selection")
-        section = SelectedSection.objects.get(
+        section = SelectedSectionModel.objects.get(
             selection=selection, section=instance
         )
         instance.is_active = section.is_active

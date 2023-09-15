@@ -1,1 +1,5 @@
-from .profile_view import ProfileView
+from .selection_history_list_view import SelectionHistoryListView
+from .selection_star_detail_view import SelectionStarDetailView
+from .selection_star_list_view import SelectionStarListView
+from .selections_list_view import SelectionsListView
+from .user_view import UserView

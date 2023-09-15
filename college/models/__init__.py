@@ -1,4 +1,2 @@
-from .career import Career
-from .college import College
-from .syllabus import Syllabus
-from .syllabus_subject import SyllabusSubject
+from .career_model import CareerModel
+from .college_model import CollegeModel

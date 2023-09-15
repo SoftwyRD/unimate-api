@@ -1,15 +1,15 @@
 from rest_framework.serializers import ModelSerializer
 
-from college.serializers import SyllabusSubjectSerializer
+from college.serializers import CollegeSerializer
 
-from ..models import Subject
+from ..models import SubjectModel
 
 
 class SubjectSerializer(ModelSerializer):
-    syllabuses = SyllabusSubjectSerializer(read_only=True, many=True)
+    college = CollegeSerializer(read_only=True)
 
     class Meta:
-        model = Subject
-        fields = ["id", "code", "name", "credits", "is_lab", "syllabuses"]
+        model = SubjectModel
+        fields = ["id", "code", "name", "credits", "is_lab", "college"]
 
         read_only_fields = ["id"]

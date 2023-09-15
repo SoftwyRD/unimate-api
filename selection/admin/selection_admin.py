@@ -1,14 +1,14 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import Selection
+from ..models import SelectionModel
 
 
-@register(Selection)
+@register(SelectionModel)
 class SelectionAdmin(ModelAdmin):
-    ordering = ("name", "user")
-    list_display = ("name", "user")
-    search_fields = ("name", "user__username")
-    readonly_fields = ("created", "modified")
+    ordering = ("name", "owner")
+    list_display = ("name", "owner")
+    search_fields = ("name", "owner__username")
+    readonly_fields = ("created_at", "modified_at")
     show_full_result_count = True
     list_per_page = 25
 
@@ -22,7 +22,7 @@ class SelectionAdmin(ModelAdmin):
         (
             "Metadata",
             {
-                "fields": ("user",),
+                "fields": ("owner",),
             },
         ),
     )
@@ -38,9 +38,9 @@ class SelectionAdmin(ModelAdmin):
             "Metadata",
             {
                 "fields": (
-                    "user",
-                    "created",
-                    "modified",
+                    "owner",
+                    "created_at",
+                    "modified_at",
                 ),
             },
         ),
@@ -54,5 +54,5 @@ class SelectionAdmin(ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields
         if obj:
-            readonly_fields += ("user",)
+            readonly_fields += ("owner",)
         return readonly_fields

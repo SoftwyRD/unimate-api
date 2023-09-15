@@ -1,11 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from ..models import College
+from ..models import CollegeModel
 
 
 class CollegeSerializer(ModelSerializer):
     class Meta:
-        model = College
+        model = CollegeModel
         fields = ["id", "name", "full_name", "careers_count"]
 
-        read_only_fields = ["id", "careers_count"]
+        read_only_fields = ["id"]

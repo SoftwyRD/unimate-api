@@ -3,15 +3,17 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from ..models import Subject
+from college.models import CollegeModel
+
+from ..models import SubjectModel
 
 
 def list_url():
     return reverse("subject:list")
 
 
-def detail_url(id):
-    return reverse("subject:detail", args=[id])
+def detail_url(college, subject):
+    return reverse("subject:detail", args=[college, subject])
 
 
 def create_subject(**kwargs):
@@ -22,13 +24,14 @@ def create_subject(**kwargs):
         "is_lab": 0,
     }
     defaults.update(**kwargs)
-    return Subject.objects.create(**defaults)
+    return SubjectModel.objects.create(**defaults)
 
 
 class TestSubjectEndpoints(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.subject = create_subject()
+        college = CollegeModel.objects.create(name="test", full_name="test")
+        self.subject = create_subject(college=college)
 
     def test_list_subjects_success(self):
         """Test that unauthenticated user can list subjects"""
@@ -36,11 +39,13 @@ class TestSubjectEndpoints(TestCase):
         response = self.client.get(list_url())
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(len(response.data), 1)
 
     def test_get_subject_success(self):
         """Test that unauthenticated user can get subjects"""
 
-        response = self.client.get(detail_url(self.subject.id))
+        response = self.client.get(
+            detail_url(self.subject.college.name, self.subject.code)
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

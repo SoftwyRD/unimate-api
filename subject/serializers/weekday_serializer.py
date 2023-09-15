@@ -1,11 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from ..models import Weekday
+from ..models import WeekdayModel
 
 
 class WeekdaySerializer(ModelSerializer):
     class Meta:
-        model = Weekday
+        model = WeekdayModel
         fields = ["id", "name"]
 
         read_only_fields = ["id"]

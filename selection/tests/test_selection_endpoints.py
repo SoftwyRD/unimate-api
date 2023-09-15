@@ -3,17 +3,17 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from ..models import Selection
+from ..models import SelectionModel
 
-SELECTION_LIST_URL = reverse("selection:list")
+SELECTION_LIST_URL = reverse("user:selections")
 
 PAYLOAD = {
     "name": "My Selection",
 }
 
 
-def selection_detail_url(id):
-    return reverse("selection:detail", args=[str(id)])
+def selection_detail_url(owner, name):
+    return reverse("selection:detail", args=[owner, name])
 
 
 def create_user(**kwargs):
@@ -32,7 +32,7 @@ def create_user(**kwargs):
 def create_selection(**kwargs):
     defauls = PAYLOAD.copy()
     defauls.update(**kwargs)
-    selection = Selection.objects.create(**defauls)
+    selection = SelectionModel.objects.create(**defauls)
     return selection
 
 
@@ -48,10 +48,7 @@ class TestSelectionEndpoints(APITestCase):
         response = self.client.get(SELECTION_LIST_URL)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("count", response.data)
-        self.assertIn("next", response.data)
-        self.assertIn("previous", response.data)
-        self.assertIn("results", response.data)
+        self.assertEqual(len(response.data), 0)
 
     def test_post_selection(self):
         """Test post selection"""
@@ -65,10 +62,12 @@ class TestSelectionEndpoints(APITestCase):
     def test_delete_selection(self):
         """Test delete selection"""
 
-        selection = create_selection(user=self.user)
-        response = self.client.delete(selection_detail_url(selection.id))
+        selection = create_selection(owner=self.user)
+        response = self.client.delete(
+            selection_detail_url(selection.owner, selection.slug)
+        )
 
-        selections = Selection.objects.filter(user=self.user)
+        selections = SelectionModel.objects.filter(owner=self.user)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(selections.count(), 0)
@@ -80,20 +79,22 @@ class TestSelectionEndpoints(APITestCase):
             username="new.username",
             email="new.mail@example.com",
         )
-        selection = create_selection(user=newUser)
-        response = self.client.delete(selection_detail_url(selection.id))
+        selection = create_selection(owner=newUser)
+        response = self.client.delete(
+            selection_detail_url(selection.owner, selection.slug)
+        )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_patch_selection(self):
         """Test patch selection"""
 
-        selection = create_selection(user=self.user)
+        selection = create_selection(owner=self.user)
         payload = {
             "name": "Best Selection",
         }
         response = self.client.patch(
-            selection_detail_url(selection.id), payload
+            selection_detail_url(selection.owner, selection.slug), payload
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -106,9 +107,9 @@ class TestSelectionEndpoints(APITestCase):
             username="new.username",
             email="new.mail@example.com",
         )
-        selection = create_selection(user=new_user)
+        selection = create_selection(owner=new_user)
         response = self.client.patch(
-            selection_detail_url(selection.id), PAYLOAD
+            selection_detail_url(selection.owner, selection.slug), PAYLOAD
         )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

@@ -1,16 +1,19 @@
 from django.contrib.admin import ModelAdmin, register
 
-from ..models import College
+from ..models import CollegeModel
+from .inlines import CareersInline
 
 
-@register(College)
+@register(CollegeModel)
 class CollegeAdmin(ModelAdmin):
-    ordering = ("full_name", "name")
-    list_display = ("full_name", "name", "careers_count")
-    search_fields = ("full_name", "name", "syllabuses__name")
+    ordering = ("name", "full_name")
+    list_display = ("name", "full_name", "careers_count")
+    search_fields = ("name", "full_name", "syllabuses__name")
     readonly_fields = ("careers_count", "created_at", "modified_at")
     show_full_result_count = True
     list_per_page = 25
+
+    inlines = (CareersInline,)
 
     add_fieldsets = (
         (

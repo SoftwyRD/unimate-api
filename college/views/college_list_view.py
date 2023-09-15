@@ -7,8 +7,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import College
-from ..pagination import PageNumberPagination
+from core.pagination import HeaderPagination
+
+from ..models import CollegeModel
 from ..serializers import CollegeSerializer
 
 SCHEMA_NAME = "colleges"
@@ -18,9 +19,9 @@ SCHEMA_NAME = "colleges"
 class CollegeListView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
-    queryset = College.objects.all()
+    queryset = CollegeModel.objects.all()
     serializer_class = CollegeSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = HeaderPagination
     filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["name"]
     ordering_fields = ["name", "full_name"]
@@ -42,8 +43,7 @@ class CollegeListView(APIView):
                 filtered_queryset, request
             )
             serializer = self.get_serializer(paginated_queryset, many=True)
-            response = paginator.get_paginated_response(serializer.data)
-            return Response(response, status.HTTP_200_OK)
+            return paginator.get_paginated_response(serializer.data)
         except NotFound:
             response = {
                 "status": "Out of range",
