@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from drf_spectacular.utils import extend_schema
+from django.db.utils import IntegrityError
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.fields import empty
 from rest_framework.permissions import IsAuthenticated
@@ -23,19 +24,22 @@ class SelectionStarDetailView(APIView):
         description="Star a selection.",
         request=None,
         responses={
-            204: None,
+            204: OpenApiResponse(description="Starred successfully."),
+            304: OpenApiResponse(
+                description="The selection is already starred."
+            ),
         },
     )
     def put(self, request, *args, **kwargs):
         try:
             selection = self.get_selection()
             starred_by = request.user
-            _, created = SelectionStarModel.objects.get_or_create(
+            SelectionStarModel.objects.create(
                 selection=selection, starred_by=starred_by
             )
-            if not created:
-                return Response(status=status.HTTP_304_NOT_MODIFIED)
             return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
         except SelectionModel.DoesNotExist:
             response = {
                 "title": "Selection does not exist",
@@ -54,6 +58,12 @@ class SelectionStarDetailView(APIView):
     @extend_schema(
         operation_id="Unstar selection",
         description="Unstar a selection.",
+        responses={
+            204: OpenApiResponse(description="Unstarred successfully."),
+            304: OpenApiResponse(
+                description="The selection is already unstarred."
+            ),
+        },
     )
     def delete(self, *args, **kwargs):
         try:
