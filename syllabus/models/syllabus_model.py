@@ -48,6 +48,11 @@ class SyllabusModel(models.Model):
         help_text=_("is syllabus active"),
         default=True,
     )
+    latest = models.BooleanField(
+        verbose_name=_("latest"),
+        help_text=_("is latest version"),
+        default=False,
+    )
     created_at = models.DateTimeField(
         verbose_name=_("created at"),
         help_text=_("Creation date"),
@@ -71,13 +76,3 @@ class SyllabusModel(models.Model):
             f"{self.career.name} ({self.version}) - "
             + f"{self.career.college.name}"
         )
-
-    def save(self, *args, **kwargs):
-        try:
-            with transaction.atomic():
-                if not self.id:
-                    self.career.syllabuses_count += 1
-                    self.career.save()
-                return super().save(*args, **kwargs)
-        except Exception:
-            raise

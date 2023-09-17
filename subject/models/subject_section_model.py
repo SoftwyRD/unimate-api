@@ -55,5 +55,5 @@ class SubjectSectionModel(models.Model):
     def __str__(self):
         return (
             f"{self.subject.code}-{self.section} - {self.subject.name}"
-            + " | {self.subject.college.name}"
+            + f" | {self.subject.college.name}"
         )

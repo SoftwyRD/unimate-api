@@ -1,0 +1,7 @@
+from .post_save_syllabus import post_save_syllabus
+from .post_save_syllabus_subject import post_save_syllabus_subject
+from .pre_delete_syllabus import pre_delete_syllabus
+from .pre_delete_syllabus_subject import pre_delete_syllabus_subject
+from .pre_save_syllabuses_fixture import pre_save_syllabuses_fixture
+from .pre_save_syllabuses_subjects_fixture import \
+    pre_save_syllabuses_subjects_fixture

@@ -1,0 +1,14 @@
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
+from ..models import CareerModel
+
+from django.utils import timezone
+
+
+@receiver(pre_save, sender=CareerModel)
+def pre_save_career_fixture(sender, instance, **kwargs):
+    raw = kwargs.get("raw")
+    if raw is not None:
+        instance.created_at = timezone.now()
+        instance.modified_at = timezone.now()

@@ -32,6 +32,11 @@ class SelectionModel(models.Model):
         on_delete=models.CASCADE,
         related_name="selections",
     )
+    is_visible = models.BooleanField(
+        verbose_name=_("is visible"),
+        help_text=_("Visibility"),
+        default=True,
+    )
     views_count = models.IntegerField(
         verbose_name=_("views count"),
         help_text=_("Views count"),
