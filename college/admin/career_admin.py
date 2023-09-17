@@ -2,12 +2,12 @@ from django.contrib.admin import ModelAdmin, register
 
 from ..models import CareerModel
 
-# from .inlines import CareerSyllabusesInline
+from .inlines import CareerSyllabusesInline
 
 
 @register(CareerModel)
 class CareerAdmin(ModelAdmin):
-    ordering = ("name",)
+    ordering = ("name", "college")
     list_display = ("name", "college", "syllabuses_count", "is_active")
     search_fields = ("name", "college__full_name", "college__name")
     list_filter = ("college__name",)
@@ -15,7 +15,7 @@ class CareerAdmin(ModelAdmin):
     show_full_result_count = True
     list_per_page = 25
 
-    # inlines = (CareerSyllabusesInline,)
+    inlines = (CareerSyllabusesInline,)
 
     add_fieldsets = (
         (

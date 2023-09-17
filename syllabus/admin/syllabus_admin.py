@@ -5,16 +5,17 @@ from ..models import SyllabusModel
 
 @register(SyllabusModel)
 class SyllabusAdmin(ModelAdmin):
-    ordering = ("career", "-version")
+    ordering = ("career__name", "-version")
     list_display = (
         "career",
         "version",
-        "is_active",
         "cycles_count",
         "subjects_count",
         "credits",
+        "is_active",
+        "latest",
     )
-    list_filter = ("is_active",)
+    list_filter = ("is_active", "latest")
     search_fields = (
         "career__name",
         "career__college__name",
@@ -24,6 +25,7 @@ class SyllabusAdmin(ModelAdmin):
         "credits",
         "subjects_count",
         "cycles_count",
+        "latest",
         "created_at",
         "modified_at",
     )
