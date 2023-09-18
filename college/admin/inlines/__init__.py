@@ -1,1 +1,2 @@
+from .career_syllabuses_inline import CareerSyllabusesInline
 from .careers_inline import CareersInline

@@ -6,9 +6,14 @@ from ..models import SelectionModel
 @register(SelectionModel)
 class SelectionAdmin(ModelAdmin):
     ordering = ("name", "owner")
-    list_display = ("name", "owner")
+    list_display = ("name", "owner", "stars_count", "views_count", "is_visible")
     search_fields = ("name", "owner__username")
-    readonly_fields = ("created_at", "modified_at")
+    readonly_fields = (
+        "stars_count",
+        "views_count",
+        "created_at",
+        "modified_at",
+    )
     show_full_result_count = True
     list_per_page = 25
 
@@ -22,7 +27,7 @@ class SelectionAdmin(ModelAdmin):
         (
             "Metadata",
             {
-                "fields": ("owner",),
+                "fields": ("is_visible", "owner"),
             },
         ),
     )
@@ -38,6 +43,9 @@ class SelectionAdmin(ModelAdmin):
             "Metadata",
             {
                 "fields": (
+                    "views_count",
+                    "stars_count",
+                    "is_visible",
                     "owner",
                     "created_at",
                     "modified_at",

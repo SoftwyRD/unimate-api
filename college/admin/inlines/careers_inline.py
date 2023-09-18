@@ -1,6 +1,6 @@
 from django.contrib.admin import TabularInline
 
-from syllabus.models import CareerModel
+from ...models import CareerModel
 
 
 class CareersInline(TabularInline):

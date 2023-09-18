@@ -1,5 +1,5 @@
 from django.core.validators import MinValueValidator
-from django.db import models, transaction
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from subject.models import SubjectModel
@@ -58,44 +58,3 @@ class SyllabusSubjectModel(models.Model):
             f"{self.syllabus.career.name} ({self.syllabus.version}) - "
             + f"{self.syllabus.career.college.name} | {self.subject}"
         )
-
-    def save(self, *args, **kwargs):
-        credits_count = 0
-        cycles_count = self.cycle
-
-        if not self.id:
-            self.syllabus.subjects_count += 1
-            credits_count = self.subject.credits
-
-        for syllabus in SyllabusSubjectModel.objects.filter(
-            syllabus=self.syllabus
-        ):
-            if syllabus.id == self.id:
-                credits_count += self.subject.credits - syllabus.subject.credits
-
-            credits_count += syllabus.subject.credits
-            if syllabus.cycle > cycles_count:
-                cycles_count = syllabus.cycle
-
-        self.syllabus.cycles_count = cycles_count
-        self.syllabus.credits = credits_count
-        try:
-            with transaction.atomic():
-                self.syllabus.save()
-                return super().save(*args, **kwargs)
-        except Exception:
-            raise
-
-    def delete(self, *args, **kwargs):
-        self.syllabus.credits -= self.subject.credits
-        self.syllabus.subjects_count -= 1
-
-        syllabus = SyllabusSubjectModel.objects.order_by("cycles_count").first()
-        self.syllabus.cycles_count = syllabus.syllabus.cycles_count
-
-        try:
-            with transaction.atomic():
-                self.syllabus.save()
-                return super().delete(*args, **kwargs)
-        except Exception:
-            raise

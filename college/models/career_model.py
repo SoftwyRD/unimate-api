@@ -1,4 +1,4 @@
-from django.db import models, transaction
+from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
@@ -62,20 +62,4 @@ class CareerModel(models.Model):
 
     def save(self, *args, **kwargs):
         self.code = self.code.upper()
-        try:
-            with transaction.atomic():
-                if not self.id:
-                    self.college.careers_count += 1
-                    self.college.save()
-                return super().save(*args, **kwargs)
-        except Exception:
-            raise
-
-    def delete(self, *args, **kwargs):
-        self.college.careers_count -= 1
-        try:
-            with transaction.atomic():
-                self.college.save()
-                return super().delete(*args, **kwargs)
-        except Exception:
-            raise
+        return super().save(*args, **kwargs)

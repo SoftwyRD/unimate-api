@@ -1,17 +1,10 @@
 from collections import OrderedDict
 
-from django.contrib.admin import TabularInline, register
+from django.contrib.admin import register
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from selection.models import SelectionModel
-
-
-class SubjectSectionInline(TabularInline):
-    model = SelectionModel
-    extra = 0
-    verbose_name = "selection"
-    verbose_name_plural = "selections"
+from .inlines import SelectionInline
 
 
 @register(get_user_model())
@@ -137,7 +130,7 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-    inlines = (SubjectSectionInline,)
+    inlines = (SelectionInline,)
 
     def activate_user(self, request, queryset):
         count = queryset.update(is_active=False)

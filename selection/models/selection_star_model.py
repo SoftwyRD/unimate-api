@@ -40,15 +40,5 @@ class SelectionStarModel(models.Model):
 
         unique_together = ("selection", "starred_by")
 
-    def save(self, *args, **kwargs):
-        self.selection.stars_count += 1
-        self.selection.save()
-        return super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        self.selection.stars_count -= 1
-        self.selection.save()
-        return super().delete(*args, **kwargs)
-
     def __str__(self):
         return f"{self.selection} | {self.starred_by.username}"

@@ -94,7 +94,13 @@ class SelectionStarDetailView(APIView):
     def get_selection(self):
         owner = self.get_owner()
         selection = self.kwargs.get("selection")
-        return SelectionModel.objects.get(slug__iexact=selection, owner=owner)
+        if self.request.user == owner:
+            return SelectionModel.objects.get(
+                slug__iexact=selection, owner=owner
+            )
+        return SelectionModel.objects.get(
+            slug__iexact=selection, owner=owner, is_visible=True
+        )
 
     def get_obj(self):
         selection = self.get_selection()
