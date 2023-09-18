@@ -1,11 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.fields import empty
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -20,16 +20,15 @@ SCHEMA_NAME = "selections"
 
 
 @extend_schema(tags=[SCHEMA_NAME])
-class SubjectSectionListView(APIView):
-    permission_classes = [IsAuthenticated, IsOwner]
+class SelectionSubjectListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwner]
     queryset = SubjectSectionModel.objects.all()
     serializer_class = SubjectSectionSerializer
     pagination_class = HeaderPagination
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["id"]
     ordering_fields = ["id", "subject__name", "professor"]
     search_fields = ["subject__name", "professor"]
-    filterset_fields = ["selections__is_active"]
 
     @extend_schema(
         operation_id="Retrieve subject sections list",
@@ -40,17 +39,16 @@ class SubjectSectionListView(APIView):
             200: serializer_class(many=True),
         },
     )
-    def get(self, request, id, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
-            self.add_view_history(request, id)
+            self.add_view_history(request)
             filtered_queryset = self.filter_queryset(queryset, request)
             paginator = self.get_paginator()
             paginated_queryset = paginator.paginate_queryset(
                 filtered_queryset, request
             )
-            selection = self.get_selection(id)
-            context = self.get_serializer_context(selection=selection)
+            context = self.get_serializer_context()
             serializer = self.get_serializer(
                 paginated_queryset, many=True, context=context
             )
@@ -82,11 +80,11 @@ class SubjectSectionListView(APIView):
         operation_id="Add subject section",
         description="Adds a subject section to the specified selections.",
     )
-    def post(self, request, id, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
-            selection = self.get_selection(id)
+            selection = self.get_selection()
             self.check_object_permissions(request, selection)
-            context = self.get_serializer_context(selection=selection)
+            context = self.get_serializer_context()
             serializer = self.get_serializer(data=request.data, context=context)
             if not serializer.is_valid():
                 response = {
@@ -117,26 +115,43 @@ class SubjectSectionListView(APIView):
             }
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get_selection(self, id):
-        return SelectionModel.objects.get(id=id)
-
-    def add_view_history(self, request, id):
+    def add_view_history(self, request):
         page = request.query_params.get("page", None)
         if page and page != 1:
             return
 
-        selection = self.get_selection(id)
+        if not request.user.is_authenticated:
+            return
+
+        selection = self.get_selection()
         ViewHistoryModel.objects.create(
             viewed_by=request.user, selection=selection
         )
 
     def get_serializer_context(self, **kwargs):
-        selection = kwargs.pop("selection")
+        selection = self.get_selection()
         return {"selection": selection}
 
+    def get_owner(self):
+        owner = self.kwargs.get("owner")
+        return get_user_model().objects.get(username__iexact=owner)
+
+    def get_selection(self):
+        selection = self.kwargs.get("selection")
+        owner = self.get_owner()
+
+        user = self.request.user
+        if user == owner:
+            return SelectionModel.objects.get(
+                slug__iexact=selection, owner=owner
+            )
+        return SelectionModel.objects.get(
+            slug__iexact=selection, owner=owner, is_visible=True
+        )
+
     def get_queryset(self):
-        id = self.kwargs.get("id")
-        return self.queryset.filter(selections__selection__id=id)
+        selection = self.get_selection()
+        return self.queryset.filter(selections__selection=selection)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

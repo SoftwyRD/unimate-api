@@ -21,7 +21,4 @@ class SyllabusSerializer(ModelSerializer):
             "subjects_count",
         ]
 
-        read_only_fields = [
-            "id",
-            "credits",
-        ]
+        read_only_fields = ["id", "credits"]

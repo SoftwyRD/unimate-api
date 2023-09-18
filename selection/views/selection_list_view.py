@@ -1,3 +1,4 @@
+from django.db.models import Q
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -17,7 +18,6 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionListView(APIView):
-    authentication_classes = []
     permission_classes = [AllowAny]
     queryset = SelectionModel.objects.all()
     serializer_class = SelectionSerializer
@@ -25,7 +25,7 @@ class SelectionListView(APIView):
     filter_backends = [SearchFilter, OrderingFilter]
     ordering = ["id"]
     ordering_fields = ["id", "name", "created_at", "modified_at"]
-    search_fields = ["name"]
+    search_fields = ["name", "owner__username"]
 
     @extend_schema(
         operation_id="Retrieve selections list",
@@ -58,7 +58,10 @@ class SelectionListView(APIView):
             return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_queryset(self):
-        return self.queryset
+        user = self.request.user
+        if user.is_authenticated:
+            return self.queryset.filter(Q(is_visible=True) | Q(owner=user))
+        return self.queryset.filter(is_visible=True)
 
     def filter_queryset(self, queryset, request):
         for backend in self.filter_backends:

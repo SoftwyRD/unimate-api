@@ -13,7 +13,7 @@ urlpatterns = [
     ),
     path(
         "<str:owner>/<str:selection>/subjects/",
-        views.SubjectSectionListView.as_view(),
+        views.SelectionSubjectListView.as_view(),
         name="subjects",
     ),
 ]
