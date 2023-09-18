@@ -1,11 +1,12 @@
 [flake8]
 exclude =
-    migrations,
     __pycache__,
-    manage.py,
-    settings.py,
-    admin.py
+    migrations,
     venv
     __init__.py
+    admin.py,
+    apps.py,
+    manage.py,
+    settings.py
 
 max-line-length = 80
