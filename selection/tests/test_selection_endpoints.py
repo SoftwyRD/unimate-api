@@ -56,7 +56,7 @@ class TestSelectionEndpoints(APITestCase):
         response = self.client.post(SELECTION_LIST_URL, PAYLOAD)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["name"], PAYLOAD["name"])
+        self.assertEqual(response.data["display"], PAYLOAD["name"])
         self.assertIn("Location", response)
 
     def test_delete_selection(self):
@@ -91,14 +91,14 @@ class TestSelectionEndpoints(APITestCase):
 
         selection = create_selection(owner=self.user)
         payload = {
-            "name": "Best Selection",
+            "display": "Best Selection",
         }
         response = self.client.patch(
             selection_detail_url(selection.owner, selection.name), payload
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["name"], payload["name"])
+        self.assertEqual(response.data["display"], payload["display"])
 
     def test_patch_selection_of_other_user(self):
         """Test patch selection of other user should not be permited"""

@@ -94,7 +94,7 @@ class SelectionDetailView(APIView):
         queryset = self.get_queryset()
         owner = self.get_owner()
         selection = self.kwargs.get("selection")
-        return queryset.get(owner=owner, slug__iexact=selection)
+        return queryset.get(owner=owner, name__iexact=selection)
 
     def get_queryset(self):
         return self.queryset
