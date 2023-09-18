@@ -14,13 +14,13 @@ class CollegeModel(models.Model):
     name = models.CharField(
         verbose_name=_("name"),
         help_text=_("College's name"),
-        max_length=255,
+        max_length=50,
         unique=True,
     )
     full_name = models.CharField(
         verbose_name=_("full name"),
         help_text=_("College's full name"),
-        max_length=50,
+        max_length=255,
         unique=True,
     )
     careers_count = models.IntegerField(

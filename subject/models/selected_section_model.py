@@ -33,14 +33,9 @@ class SelectedSectionModel(models.Model):
         help_text=_("Is active on selection"),
         default=True,
     )
-    created = models.DateTimeField(
-        verbose_name=_("created"),
+    created_at = models.DateTimeField(
+        verbose_name=_("created at"),
         help_text=_("Creation date"),
-        auto_now_add=True,
-    )
-    modified = models.DateTimeField(
-        verbose_name=_("modified"),
-        help_text=_("Modified date"),
         auto_now_add=True,
     )
 

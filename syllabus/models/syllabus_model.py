@@ -43,15 +43,15 @@ class SyllabusModel(models.Model):
         validators=[MinValueValidator(0)],
         default=0,
     )
-    is_active = models.BooleanField(
-        verbose_name=_("is active"),
-        help_text=_("is syllabus active"),
-        default=True,
-    )
     latest = models.BooleanField(
         verbose_name=_("latest"),
         help_text=_("is latest version"),
         default=False,
+    )
+    is_active = models.BooleanField(
+        verbose_name=_("is active"),
+        help_text=_("is syllabus active"),
+        default=True,
     )
     created_at = models.DateTimeField(
         verbose_name=_("created at"),

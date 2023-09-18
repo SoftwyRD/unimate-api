@@ -18,8 +18,8 @@ class SelectionSerializer(ModelSerializer):
         model = SelectionModel
         fields = [
             "id",
+            "display",
             "name",
-            "slug",
             "full_name",
             "owner",
             "stars_count",
@@ -31,14 +31,14 @@ class SelectionSerializer(ModelSerializer):
 
         read_only_fields = [
             "id",
-            "slug",
+            "name",
             "stars_count",
             "created_at",
             "modified_at",
         ]
 
     def get_full_name(self, obj):
-        return f"{obj.owner.username}/{obj.slug}"
+        return f"{obj.owner.username}/{obj.name}"
 
     def get_visibility(self, obj):
         return "Visible" if obj.is_visible else "Hidden"

@@ -64,7 +64,7 @@ class TestSelectionEndpoints(APITestCase):
 
         selection = create_selection(owner=self.user)
         response = self.client.delete(
-            selection_detail_url(selection.owner, selection.slug)
+            selection_detail_url(selection.owner, selection.name)
         )
 
         selections = SelectionModel.objects.filter(owner=self.user)
@@ -81,7 +81,7 @@ class TestSelectionEndpoints(APITestCase):
         )
         selection = create_selection(owner=newUser)
         response = self.client.delete(
-            selection_detail_url(selection.owner, selection.slug)
+            selection_detail_url(selection.owner, selection.name)
         )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -94,7 +94,7 @@ class TestSelectionEndpoints(APITestCase):
             "name": "Best Selection",
         }
         response = self.client.patch(
-            selection_detail_url(selection.owner, selection.slug), payload
+            selection_detail_url(selection.owner, selection.name), payload
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -109,7 +109,7 @@ class TestSelectionEndpoints(APITestCase):
         )
         selection = create_selection(owner=new_user)
         response = self.client.patch(
-            selection_detail_url(selection.owner, selection.slug), PAYLOAD
+            selection_detail_url(selection.owner, selection.name), PAYLOAD
         )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

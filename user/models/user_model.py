@@ -58,6 +58,9 @@ class UserModel(AbstractUser):
         null=True,
         blank=True,
     )
+    verified = models.BooleanField(
+        _("verified"), help_text=_("Is user verified"), default=False
+    )
 
     objects = UserManager()
 

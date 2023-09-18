@@ -27,8 +27,8 @@ class SelectionStarModel(models.Model):
         on_delete=models.CASCADE,
         related_name="starred_selections",
     )
-    starred = models.DateTimeField(
-        verbose_name=_("starred"),
+    starred_at = models.DateTimeField(
+        verbose_name=_("starred at"),
         help_text=_("Starred date"),
         auto_now_add=True,
     )
