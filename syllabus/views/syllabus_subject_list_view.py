@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from college.models import CollegeModel
-from syllabus.models import CareerModel, SyllabusSubjectModel, SyllabusModel
+from college.models import CollegeModel, CareerModel
+from syllabus.models import SyllabusSubjectModel, SyllabusModel
 
 from syllabus.serializers import SyllabusSubjectSerializer
 

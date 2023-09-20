@@ -1,0 +1,610 @@
+[
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 370, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 384, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 11, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 24, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 401, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 565, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 371, "cycle": 1 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 12, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 13, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 25, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 422, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1224, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 566, "cycle": 2 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1231, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 42, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 61, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1225, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1043, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1044, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 567, "cycle": 3 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 385, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 43, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 62, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 402, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 217, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 571, "cycle": 4 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 382, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 160, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 63, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1226, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 523, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 572, "cycle": 5 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 161, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 64, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 399, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1227, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 524, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 573, "cycle": 6 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1232, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 218, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 220, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 221, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 236, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 237, "cycle": 7 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1228, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 219, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 222, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 228, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 232, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 239, "cycle": 8 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1229, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 225, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 226, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 231, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 233, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 243, "cycle": 9 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 124, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 167, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 169, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1233, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 223, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 224, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 227, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 229, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 234, "cycle": 10 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 125, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 126, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 127, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 168, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 170, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 171, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 212, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1230, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 235, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 238, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 242, "cycle": 11 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 129, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 131, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 148, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 151, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 153, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 159, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 173, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 175, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 193, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 196, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 198, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 216, "cycle": 12 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 128, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 132, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 134, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 152, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 154, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 172, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 176, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 178, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 197, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 199, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 213, "cycle": 13 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 140, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 147, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 149, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 155, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 157, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 184, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 192, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 194, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 200, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 202, "cycle": 14 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 146, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 150, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 156, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1234, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 185, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 191, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 195, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 201, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 207, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 208, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1235, "cycle": 15 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 141, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 143, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 144, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1236, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1237, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 186, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 188, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 189, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 209, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 215, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1238, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1239, "cycle": 16 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 135, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 136, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 137, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 138, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 139, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1240, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 179, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 180, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 181, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 182, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 183, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 211, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 214, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 1241, "cycle": 17 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 203, "cycle": 18 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 246, "cycle": 19 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 204, "cycle": 20 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 250, "cycle": 20 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 205, "cycle": 21 }
+  },
+  {
+    "model": "syllabus.SyllabusSubjectModel",
+    "fields": { "syllabus": 1, "subject": 206, "cycle": 21 }
+  }
+]

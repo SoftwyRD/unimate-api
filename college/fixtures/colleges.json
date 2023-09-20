@@ -1,0 +1,72 @@
+[
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "INTEC",
+      "full_name": "Instituto Tecnológico de Santo Domingo"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UASD",
+      "full_name": "Universidad Autónoma de Santo Domingo"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "PUCMM",
+      "full_name": "Pontificia Universidad Católica Madre y Maestra"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UNIBE",
+      "full_name": "Universidad Iberoamericana"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UNAPEC",
+      "full_name": "Universidad APEC"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UFHEC",
+      "full_name": "Universidad Federico Henríquez y Carvajal"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UNPHU",
+      "full_name": "Universidad Nacional Pedro Henríquez Ureña"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "O&M",
+      "full_name": "Universidad Organización y Método"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "ISFODOSU",
+      "full_name": "Instituto Superior de Formación Docente Salomé Ureña"
+    }
+  },
+  {
+    "model": "college.CollegeModel",
+    "fields": {
+      "name": "UCE",
+      "full_name": "Universidad Central del Este"
+    }
+  }
+]

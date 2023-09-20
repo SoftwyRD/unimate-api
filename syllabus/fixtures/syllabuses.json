@@ -1,0 +1,418 @@
+[
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 1,
+      "version": "2020",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 2,
+      "version": "2016",
+      "latest": false
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 2,
+      "version": "2020",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 3,
+      "version": "2020",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 4,
+      "version": "2020",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 5,
+      "version": "2020",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 6,
+      "version": "000013",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 7,
+      "version": "200920",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 8,
+      "version": "000012",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 9,
+      "version": "200820",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 10,
+      "version": "000012",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 11,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 12,
+      "version": "4A",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 13,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 14,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 15,
+      "version": "2A",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 16,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 17,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 18,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 19,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 20,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 21,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 22,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 23,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 24,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 25,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 26,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 27,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 28,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 29,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 30,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 31,
+      "version": "2014",
+      "latest": false
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 31,
+      "version": "2022",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 32,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 33,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 34,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 35,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 36,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 37,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 38,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 39,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 40,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 41,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 42,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 43,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 44,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 45,
+      "version": "latest",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 46,
+      "version": "01",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 47,
+      "version": "027",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 48,
+      "version": "22-A",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 49,
+      "version": "021",
+      "latest": true
+    }
+  },
+  {
+    "model": "syllabus.SyllabusModel",
+    "fields": {
+      "career": 50,
+      "version": "023",
+      "latest": true
+    }
+  }
+]
