@@ -39,4 +39,4 @@ class ViewHistoryModel(models.Model):
         db_table = "selection_view"
 
     def __str__(self):
-        return f"{self.selection.display} - {self.viewed_by.username}"
+        return f"{self.selection.name} - {self.viewed_by.username}"

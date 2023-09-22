@@ -13,17 +13,15 @@ class SelectionModel(models.Model):
         unique=True,
         editable=False,
     )
-    display = models.CharField(
+    name = models.CharField(
         verbose_name=_("display name"),
         help_text=_("Selection display name"),
         max_length=100,
-        default="My Selection",
     )
-    name = models.SlugField(
-        verbose_name=_("display"),
-        help_text=_("Selection display"),
+    slug = models.SlugField(
+        verbose_name=_("slug"),
+        help_text=_("Selection slug"),
         max_length=100,
-        default="My-Selection",
     )
     owner = models.ForeignKey(
         verbose_name=_("owner"),
@@ -68,8 +66,8 @@ class SelectionModel(models.Model):
         unique_together = ("name", "owner")
 
     def __str__(self):
-        return f"{self.owner.username}/{self.name}"
+        return f"{self.owner.username}/{self.slug}"
 
     def save(self, *args, **kwargs):
-        self.name = slugify(self.display)
+        self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
