@@ -13,7 +13,7 @@ class SubjectSectionAdmin(ModelAdmin):
         "selections__selection__name",
         "subject__name",
         "subject__code",
-        "selections__selection__user__username",
+        "selections__selection__owner__username",
     )
     show_full_result_count = True
     list_per_page = 25
