@@ -17,6 +17,9 @@ class PasswordView(APIView):
     @extend_schema(
         operation_id="Update authenticated user password",
         description="Update authenticated user password.",
+        responses={
+            204: None,
+        },
     )
     def put(self, request, *args, **kwargs):
         try:

@@ -1,3 +1,4 @@
+from django.db.utils import IntegrityError
 from django.urls import reverse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
