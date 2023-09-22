@@ -35,16 +35,6 @@ class SyllabusSubjectModel(models.Model):
         validators=[MinValueValidator(0)],
         default=1,
     )
-    created_at = models.DateTimeField(
-        verbose_name=_("created at"),
-        help_text=_("Creation date"),
-        auto_now_add=True,
-    )
-    modified_at = models.DateTimeField(
-        verbose_name=_("modified at"),
-        help_text=_("Modified date"),
-        auto_now_add=True,
-    )
 
     class Meta:
         verbose_name = _("subject")

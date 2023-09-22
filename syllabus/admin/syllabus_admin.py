@@ -26,8 +26,6 @@ class SyllabusAdmin(ModelAdmin):
         "subjects_count",
         "cycles_count",
         "latest",
-        "created_at",
-        "modified_at",
     )
     show_full_result_count = True
     list_per_page = 25
@@ -65,8 +63,6 @@ class SyllabusAdmin(ModelAdmin):
                     "subjects_count",
                     "cycles_count",
                     "is_active",
-                    "created_at",
-                    "modified_at",
                 ),
             },
         ),

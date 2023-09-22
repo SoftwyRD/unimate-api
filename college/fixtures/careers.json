@@ -1,0 +1,402 @@
+[
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 1,
+      "code": "MED",
+      "name": "Doctor en Medicina"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 1,
+      "code": "IDS",
+      "name": "Ingeniería de Software"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 1,
+      "code": "IND",
+      "name": "Ingeniería Industrial"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 1,
+      "code": "PSI",
+      "name": "Licenciatura en Psicología"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 1,
+      "code": "ECO",
+      "name": "Economía"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 2,
+      "code": "ARQ",
+      "name": "Arquitectura"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 2,
+      "code": "DMED",
+      "name": "Doctor en Medicina"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 2,
+      "code": "DERE",
+      "name": "Licenciatura en Derecho"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 2,
+      "code": "TEA",
+      "name": "Licenciatura en Teatro"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 2,
+      "code": "ICIV",
+      "name": "Ingeniería Civil"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 3,
+      "code": "LDI",
+      "name": "Licenciatura en Diseño e Interiorismo"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 3,
+      "code": "EES",
+      "name": "Estomatología"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 3,
+      "code": "LND",
+      "name": "Licenciatura en Nutrición y Dietética"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 3,
+      "code": "LTS",
+      "name": "Licenciatura en Trabajo Social"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 3,
+      "code": "TTF",
+      "name": "Licenciatura en Terapia Física"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 4,
+      "code": "DI2",
+      "name": "Diseño de Interiores"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 4,
+      "code": "GT7",
+      "name": "Dirección y Gestión del Turismo"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 4,
+      "code": "OD11",
+      "name": "Odontología"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 4,
+      "code": "GM6",
+      "name": "Mercadeo"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 4,
+      "code": "CO1",
+      "name": "Comunicación"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 5,
+      "code": "LMS",
+      "name": "Licenciatura en Matemática Orientada a la Educación Superior"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 5,
+      "code": "LIE",
+      "name": "Licenciatura en Inglés Orientada a la Ensenanza"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 5,
+      "code": "ADM",
+      "name": "Licenciatura en Administración de Empresas"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 5,
+      "code": "CON",
+      "name": "Licenciatura en Contabilidad"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 5,
+      "code": "NEG",
+      "name": "Licenciatura en Negocios Internacionales"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 6,
+      "code": "DER",
+      "name": "Derecho"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 6,
+      "code": "ENF",
+      "name": "Enfermería"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 6,
+      "code": "PSI",
+      "name": "Psicología Clínica"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 6,
+      "code": "INI",
+      "name": "Ingeniería Industrial"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 6,
+      "code": "INE",
+      "name": "Ingeniería Eléctrica"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 7,
+      "code": "ARQ",
+      "name": "Arquitectura"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 7,
+      "code": "IAG",
+      "name": "Agrimensura"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 7,
+      "code": "MER",
+      "name": "Licenciatura en Mercadotecnia"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 7,
+      "code": "CON",
+      "name": "Licenciatura en Contabilidad y Auditoría"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 7,
+      "code": "ODO",
+      "name": "Doctor en Odontología"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 8,
+      "code": "ADM",
+      "name": "Licenciatura en Administración de Empresas"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 8,
+      "code": "ARQ",
+      "name": "Arquitectura"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 8,
+      "code": "CIV",
+      "name": "Ingeniería Civil"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 8,
+      "code": "MED",
+      "name": "Doctor en Medicina"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 8,
+      "code": "",
+      "name": "Licenciatura en Psicología Mención Clínica"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 9,
+      "code": "INI",
+      "name": "Licenciatura en Educación Inicial"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 9,
+      "code": "EFS",
+      "name": "Licenciatura en Educación Física"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 9,
+      "code": "LIT",
+      "name": "Licenciatura en Lengua Española y Literatura Orientada a la Educación Secundaria"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 9,
+      "code": "CSO",
+      "name": "Licenciatura en Ciencias Sociales Orientada a la Educación Secundaria"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 9,
+      "code": "MAS",
+      "name": "Licenciatura en Matemática orientada a la Educación Secundaria"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 10,
+      "code": "ICS",
+      "name": "Ingeniería en Ciberseguridad"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 10,
+      "code": "FAR",
+      "name": "Farmacia"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 10,
+      "code": "VET",
+      "name": "Veterinaria"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 10,
+      "code": "ISW",
+      "name": "Ingeniería de Software"
+    }
+  },
+  {
+    "model": "college.CareerModel",
+    "fields": {
+      "college": 10,
+      "code": "PSI",
+      "name": "Licenciatura en Psicología Mención Clínica"
+    }
+  }
+]

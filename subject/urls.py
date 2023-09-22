@@ -12,8 +12,13 @@ urlpatterns = [
         name="detail",
     ),
     path(
-        "sections/<int:id>/",
+        "<str:college>/<str:subject>/sections/",
+        views.SubjectSectionListView.as_view(),
+        name="section-list",
+    ),
+    path(
+        "<str:college>/<str:subject>/sections/<int:section>/",
         views.SubjectSectionDetailView.as_view(),
-        name="sections",
+        name="section-detail",
     ),
 ]

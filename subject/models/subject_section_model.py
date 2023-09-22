@@ -34,6 +34,11 @@ class SubjectSectionModel(models.Model):
         help_text=_("Professor's name"),
         max_length=60,
     )
+    is_custom = models.BooleanField(
+        verbose_name=_("is custom"),
+        help_text=_("is section"),
+        default=False,
+    )
     cycle = models.IntegerField(
         verbose_name=_("cycle"),
         help_text=_("cycle"),

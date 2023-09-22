@@ -23,7 +23,7 @@ class CareerModel(models.Model):
     code = models.CharField(
         verbose_name=_("code"),
         help_text=_("Career's code"),
-        max_length=10,
+        max_length=20,
     )
     name = models.CharField(
         verbose_name=_("name"),

@@ -8,10 +8,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from college.models import CollegeModel
+from college.models import CollegeModel, CareerModel
 from core.pagination import HeaderPagination
 
-from ..models import CareerModel, SyllabusModel
+from ..models import SyllabusModel
 from ..serializers import SyllabusSerializer
 
 SCHEMA_NAME = "syllabuses"

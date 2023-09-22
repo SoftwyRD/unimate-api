@@ -12,7 +12,6 @@ class SyllabusSubjectAdmin(ModelAdmin):
         "syllabus__career__name",
         "syllabus__career__college__name",
     )
-    readonly_fields = ("created_at", "modified_at")
     show_full_result_count = True
     list_per_page = 25
 
@@ -37,15 +36,6 @@ class SyllabusSubjectAdmin(ModelAdmin):
                     "syllabus",
                     "subject",
                     "cycle",
-                ),
-            },
-        ),
-        (
-            "Metadata",
-            {
-                "fields": (
-                    "created_at",
-                    "modified_at",
                 ),
             },
         ),

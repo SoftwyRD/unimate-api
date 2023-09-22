@@ -133,4 +133,3 @@ dmypy.json
 .vscode/
 **/migrations/
 !**/migrations/__init__.py
-fixtures/

@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.fields import empty
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -16,9 +16,39 @@ SCHEMA_NAME = "selections"
 
 @extend_schema(tags=[SCHEMA_NAME])
 class SelectionDetailView(APIView):
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwner]
     queryset = SelectionModel.objects.all()
     serializer_class = SelectionSerializer
+
+    @extend_schema(
+        operation_id="Retrieve selection",
+        description="Retrieves the specified selection.",
+    )
+    def get(self, request, *args, **kwargs):
+        try:
+            instance = self.get_obj()
+            self.check_object_permissions(request, instance)
+            serializer = self.get_serializer(instance)
+            response = serializer.data
+            return Response(response, status.HTTP_200_OK)
+        except (
+            get_user_model().DoesNotExist,
+            SelectionModel.DoesNotExist,
+            PermissionDenied,
+        ):
+            response = {
+                "title": "Selection does not exist",
+                "message": "Could not find any matching selection.",
+            }
+            return Response(response, status.HTTP_404_NOT_FOUND)
+        except Exception:
+            response = {
+                "title": "Internal error",
+                "message": (
+                    "There was an error trying to retrieve the selection."
+                ),
+            }
+            return Response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
         operation_id="Partial update selection",

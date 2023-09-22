@@ -11,6 +11,7 @@ urlpatterns = [
         views.SelectionHistoryListView.as_view(),
         name="history",
     ),
+    path("password/", views.PasswordView().as_view(), name="password"),
     path(
         "starred/",
         views.SelectionStarListView.as_view(),

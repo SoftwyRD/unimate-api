@@ -10,6 +10,6 @@ class SelectionStarSerializer(ModelSerializer):
 
     class Meta:
         model = SelectionStarModel
-        fields = ["selection", "selection_id", "starred"]
+        fields = ["selection", "selection_id", "starred_at"]
 
-        read_only_fields = ["starred"]
+        read_only_fields = ["starred_at"]

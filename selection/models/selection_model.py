@@ -14,16 +14,14 @@ class SelectionModel(models.Model):
         editable=False,
     )
     name = models.CharField(
-        verbose_name=_("name"),
-        help_text=_("Selection name"),
+        verbose_name=_("display name"),
+        help_text=_("Selection display name"),
         max_length=100,
-        default="My Selection",
     )
     slug = models.SlugField(
         verbose_name=_("slug"),
         help_text=_("Selection slug"),
         max_length=100,
-        default="my-selection",
     )
     owner = models.ForeignKey(
         verbose_name=_("owner"),

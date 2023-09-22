@@ -1,42 +1,42 @@
 [
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Monday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Tuesday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Wednesday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Thursday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Friday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Saturday"
     }
   },
   {
-    "model": "subject.weekday",
+    "model": "subject.WeekdayModel",
     "fields": {
       "name": "Sunday"
     }

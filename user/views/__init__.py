@@ -1,3 +1,4 @@
+from .password_view import PasswordView
 from .selection_history_list_view import SelectionHistoryListView
 from .selection_star_detail_view import SelectionStarDetailView
 from .selection_star_list_view import SelectionStarListView
