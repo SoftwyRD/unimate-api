@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+    python manage.py makemigrations && \
+    python manage.py migrate
 
 EXPOSE 8000
 
