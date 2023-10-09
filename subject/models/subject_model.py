@@ -48,7 +48,7 @@ class SubjectModel(models.Model):
         db_table = "subject"
 
     def __str__(self):
-        return f"{self.code} - {self.name} | {self.college.name}"
+        return f"{self.code} - {self.name}"
 
     def save(self, *args, **kwargs):
         self.code = self.code.upper()

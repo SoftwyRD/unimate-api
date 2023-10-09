@@ -131,5 +131,5 @@ dmypy.json
 # Custom files
 .DS_STORE
 .vscode/
-**/migrations/
+**/migrations/**
 !**/migrations/__init__.py

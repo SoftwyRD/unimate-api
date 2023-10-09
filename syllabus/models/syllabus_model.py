@@ -73,6 +73,5 @@ class SyllabusModel(models.Model):
 
     def __str__(self):
         return (
-            f"{self.career.name} ({self.version}) - "
-            + f"{self.career.college.name}"
+            f"{self.career.name} ({self.version})"
         )
