@@ -44,6 +44,7 @@ class SelectionSubjectListView(APIView):
             queryset = self.get_queryset()
             self.add_view_history(request)
             filtered_queryset = self.filter_queryset(queryset, request)
+            print(queryset)
             paginator = self.get_paginator()
             paginated_queryset = paginator.paginate_queryset(
                 filtered_queryset, request
@@ -106,7 +107,8 @@ class SelectionSubjectListView(APIView):
                 "message": "Could not find any matching section.",
             }
             return Response(response, status.HTTP_404_NOT_FOUND)
-        except Exception:
+        except Exception as e:
+            print(e)
             response = {
                 "title": "Internal error",
                 "message": (
@@ -165,9 +167,9 @@ class SelectionSubjectListView(APIView):
         return self.serializer_class(instance, data, **kwargs)
 
     def get_success_headers(self, response):
-        id = response["id"]
-        location = reverse("subject:sections", args=[id])
-        headers = {
-            "Location": location,
-        }
-        return headers
+        # id = response["id"]
+        # location = reverse("subject:sections", args=[id])
+        # headers = {
+        #     "Location": location,
+        # }
+        return None

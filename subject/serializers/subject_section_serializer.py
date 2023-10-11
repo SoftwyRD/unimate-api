@@ -1,5 +1,7 @@
 from rest_framework.serializers import IntegerField, ModelSerializer
 
+from subject.models import SelectedSectionModel
+
 from ..models import SubjectSectionModel
 from .section_schedule_serializer import SectionScheduleSerializer
 from .subject_serializer import SubjectSerializer
@@ -23,3 +25,10 @@ class SubjectSectionSerializer(ModelSerializer):
         ]
 
         read_only_fields = ["id"]
+
+    def create(self, validated_data):
+        section = super().create(validated_data)
+        SelectedSectionModel.objects.create(
+            selection=self.context["selection"], section=section
+        )
+        return section

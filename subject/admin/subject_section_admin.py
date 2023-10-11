@@ -8,7 +8,7 @@ from .inlines import SectionScheduleInline
 class SubjectSectionAdmin(ModelAdmin):
     ordering = ("subject", "-section", "-cycle", "-year")
     list_display = ("subject", "section", "cycle", "year")
-    list_filter = ("selections__is_active",)
+    list_filter = ("is_custom",)
     search_fields = (
         "selections__selection__name",
         "subject__name",
