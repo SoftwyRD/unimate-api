@@ -9,5 +9,5 @@ class SelectionInline(TabularInline):
     verbose_name = "selection"
     verbose_name_plural = "selections"
 
-    fields = ("display", "views_count", "stars_count", "is_visible")
+    fields = ("name", "views_count", "stars_count", "is_visible")
     readonly_fields = ("name", "views_count", "stars_count")
